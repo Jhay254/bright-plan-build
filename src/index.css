@@ -2,95 +2,114 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600&family=DM+Sans:wght@400;500;600&family=Lora:wght@400;500;600&display=swap');
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* === ECHO HEALING PALETTE === */
+    /* Primary — The Healing Spectrum (Greens) */
+    --forest: 153 40% 30%;        /* #2D6A4F */
+    --fern: 153 37% 40%;          /* #40916C */
+    --sage: 153 40% 63%;          /* #74C69D */
+    --mist: 150 45% 81%;          /* #B7E4C7 */
+    --dawn: 150 52% 90%;          /* #D8F3DC */
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    /* Secondary — Warmth & Grounding */
+    --dusk: 268 28% 51%;          /* #7B5EA7 */
+    --sunlight: 43 78% 66%;       /* #E9C46A */
+    --ember: 25 86% 67%;          /* #F4A261 */
+    --shore: 199 67% 73%;         /* #8ECAE6 */
+    --tide: 181 33% 75%;          /* #A8DADC */
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    /* Neutrals — Warm, Never Clinical */
+    --parchment: 40 20% 98%;      /* #FAFAF8 */
+    --sand: 30 18% 93%;           /* #F2EDE8 */
+    --stone: 25 15% 88%;          /* #E8E0D8 */
+    --driftwood: 20 4% 40%;       /* #6B6560 */
+    --bark: 20 6% 16%;            /* #2C2825 */
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Semantic — Functional Communication */
+    --affirm: 148 58% 26%;        /* #1B6B3A */
+    --gentle-alert: 40 100% 46%;  /* #E9A800 */
+    --care-alert: 20 77% 47%;     /* #D4551A */
+    --urgent: 0 68% 33%;          /* #8B1A1A */
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* === SHADCN MAPPING === */
+    --background: var(--parchment);
+    --foreground: var(--bark);
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --card: var(--parchment);
+    --card-foreground: var(--bark);
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --popover: var(--parchment);
+    --popover-foreground: var(--bark);
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --primary: var(--forest);
+    --primary-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --secondary: var(--dawn);
+    --secondary-foreground: var(--forest);
 
-    --radius: 0.5rem;
+    --muted: var(--sand);
+    --muted-foreground: var(--driftwood);
 
-    --sidebar-background: 0 0% 98%;
+    --accent: var(--mist);
+    --accent-foreground: var(--forest);
 
-    --sidebar-foreground: 240 5.3% 26.1%;
+    --destructive: var(--care-alert);
+    --destructive-foreground: 0 0% 100%;
 
-    --sidebar-primary: 240 5.9% 10%;
+    --border: var(--stone);
+    --input: var(--sand);
+    --ring: var(--fern);
 
-    --sidebar-primary-foreground: 0 0% 98%;
+    --radius: 0.75rem;
 
-    --sidebar-accent: 240 4.8% 95.9%;
+    /* Sidebar */
+    --sidebar-background: var(--dawn);
+    --sidebar-foreground: var(--bark);
+    --sidebar-primary: var(--forest);
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: var(--mist);
+    --sidebar-accent-foreground: var(--forest);
+    --sidebar-border: var(--stone);
+    --sidebar-ring: var(--fern);
 
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* === ECHO SHADOWS (warm-toned) === */
+    --shadow-1: 0 1px 3px rgba(44, 40, 37, 0.08);
+    --shadow-2: 0 4px 12px rgba(44, 40, 37, 0.10);
+    --shadow-3: 0 8px 24px rgba(44, 40, 37, 0.12);
+    --shadow-4: 0 16px 48px rgba(44, 40, 37, 0.16);
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --background: 20 6% 10%;
+    --foreground: var(--sand);
+    --card: 20 6% 12%;
+    --card-foreground: var(--sand);
+    --popover: 20 6% 12%;
+    --popover-foreground: var(--sand);
+    --primary: var(--sage);
+    --primary-foreground: var(--bark);
+    --secondary: 20 6% 16%;
+    --secondary-foreground: var(--sand);
+    --muted: 20 6% 16%;
+    --muted-foreground: var(--driftwood);
+    --accent: 20 6% 18%;
+    --accent-foreground: var(--sage);
+    --destructive: var(--care-alert);
+    --destructive-foreground: 0 0% 100%;
+    --border: 20 6% 20%;
+    --input: 20 6% 20%;
+    --ring: var(--sage);
+    --sidebar-background: 20 6% 10%;
+    --sidebar-foreground: var(--sand);
+    --sidebar-primary: var(--sage);
+    --sidebar-primary-foreground: var(--bark);
+    --sidebar-accent: 20 6% 16%;
+    --sidebar-accent-foreground: var(--sage);
+    --sidebar-border: 20 6% 20%;
+    --sidebar-ring: var(--sage);
   }
 }
 
@@ -101,5 +120,53 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
   }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+}
+
+@layer utilities {
+  .font-heading {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+  .font-body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+  .font-professional {
+    font-family: 'DM Sans', system-ui, sans-serif;
+  }
+  .font-journal {
+    font-family: 'Lora', Georgia, 'Times New Roman', serif;
+  }
+}
+
+/* Echo-specific animations */
+@keyframes float-gentle {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-gentle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.animate-float-gentle {
+  animation: float-gentle 6s ease-in-out infinite;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s ease-out forwards;
+}
+
+.animate-pulse-gentle {
+  animation: pulse-gentle 3s ease-in-out infinite;
 }
