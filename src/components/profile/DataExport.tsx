@@ -4,7 +4,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "react-i18next";
-import { Download, FileText } from "lucide-react";
+import { Download, FileText, Info } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 const DataExport = () => {
   const { user, profile } = useAuth();
@@ -156,6 +157,16 @@ const DataExport = () => {
           <FileText className="h-4 w-4 ltr:mr-2 rtl:ml-2" />
           {exportingPdf ? t("common.loading") : "PDF Journal"}
         </Button>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button type="button" className="text-driftwood hover:text-forest transition-colors" aria-label="PDF export info">
+              <Info className="h-4 w-4" />
+            </button>
+          </TooltipTrigger>
+          <TooltipContent side="top" className="max-w-[200px] text-xs">
+            PDF export opens your browser's print dialog. Choose "Save as PDF" to download.
+          </TooltipContent>
+        </Tooltip>
       </div>
     </div>
   );
