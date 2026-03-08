@@ -145,7 +145,7 @@ const CocoonPage = () => {
       {/* Active sessions */}
       {activeSessions.length > 0 && (
         <div className="mb-8">
-          <h2 className="font-heading text-sm font-semibold text-bark uppercase tracking-wide mb-3">Active</h2>
+          <h2 className="font-heading text-sm font-semibold text-bark uppercase tracking-wide mb-3">{t("cocoon.active")}</h2>
           <div className="space-y-2">
             {activeSessions.map((s) => (
               <button
