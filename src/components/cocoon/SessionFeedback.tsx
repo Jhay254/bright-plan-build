@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "react-i18next";
+import { BookOpen } from "lucide-react";
 import type { Database } from "@/integrations/supabase/types";
 
 type FeedbackRole = Database["public"]["Enums"]["app_role"];
@@ -38,6 +40,7 @@ const SessionFeedback = ({ sessionId, volunteerId, role, onComplete }: SessionFe
   const { user } = useAuth();
   const { toast } = useToast();
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [rating, setRating] = useState<number | null>(null);
   const [feltHeard, setFeltHeard] = useState<boolean | null>(null);
   const [feltSafe, setFeltSafe] = useState<boolean | null>(null);
@@ -211,6 +214,21 @@ const SessionFeedback = ({ sessionId, volunteerId, role, onComplete }: SessionFe
       <button onClick={onComplete} className="block mx-auto mt-3 text-sm text-driftwood hover:text-forest">
         {t("feedback.skip")}
       </button>
+
+      {/* Post-session journal prompt */}
+      {role === "seeker" && (
+        <div className="mt-6 pt-6 border-t border-border text-center">
+          <p className="text-sm text-driftwood mb-2">Would you like to reflect on this session?</p>
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-1.5"
+            onClick={() => navigate("/app/journal/new?prompt=post-session")}
+          >
+            <BookOpen className="h-4 w-4" /> Write in Journal
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
