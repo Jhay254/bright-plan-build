@@ -20,20 +20,17 @@ const Footer = () => {
           <div>
             <h4 className="font-heading text-sm font-semibold text-sand mb-4">For Seekers</h4>
             <ul className="space-y-2.5">
-              <li><a href="#" className="text-stone text-sm hover:text-mist transition-colors">Get Support</a></li>
-              <li><a href="#" className="text-stone text-sm hover:text-mist transition-colors">How It Works</a></li>
-              <li><a href="#" className="text-stone text-sm hover:text-mist transition-colors">Your Privacy</a></li>
-              <li><a href="#" className="text-stone text-sm hover:text-mist transition-colors">Crisis Resources</a></li>
+              <li><a href="/auth" className="text-stone text-sm hover:text-mist transition-colors">Get Support</a></li>
+              <li><a href="/#how-it-works" className="text-stone text-sm hover:text-mist transition-colors">How It Works</a></li>
+              <li><a href="/#principles" className="text-stone text-sm hover:text-mist transition-colors">Our Principles</a></li>
             </ul>
           </div>
 
           <div>
             <h4 className="font-heading text-sm font-semibold text-sand mb-4">For Volunteers</h4>
             <ul className="space-y-2.5">
-              <li><a href="#" className="text-stone text-sm hover:text-mist transition-colors">Become a Volunteer</a></li>
-              <li><a href="#" className="text-stone text-sm hover:text-mist transition-colors">Training & CPD</a></li>
-              <li><a href="#" className="text-stone text-sm hover:text-mist transition-colors">Content Studio</a></li>
-              <li><a href="#" className="text-stone text-sm hover:text-mist transition-colors">Institutions</a></li>
+              <li><a href="/volunteer" className="text-stone text-sm hover:text-mist transition-colors">Become a Volunteer</a></li>
+              <li><a href="/#for-volunteers" className="text-stone text-sm hover:text-mist transition-colors">Why Volunteer</a></li>
             </ul>
           </div>
         </div>
