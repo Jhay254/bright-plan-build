@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import QueryError from "@/components/ui/query-error";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserSessions, useAvailableSessions } from "@/hooks/use-sessions";
@@ -35,7 +36,7 @@ const CocoonPage = () => {
   const { user, role } = useAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { data: sessions = [], isLoading } = useUserSessions(user?.id);
+  const { data: sessions = [], isLoading, isError, refetch } = useUserSessions(user?.id);
   const { data: availableSessions = [] } = useAvailableSessions(user?.id, role === "volunteer");
 
   const STATUS_LABEL: Record<SessionStatus, string> = {
@@ -61,6 +62,7 @@ const CocoonPage = () => {
   }, [availableSessions, filterLang, filterTopic]);
 
   if (isLoading) return <PageSkeleton rows={4} />;
+  if (isError) return <QueryError onRetry={() => refetch()} />;
 
   return (
     <>

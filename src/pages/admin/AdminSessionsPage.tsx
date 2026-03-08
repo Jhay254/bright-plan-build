@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { PageSkeleton } from "@/components/ui/skeleton-card";
+import QueryError from "@/components/ui/query-error";
 import { Helmet } from "react-helmet-async";
 import { MessageSquare, Clock } from "lucide-react";
 import type { Database } from "@/integrations/supabase/types";
@@ -22,7 +23,7 @@ const STATUS_COLORS: Record<SessionStatus, string> = {
 const AdminSessionsPage = () => {
   const [statusFilter, setStatusFilter] = useState<SessionStatus | "all">("all");
 
-  const { data: sessions = [], isLoading } = useQuery({
+  const { data: sessions = [], isLoading, isError, refetch } = useQuery({
     queryKey: ["admin", "sessions", statusFilter],
     queryFn: async () => {
       let query = supabase
@@ -39,6 +40,7 @@ const AdminSessionsPage = () => {
   });
 
   if (isLoading) return <PageSkeleton rows={5} />;
+  if (isError) return <QueryError onRetry={() => refetch()} />;
 
   const statuses: (SessionStatus | "all")[] = ["all", "requested", "matched", "active", "wrap_up", "closed", "cancelled"];
 

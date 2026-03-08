@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Plus, BookOpen, Flag } from "lucide-react";
 import { getMoodOption } from "@/lib/journal";
 import { PageSkeleton } from "@/components/ui/skeleton-card";
+import QueryError from "@/components/ui/query-error";
 import { Helmet } from "react-helmet-async";
 import HealingTimeline from "@/components/journal/HealingTimeline";
 
@@ -13,7 +14,7 @@ const JournalPage = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [filter, setFilter] = useState<"all" | "milestones">("all");
-  const { data: entries = [], isLoading } = useJournalEntries(user?.id, filter);
+  const { data: entries = [], isLoading, isError, refetch } = useJournalEntries(user?.id, filter);
 
   // Group entries by date
   const grouped = entries.reduce<Record<string, typeof entries>>((acc, entry) => {
@@ -29,6 +30,7 @@ const JournalPage = () => {
   const milestoneCount = entries.filter((e) => e.is_milestone).length;
 
   if (isLoading) return <PageSkeleton rows={4} />;
+  if (isError) return <QueryError onRetry={() => refetch()} />;
 
   return (
     <>
