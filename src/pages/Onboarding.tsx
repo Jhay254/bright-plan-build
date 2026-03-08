@@ -82,7 +82,12 @@ const Onboarding = () => {
   const back = () => step > 0 && setStep(step - 1);
 
   return (
-    <div className="min-h-screen bg-dawn flex flex-col">
+    <>
+      <Helmet>
+        <title>Welcome — Echo</title>
+        <meta name="description" content="Set up your Echo profile. Choose your language, goals, and preferences." />
+      </Helmet>
+      <div className="min-h-screen bg-dawn flex flex-col">
       {/* Progress bar */}
       <div className="px-6 pt-6">
         <div className="flex gap-1.5">
