@@ -31,7 +31,7 @@ function AdminSidebar() {
   return (
     <Sidebar collapsible="icon" className="border-r border-border">
       <SidebarContent className="bg-card">
-        <SidebarGroup defaultOpen>
+        <SidebarGroup>
           <SidebarGroupLabel className="text-driftwood font-heading text-xs uppercase tracking-wider">
             Admin Panel
           </SidebarGroupLabel>
