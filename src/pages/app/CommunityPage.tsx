@@ -17,7 +17,7 @@ const CommunityPage = () => {
       <div className="px-6 pt-8 pb-24 max-w-2xl mx-auto">
         <h1 className="font-heading text-2xl font-bold text-foreground mb-1">{t("community.title")}</h1>
         <p className="text-sm text-muted-foreground mb-6">
-          Resources, support, and encouragement from those who understand.
+          {t("community.subtitle")}
         </p>
 
         <Tabs defaultValue="resources">
