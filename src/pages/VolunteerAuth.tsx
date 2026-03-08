@@ -51,7 +51,7 @@ const VolunteerAuth = () => {
         // Check if session was created immediately (auto-confirm enabled)
         const { data: { session } } = await supabase.auth.getSession();
         if (session) {
-          navigate("/app");
+          navigate("/app/volunteer");
         } else {
           toast({ title: "Check your email", description: "Confirm your account, then sign in to complete volunteer setup." });
         }
