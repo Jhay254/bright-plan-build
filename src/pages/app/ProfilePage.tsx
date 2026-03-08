@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 import AccountUpgrade from "@/components/profile/AccountUpgrade";
 import DataExport from "@/components/profile/DataExport";
 import AccountDeletion from "@/components/profile/AccountDeletion";
+import ThemeToggle from "@/components/profile/ThemeToggle";
 
 const LANGUAGES = [
   { code: "en", label: "English" },
@@ -148,6 +149,9 @@ const ProfilePage = () => {
             ))}
           </div>
         </div>
+
+        {/* Theme */}
+        <ThemeToggle />
 
         {/* Healing Goals */}
         {profile?.healing_goals && profile.healing_goals.length > 0 && (

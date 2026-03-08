@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Plus, BookOpen, Flag } from "lucide-react";
 import { getMoodOption } from "@/lib/journal";
 import { PageSkeleton } from "@/components/ui/skeleton-card";
+import HealingTimeline from "@/components/journal/HealingTimeline";
 
 const JournalPage = () => {
   const { user } = useAuth();
@@ -49,6 +50,9 @@ const JournalPage = () => {
           <Flag className="h-3 w-3 text-dusk" /> {milestoneCount} {milestoneCount === 1 ? "milestone" : "milestones"}
         </span>
       </div>
+
+      {/* Healing Timeline */}
+      <HealingTimeline entries={entries} />
 
       {/* Filter */}
       <div className="flex gap-2 mb-6">

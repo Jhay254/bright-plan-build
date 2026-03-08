@@ -242,6 +242,7 @@ const ChatRoom = () => {
     return (
       <SessionFeedback
         sessionId={session.id}
+        volunteerId={session.volunteer_id}
         role={role ?? "seeker"}
         onComplete={() => navigate("/app/cocoon")}
       />

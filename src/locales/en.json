@@ -141,6 +141,7 @@
     "aliasUpdated": "Alias updated!",
     "languageUpdated": "Language updated!",
     "language": "Language",
+    "theme": "Appearance",
     "healingGoals": "Healing Goals",
     "culturalContext": "Cultural Context",
     "safetyResources": "Safety Resources",
@@ -174,6 +175,29 @@
       "title": "Data Retention",
       "desc": "Session message content is automatically removed 90 days after a session ends. Session metadata is retained for safety oversight."
     }
+  },
+  "feedback": {
+    "seekerTitle": "How are you feeling?",
+    "volunteerTitle": "Session Reflection",
+    "seekerDesc": "Your feedback helps us improve and supports your healing journey.",
+    "volunteerDesc": "Reflect on this session for your own growth.",
+    "howFeelAfter": "How do you feel after this session?",
+    "howSessionGo": "How did the session go?",
+    "feltHeard": "Did you feel heard?",
+    "feltSafe": "Did you feel safe?",
+    "yes": "Yes",
+    "notReally": "Not really",
+    "endorseSkills": "Endorse your volunteer's skills",
+    "endorseDesc": "Select up to 3 skills that describe your volunteer (optional).",
+    "anythingElse": "Anything else you'd like to share?",
+    "selfReflection": "Self-reflection notes",
+    "optional": "optional",
+    "seekerPlaceholder": "How could we improve your experience?",
+    "volunteerPlaceholder": "What went well? What could you improve?",
+    "submitting": "Submitting…",
+    "submit": "Submit Feedback",
+    "skip": "Skip for now",
+    "thanks": "Thank you for your feedback"
   },
   "crisis": {
     "title": "It sounds like you may be going through something serious",
