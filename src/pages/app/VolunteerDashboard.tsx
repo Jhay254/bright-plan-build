@@ -14,7 +14,7 @@ import CpdLog from "@/components/volunteer/CpdLog";
 import { useEffect } from "react";
 
 const VolunteerDashboard = () => {
-  const { user, profile } = useAuth();
+  const { user, profile, refreshProfile: refreshAuth } = useAuth();
   const navigate = useNavigate();
   const { data: volProfile, isLoading: vpLoading, refetch: refetchProfile } = useVolunteerProfile(user?.id);
   const { data: activeSessions = [], isLoading: sessionsLoading } = useVolunteerActiveSessions(user?.id);
