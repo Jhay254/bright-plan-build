@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Shield, Eye, Heart, ChevronRight, ChevronLeft, Globe, Compass, Target } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { Helmet } from "react-helmet-async";
 
 const LANGUAGES = [
   { code: "en", label: "English" },
