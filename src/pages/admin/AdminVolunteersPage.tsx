@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { PageSkeleton } from "@/components/ui/skeleton-card";
+import { Helmet } from "react-helmet-async";
 import { UserCheck, CheckCircle2, XCircle } from "lucide-react";
 import type { Database } from "@/integrations/supabase/types";
 

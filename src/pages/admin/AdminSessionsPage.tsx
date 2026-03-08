@@ -106,6 +106,7 @@ const AdminSessionsPage = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 

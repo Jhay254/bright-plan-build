@@ -150,6 +150,7 @@ const AdminUsersPage = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 
