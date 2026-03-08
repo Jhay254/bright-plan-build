@@ -68,8 +68,9 @@ const Auth = () => {
     }
     setSubmitting(true);
     try {
-      // Clear any stale volunteer data so seekers aren't misrouted
+      // Clear any stale session and volunteer data so seekers aren't misrouted
       localStorage.removeItem("echo_volunteer_pending");
+      await supabase.auth.signOut();
       await signInAnonymously();
       const { data: { user } } = await supabase.auth.getUser();
       if (user) await recordConsent(user.id);
