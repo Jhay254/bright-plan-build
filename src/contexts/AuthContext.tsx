@@ -12,6 +12,7 @@ interface AuthState {
   profile: Profile | null;
   role: AppRole | null;
   loading: boolean;
+  refreshProfile: () => Promise<void>;
   signUp: (email: string, password: string) => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
   signInAnonymously: () => Promise<void>;
@@ -36,14 +37,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (roleRes.data) setRole(roleRes.data);
   }, []);
 
+  const refreshProfile = useCallback(async () => {
+    if (user) await fetchProfileAndRole(user.id);
+  }, [user, fetchProfileAndRole]);
+
   useEffect(() => {
-    // Set up auth listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (_event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
         if (session?.user) {
-          // Use setTimeout to avoid Supabase deadlock
           setTimeout(() => fetchProfileAndRole(session.user.id), 0);
         } else {
           setProfile(null);
@@ -53,7 +56,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
     );
 
-    // THEN check existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
@@ -91,7 +93,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ session, user, profile, role, loading, signUp, signIn, signInAnonymously, signOut }}>
+    <AuthContext.Provider value={{ session, user, profile, role, loading, refreshProfile, signUp, signIn, signInAnonymously, signOut }}>
       {children}
     </AuthContext.Provider>
   );

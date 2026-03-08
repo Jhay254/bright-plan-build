@@ -19,9 +19,12 @@ export type Database = {
           alias: string
           avatar_seed: string
           created_at: string
+          cultural_context: string | null
+          healing_goals: string[] | null
           id: string
           is_anonymous: boolean
           language: string
+          onboarding_complete: boolean
           updated_at: string
           user_id: string
         }
@@ -29,9 +32,12 @@ export type Database = {
           alias: string
           avatar_seed?: string
           created_at?: string
+          cultural_context?: string | null
+          healing_goals?: string[] | null
           id?: string
           is_anonymous?: boolean
           language?: string
+          onboarding_complete?: boolean
           updated_at?: string
           user_id: string
         }
@@ -39,9 +45,12 @@ export type Database = {
           alias?: string
           avatar_seed?: string
           created_at?: string
+          cultural_context?: string | null
+          healing_goals?: string[] | null
           id?: string
           is_anonymous?: boolean
           language?: string
+          onboarding_complete?: boolean
           updated_at?: string
           user_id?: string
         }

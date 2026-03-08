@@ -7,6 +7,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import VolunteerAuth from "./pages/VolunteerAuth";
+import Onboarding from "./pages/Onboarding";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "@/components/app/ProtectedRoute";
 import AppShell from "@/components/app/AppShell";
@@ -29,6 +30,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/volunteer" element={<VolunteerAuth />} />
+            <Route path="/onboarding" element={<Onboarding />} />
             <Route
               path="/app"
               element={
