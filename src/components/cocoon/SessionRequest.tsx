@@ -83,13 +83,16 @@ const SessionRequest = () => {
       </fieldset>
 
       {/* Urgency */}
-      <div className="mb-6">
-        <p className="text-sm font-medium text-bark mb-3">How are you feeling right now?</p>
-        <div className="space-y-2">
+      <fieldset className="mb-6">
+        <legend className="text-sm font-medium text-bark mb-3">How are you feeling right now?</legend>
+        <div className="space-y-2" role="radiogroup" aria-label="Urgency level">
           {URGENCY_OPTIONS.map((opt) => (
             <button
               key={opt.value}
               onClick={() => setUrgency(opt.value)}
+              role="radio"
+              aria-checked={urgency === opt.value}
+              aria-label={`${opt.label}: ${opt.description}`}
               className={`w-full text-left px-5 py-3.5 rounded-echo-md border-2 transition-all ${
                 urgency === opt.value
                   ? "border-forest bg-dawn"
@@ -103,7 +106,7 @@ const SessionRequest = () => {
             </button>
           ))}
         </div>
-      </div>
+      </fieldset>
 
       {/* Preferences */}
       <div className="mb-8">
