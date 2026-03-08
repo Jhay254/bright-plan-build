@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { PageSkeleton } from "@/components/ui/skeleton-card";
+import QueryError from "@/components/ui/query-error";
 import { Helmet } from "react-helmet-async";
 import { MessageSquare, Clock } from "lucide-react";
 import type { Database } from "@/integrations/supabase/types";
