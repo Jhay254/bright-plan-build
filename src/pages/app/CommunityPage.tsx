@@ -22,11 +22,11 @@ const CommunityPage = () => {
 
         <Tabs defaultValue="resources">
           <TabsList className="w-full mb-6">
-            <TabsTrigger value="resources" className="flex-1 gap-1.5" aria-label="Resources tab">
-              <BookOpen className="h-4 w-4" /> Resources
+            <TabsTrigger value="resources" className="flex-1 gap-1.5" aria-label={t("community.resourcesTab")}>
+              <BookOpen className="h-4 w-4" /> {t("community.resourcesTab")}
             </TabsTrigger>
-            <TabsTrigger value="encouragements" className="flex-1 gap-1.5" aria-label="Encouragements tab">
-              <Heart className="h-4 w-4" /> Encouragements
+            <TabsTrigger value="encouragements" className="flex-1 gap-1.5" aria-label={t("community.encouragementsTab")}>
+              <Heart className="h-4 w-4" /> {t("community.encouragementsTab")}
             </TabsTrigger>
           </TabsList>
           <TabsContent value="resources">
