@@ -109,10 +109,10 @@ const ProfilePage = () => {
                 className="h-9 text-sm"
                 autoFocus
               />
-              <button onClick={saveAlias} disabled={saving} className="text-affirm hover:opacity-80">
+              <button onClick={saveAlias} disabled={saving} aria-label="Save alias" className="text-affirm hover:opacity-80">
                 <Check className="h-5 w-5" />
               </button>
-              <button onClick={() => { setEditingAlias(false); setAliasValue(profile?.alias ?? ""); }} className="text-driftwood hover:opacity-80">
+              <button onClick={() => { setEditingAlias(false); setAliasValue(profile?.alias ?? ""); }} aria-label="Cancel editing alias" className="text-driftwood hover:opacity-80">
                 <X className="h-5 w-5" />
               </button>
             </div>
