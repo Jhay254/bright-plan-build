@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { PageSkeleton } from "@/components/ui/skeleton-card";
+import { Helmet } from "react-helmet-async";
 import { LayoutDashboard, Users, UserCheck, MessageSquare, AlertTriangle, Clock } from "lucide-react";
 
 interface Stats {
