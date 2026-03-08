@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { Home, MessageCircle, BookOpen, Users, User, HeartHandshake } from "lucide-react";
+import { Home, MessageCircle, BookOpen, Users, User, HeartHandshake, Shield } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contexts/AuthContext";
@@ -11,6 +11,7 @@ const BottomTabBar = () => {
   const { data: unreadCount = 0 } = useUnreadCount(user?.id);
 
   const isVolunteer = role === "volunteer";
+  const isAdmin = role === "admin";
 
   // Show badge on cocoon tab if there are unread session notifications
   const tabs = [
@@ -20,7 +21,10 @@ const BottomTabBar = () => {
       ? [{ to: "/app/volunteer", icon: HeartHandshake, label: "Hub", end: false, badge: 0 }]
       : [{ to: "/app/journal", icon: BookOpen, label: t("nav.journal"), end: false, badge: 0 }]),
     { to: "/app/community", icon: Users, label: t("nav.community"), badge: 0 },
-    { to: "/app/profile", icon: User, label: t("nav.profile"), badge: 0 },
+    ...(isAdmin
+      ? [{ to: "/admin", icon: Shield, label: "Admin", end: false, badge: 0 }]
+      : []),
+    { to: "/app/profile", icon: User, label: t("nav.profile"), end: false, badge: 0 },
   ];
 
   return (
