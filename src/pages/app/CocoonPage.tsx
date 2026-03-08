@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Plus, MessageCircle, Clock, CheckCircle2, Filter } from "lucide-react";
 import { PageSkeleton } from "@/components/ui/skeleton-card";
 import { useTranslation } from "react-i18next";
+import { Helmet } from "react-helmet-async";
 import type { Database } from "@/integrations/supabase/types";
 
 type SessionStatus = Database["public"]["Enums"]["session_status"];
