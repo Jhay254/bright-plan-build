@@ -14,6 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
+      cocoon_sessions: {
+        Row: {
+          created_at: string
+          ended_at: string | null
+          id: string
+          language: string
+          preferences: string | null
+          seeker_id: string
+          started_at: string | null
+          status: Database["public"]["Enums"]["session_status"]
+          topic: string
+          updated_at: string
+          urgency: Database["public"]["Enums"]["urgency_level"]
+          volunteer_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          ended_at?: string | null
+          id?: string
+          language?: string
+          preferences?: string | null
+          seeker_id: string
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["session_status"]
+          topic: string
+          updated_at?: string
+          urgency?: Database["public"]["Enums"]["urgency_level"]
+          volunteer_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          ended_at?: string | null
+          id?: string
+          language?: string
+          preferences?: string | null
+          seeker_id?: string
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["session_status"]
+          topic?: string
+          updated_at?: string
+          urgency?: Database["public"]["Enums"]["urgency_level"]
+          volunteer_id?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           alias: string
@@ -56,6 +101,85 @@ export type Database = {
         }
         Relationships: []
       }
+      session_feedback: {
+        Row: {
+          created_at: string
+          emotional_rating: number
+          felt_heard: boolean | null
+          felt_safe: boolean | null
+          id: string
+          reflection: string | null
+          role: Database["public"]["Enums"]["app_role"]
+          session_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          emotional_rating: number
+          felt_heard?: boolean | null
+          felt_safe?: boolean | null
+          id?: string
+          reflection?: string | null
+          role: Database["public"]["Enums"]["app_role"]
+          session_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          emotional_rating?: number
+          felt_heard?: boolean | null
+          felt_safe?: boolean | null
+          id?: string
+          reflection?: string | null
+          role?: Database["public"]["Enums"]["app_role"]
+          session_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "session_feedback_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "cocoon_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      session_messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          is_system: boolean
+          sender_id: string
+          session_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          is_system?: boolean
+          sender_id: string
+          session_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          is_system?: boolean
+          sender_id?: string
+          session_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "session_messages_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "cocoon_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -94,9 +218,28 @@ export type Database = {
         }
         Returns: boolean
       }
+      transition_session: {
+        Args: {
+          _new_status: Database["public"]["Enums"]["session_status"]
+          _session_id: string
+        }
+        Returns: boolean
+      }
+      volunteer_accept_session: {
+        Args: { _session_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
       app_role: "seeker" | "volunteer" | "admin"
+      session_status:
+        | "requested"
+        | "matched"
+        | "active"
+        | "wrap_up"
+        | "closed"
+        | "cancelled"
+      urgency_level: "low" | "medium" | "high" | "crisis"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -225,6 +368,15 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["seeker", "volunteer", "admin"],
+      session_status: [
+        "requested",
+        "matched",
+        "active",
+        "wrap_up",
+        "closed",
+        "cancelled",
+      ],
+      urgency_level: ["low", "medium", "high", "crisis"],
     },
   },
 } as const
