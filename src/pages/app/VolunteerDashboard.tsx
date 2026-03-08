@@ -19,6 +19,7 @@ const VolunteerDashboard = () => {
   const navigate = useNavigate();
   const { data: volProfile, isLoading: vpLoading, refetch: refetchProfile } = useVolunteerProfile(user?.id);
   const { data: activeSessions = [], isLoading: sessionsLoading } = useVolunteerActiveSessions(user?.id);
+  const [showReapply, setShowReapply] = useState(false);
 
   // Auto-create volunteer profile if it doesn't exist
   useEffect(() => {
