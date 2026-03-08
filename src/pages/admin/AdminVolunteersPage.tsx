@@ -125,7 +125,7 @@ const AdminVolunteersPage = () => {
                       Joined {new Date(v.created_at).toLocaleDateString()} ·{" "}
                       {v.is_approved ? (
                         <span className="text-fern">Approved</span>
-                      ) : (v as any).rejection_reason ? (
+                      ) : v.rejection_reason ? (
                         <span className="text-destructive">Rejected</span>
                       ) : (
                         <span className="text-sunlight">Pending</span>
