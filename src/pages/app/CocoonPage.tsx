@@ -35,7 +35,7 @@ const CocoonPage = () => {
   const { user, role } = useAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { data: sessions = [], isLoading } = useUserSessions(user?.id);
+  const { data: sessions = [], isLoading, isError, refetch } = useUserSessions(user?.id);
   const { data: availableSessions = [] } = useAvailableSessions(user?.id, role === "volunteer");
 
   const STATUS_LABEL: Record<SessionStatus, string> = {
