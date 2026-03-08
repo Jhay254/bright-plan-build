@@ -7,16 +7,16 @@ import { Award, Clock, MessageCircle, Star, ArrowLeft, ShieldCheck } from "lucid
 import { Skeleton } from "@/components/ui/skeleton";
 
 const PortfolioPublic = () => {
-  const { odbc_volumeId } = useParams<{ odbc_volumeId: string }>();
+  const { volunteerId } = useParams<{ volunteerId: string }>();
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ["public-portfolio", odbc_volumeId],
+    queryKey: ["public-portfolio", volunteerId],
     queryFn: async () => {
       // Fetch volunteer profile
       const { data: vp, error: vpErr } = await supabase
         .from("volunteer_profiles")
         .select("*")
-        .eq("user_id", odbc_volumeId)
+        .eq("user_id", volunteerId)
         .eq("is_approved", true)
         .single();
       if (vpErr || !vp) throw new Error("Portfolio not found or volunteer not approved");
@@ -25,14 +25,14 @@ const PortfolioPublic = () => {
       const { data: profile } = await supabase
         .from("profiles")
         .select("alias, avatar_seed")
-        .eq("user_id", odbc_volumeId)
+        .eq("user_id", volunteerId)
         .single();
 
       // Fetch training progress
       const { data: tp } = await supabase
         .from("training_progress")
         .select("completed")
-        .eq("user_id", odbc_volumeId);
+        .eq("user_id", volunteerId);
       const completedModules = tp?.filter((t) => t.completed).length ?? 0;
       const totalModules = 5; // matches TRAINING_MODULES in lib/volunteer.ts
 
@@ -40,18 +40,18 @@ const PortfolioPublic = () => {
       const { data: cpd } = await supabase
         .from("cpd_entries")
         .select("hours")
-        .eq("user_id", odbc_volumeId);
+        .eq("user_id", volunteerId);
       const cpdHours = cpd?.reduce((s, e) => s + Number(e.hours), 0) ?? 0;
 
       return {
         vp,
         alias: profile?.alias ?? "Volunteer",
-        avatarSeed: profile?.avatar_seed ?? odbc_volumeId,
+        avatarSeed: profile?.avatar_seed ?? volunteerId,
         trainingPct: Math.round((completedModules / totalModules) * 100),
         cpdHours,
       };
     },
-    enabled: !!odbc_volumeId,
+    enabled: !!volunteerId,
   });
 
   if (isLoading) {
