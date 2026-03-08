@@ -1,0 +1,1 @@
+ALTER TABLE public.profiles ADD COLUMN consent_given_at timestamp with time zone DEFAULT NULL;

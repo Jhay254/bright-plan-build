@@ -1,13 +1,16 @@
 import { useState, useRef, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Helmet } from "react-helmet-async";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useAuth } from "@/contexts/AuthContext";
 import echoLogo from "@/assets/echo-logo.png";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "react-i18next";
+import { supabase } from "@/integrations/supabase/client";
+import CookieBanner from "@/components/CookieBanner";
 
 type AuthMode = "signin" | "signup" | "anonymous";
 
@@ -15,6 +18,7 @@ const Auth = () => {
   const [mode, setMode] = useState<AuthMode>("anonymous");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [consent, setConsent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [cooldown, setCooldown] = useState(0);
   const failCount = useRef(0);
@@ -50,10 +54,23 @@ const Auth = () => {
 
   const isDisabled = submitting || cooldown > 0;
 
+  const recordConsent = async (userId: string) => {
+    await supabase
+      .from("profiles")
+      .update({ consent_given_at: new Date().toISOString() } as any)
+      .eq("user_id", userId);
+  };
+
   const handleAnonymous = async () => {
+    if (!consent) {
+      toast({ title: t("auth.error"), description: t("auth.consentRequired"), variant: "destructive" });
+      return;
+    }
     setSubmitting(true);
     try {
       await signInAnonymously();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) await recordConsent(user.id);
       navigate("/onboarding");
     } catch (e: any) {
       toast({ title: t("auth.somethingWrong"), description: e.message, variant: "destructive" });
@@ -65,6 +82,10 @@ const Auth = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (cooldown > 0) return;
+    if (mode === "signup" && !consent) {
+      toast({ title: t("auth.error"), description: t("auth.consentRequired"), variant: "destructive" });
+      return;
+    }
     setSubmitting(true);
     try {
       if (mode === "signup") {
@@ -83,6 +104,8 @@ const Auth = () => {
     }
   };
 
+  const needsConsent = mode === "signup" || mode === "anonymous";
+
   return (
     <>
       <Helmet>
@@ -98,11 +121,29 @@ const Auth = () => {
         </div>
 
         <div className="bg-card rounded-echo-lg shadow-echo-2 p-8">
+          {/* Consent checkbox — shown for anonymous + signup */}
+          {needsConsent && (
+            <div className="flex items-start gap-2 mb-6">
+              <Checkbox
+                id="consent"
+                checked={consent}
+                onCheckedChange={(v) => setConsent(v === true)}
+                aria-required="true"
+              />
+              <Label htmlFor="consent" className="text-xs text-driftwood leading-relaxed cursor-pointer">
+                {t("auth.consentLabel")}{" "}
+                <Link to="/privacy" className="text-forest underline" target="_blank" rel="noopener">
+                  {t("auth.privacyPolicy")}
+                </Link>
+              </Label>
+            </div>
+          )}
+
           <Button
             variant="hero"
             className="w-full mb-6"
             onClick={handleAnonymous}
-            disabled={isDisabled}
+            disabled={isDisabled || !consent}
           >
             {t("auth.enterAnonymously")}
           </Button>
@@ -146,7 +187,12 @@ const Auth = () => {
                 Too many attempts. Try again in {cooldown}s.
               </p>
             )}
-            <Button type="submit" variant="outline" className="w-full" disabled={isDisabled}>
+            <Button
+              type="submit"
+              variant="outline"
+              className="w-full"
+              disabled={isDisabled || (mode === "signup" && !consent)}
+            >
               {mode === "signup" ? t("auth.createAccount") : t("auth.signIn")}
             </Button>
           </form>
@@ -169,6 +215,7 @@ const Auth = () => {
         </p>
       </div>
     </div>
+    <CookieBanner />
     </>
   );
 };

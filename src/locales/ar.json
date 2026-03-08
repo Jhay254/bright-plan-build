@@ -16,7 +16,10 @@
     "checkEmail": "تحقق من بريدك الإلكتروني",
     "confirmLink": "أرسلنا لك رابط التأكيد.",
     "error": "خطأ",
-    "somethingWrong": "حدث خطأ ما"
+    "somethingWrong": "حدث خطأ ما",
+    "consentRequired": "يرجى الموافقة على سياسة الخصوصية للمتابعة.",
+    "consentLabel": "أوافق على",
+    "privacyPolicy": "سياسة الخصوصية"
   },
   "onboarding": {
     "safe": "أنت في أمان هنا",
