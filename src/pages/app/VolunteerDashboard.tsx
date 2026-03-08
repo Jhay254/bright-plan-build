@@ -91,9 +91,23 @@ const VolunteerDashboard = () => {
                 <p className="text-xs text-driftwood font-medium mb-1">Reason</p>
                 <p className="text-sm text-bark">{volProfile.rejection_reason}</p>
               </div>
-              <p className="text-xs text-driftwood">
-                If you believe this was a mistake or your circumstances have changed, please reach out to our team.
-              </p>
+
+              {showReapply ? (
+                <ReapplyForm
+                  userId={user!.id}
+                  currentMotivation={volProfile.motivation}
+                  currentBackground={volProfile.background}
+                  currentSpecialisations={volProfile.specialisations}
+                  onSuccess={() => {
+                    setShowReapply(false);
+                    refetchProfile();
+                  }}
+                />
+              ) : (
+                <Button variant="hero" className="mt-2" onClick={() => setShowReapply(true)}>
+                  Update & Re-apply
+                </Button>
+              )}
             </>
           ) : (
             <>
