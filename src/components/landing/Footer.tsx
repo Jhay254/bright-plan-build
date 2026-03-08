@@ -37,7 +37,7 @@ const Footer = () => {
 
         <div className="border-t border-driftwood/20 pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-stone text-xs">
-            © {new Date().getFullYear()} Project Echo. Free forever for seekers.
+            © {new Date().getFullYear()} Project Echo. Free forever for seekers. · <a href="/privacy" className="hover:text-mist transition-colors underline">Privacy Policy</a>
           </p>
           <p className="text-driftwood text-xs">
             Dignity · Safety · Meaningful Access · Participation · Empowerment

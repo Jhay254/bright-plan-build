@@ -80,6 +80,7 @@ const App = () => (
                   <Route path="users" element={<AdminUsersPage />} />
                   <Route path="crisis" element={<AdminCrisisPage />} />
                 </Route>
+                <Route path="/privacy" element={<PrivacyPolicy />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </ErrorBoundary>
