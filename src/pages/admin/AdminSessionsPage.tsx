@@ -6,7 +6,8 @@ import { Input } from "@/components/ui/input";
 import { PageSkeleton } from "@/components/ui/skeleton-card";
 import QueryError from "@/components/ui/query-error";
 import { Helmet } from "react-helmet-async";
-import { MessageSquare, Clock, Search, ChevronLeft, ChevronRight } from "lucide-react";
+import { MessageSquare, Clock, Search, ChevronLeft, ChevronRight, Download } from "lucide-react";
+import { downloadCsv } from "@/lib/csv-export";
 import type { Database } from "@/integrations/supabase/types";
 
 type Session = Database["public"]["Tables"]["cocoon_sessions"]["Row"];
@@ -82,7 +83,43 @@ const AdminSessionsPage = () => {
         <div className="flex items-center gap-3 mb-6">
           <MessageSquare className="h-6 w-6 text-forest" />
           <h1 className="font-heading text-2xl font-bold text-bark">Sessions</h1>
-          <span className="text-sm text-driftwood ml-auto">{filtered.length} session{filtered.length !== 1 ? "s" : ""}</span>
+          <div className="ml-auto flex items-center gap-3">
+            <span className="text-sm text-driftwood">{filtered.length} session{filtered.length !== 1 ? "s" : ""}</span>
+            <Button
+              size="sm"
+              variant="outline"
+              className="gap-1.5 text-xs"
+              disabled={filtered.length === 0}
+              onClick={() =>
+                downloadCsv(
+                  filtered.map((s) => ({
+                    topic: s.topic,
+                    status: s.status.replace("_", " "),
+                    urgency: s.urgency,
+                    language: s.language,
+                    created: new Date(s.created_at).toLocaleDateString(),
+                    duration:
+                      s.started_at && s.ended_at
+                        ? `${Math.round((new Date(s.ended_at).getTime() - new Date(s.started_at).getTime()) / 60000)} min`
+                        : s.started_at
+                        ? "Ongoing"
+                        : "",
+                  })),
+                  [
+                    { key: "topic", label: "Topic" },
+                    { key: "status", label: "Status" },
+                    { key: "urgency", label: "Urgency" },
+                    { key: "language", label: "Language" },
+                    { key: "created", label: "Created" },
+                    { key: "duration", label: "Duration" },
+                  ],
+                  `echo-sessions-${new Date().toISOString().slice(0, 10)}.csv`
+                )
+              }
+            >
+              <Download className="h-3.5 w-3.5" /> Export CSV
+            </Button>
+          </div>
         </div>
 
         {/* Search */}
