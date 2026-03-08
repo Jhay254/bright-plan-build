@@ -209,7 +209,6 @@ const CocoonPage = () => {
     </div>
     </>
   );
-  );
 };
 
 export default CocoonPage;
