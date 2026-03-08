@@ -130,7 +130,12 @@ const ChatRoom = () => {
           filter: `id=eq.${sessionId}`,
         },
         (payload) => {
-          setSession(payload.new as Session);
+          const updated = payload.new as Session;
+          setSession(updated);
+          // 17.5: Proactive feedback — auto-show when session closes
+          if (updated.status === "closed") {
+            setShowFeedback(true);
+          }
         }
       )
       .subscribe();
