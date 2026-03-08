@@ -31,7 +31,12 @@ const JournalPage = () => {
   if (isLoading) return <PageSkeleton rows={4} />;
 
   return (
-    <div className="px-6 pt-8 pb-24 max-w-lg mx-auto">
+    <>
+      <Helmet>
+        <title>Healing Journal — Echo</title>
+        <meta name="description" content="Private reflections on your healing journey." />
+      </Helmet>
+      <div className="px-6 pt-8 pb-24 max-w-lg mx-auto">
       {/* Header */}
       <div className="flex items-center justify-between mb-2">
         <div>
