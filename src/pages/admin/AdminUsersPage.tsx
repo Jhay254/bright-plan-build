@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -13,63 +13,70 @@ interface UserWithRole extends Profile {
   role?: AppRole;
 }
 
+const ROLE_COLORS: Record<AppRole, string> = {
+  seeker: "bg-shore/20 text-shore",
+  volunteer: "bg-fern/20 text-fern",
+  admin: "bg-dusk/20 text-dusk",
+};
+
 const AdminUsersPage = () => {
   const { toast } = useToast();
-  const [users, setUsers] = useState<UserWithRole[]>([]);
-  const [loading, setLoading] = useState(true);
+  const qc = useQueryClient();
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
+  const { data: users = [], isLoading } = useQuery({
+    queryKey: ["admin", "users"],
+    queryFn: async () => {
+      // Batch: fetch profiles and roles in parallel
+      const [profilesRes, rolesRes] = await Promise.all([
+        supabase
+          .from("profiles")
+          .select("*")
+          .order("created_at", { ascending: false })
+          .limit(200),
+        supabase
+          .from("user_roles")
+          .select("user_id, role"),
+      ]);
 
-  const fetchUsers = async () => {
-    setLoading(true);
-    const { data: profiles } = await supabase
-      .from("profiles")
-      .select("*")
-      .order("created_at", { ascending: false })
-      .limit(200);
+      if (profilesRes.error) throw profilesRes.error;
+      if (rolesRes.error) throw rolesRes.error;
 
-    if (!profiles) {
-      setLoading(false);
-      return;
-    }
+      // Build a map of user_id → highest-priority role
+      const roleMap = new Map<string, AppRole>();
+      const priority: Record<AppRole, number> = { admin: 1, volunteer: 2, seeker: 3 };
+      for (const r of rolesRes.data || []) {
+        const existing = roleMap.get(r.user_id);
+        if (!existing || priority[r.role] < priority[existing]) {
+          roleMap.set(r.user_id, r.role);
+        }
+      }
 
-    // Get roles for each user
-    const enriched: UserWithRole[] = [];
-    for (const p of profiles) {
-      const { data: roleData } = await supabase
-        .from("user_roles")
-        .select("role")
-        .eq("user_id", p.user_id)
-        .limit(1)
-        .single();
-      enriched.push({ ...p, role: roleData?.role });
-    }
-    setUsers(enriched);
-    setLoading(false);
-  };
+      return (profilesRes.data || []).map((p) => ({
+        ...p,
+        role: roleMap.get(p.user_id),
+      })) as UserWithRole[];
+    },
+    staleTime: 30_000,
+  });
 
-  const addRole = async (userId: string, role: AppRole) => {
-    const { error } = await supabase.rpc("admin_set_user_role", {
-      _target_user_id: userId,
-      _new_role: role,
-    });
-    if (error) {
-      toast({ title: "Error", description: error.message, variant: "destructive" });
-      return;
-    }
-    toast({ title: `Role '${role}' added` });
-    fetchUsers();
-  };
+  const addRoleMutation = useMutation({
+    mutationFn: async ({ userId, role }: { userId: string; role: AppRole }) => {
+      const { error } = await supabase.rpc("admin_set_user_role", {
+        _target_user_id: userId,
+        _new_role: role,
+      });
+      if (error) throw error;
+    },
+    onSuccess: (_, { role }) => {
+      toast({ title: `Role '${role}' added` });
+      qc.invalidateQueries({ queryKey: ["admin", "users"] });
+    },
+    onError: (e: any) => {
+      toast({ title: "Error", description: e.message, variant: "destructive" });
+    },
+  });
 
-  if (loading) return <PageSkeleton rows={5} />;
-
-  const ROLE_COLORS: Record<AppRole, string> = {
-    seeker: "bg-shore/20 text-shore",
-    volunteer: "bg-fern/20 text-fern",
-    admin: "bg-dusk/20 text-dusk",
-  };
+  if (isLoading) return <PageSkeleton rows={5} />;
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
@@ -110,12 +117,24 @@ const AdminUsersPage = () => {
                   <td className="py-3">
                     <div className="flex gap-1">
                       {u.role !== "volunteer" && (
-                        <Button size="sm" variant="ghost" className="text-xs h-7" onClick={() => addRole(u.user_id, "volunteer")}>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className="text-xs h-7"
+                          disabled={addRoleMutation.isPending}
+                          onClick={() => addRoleMutation.mutate({ userId: u.user_id, role: "volunteer" })}
+                        >
                           <Shield className="h-3 w-3 mr-1" /> +Volunteer
                         </Button>
                       )}
                       {u.role !== "admin" && (
-                        <Button size="sm" variant="ghost" className="text-xs h-7" onClick={() => addRole(u.user_id, "admin")}>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className="text-xs h-7"
+                          disabled={addRoleMutation.isPending}
+                          onClick={() => addRoleMutation.mutate({ userId: u.user_id, role: "admin" })}
+                        >
                           <Shield className="h-3 w-3 mr-1" /> +Admin
                         </Button>
                       )}

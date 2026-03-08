@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { PageSkeleton } from "@/components/ui/skeleton-card";
@@ -18,24 +19,25 @@ const STATUS_COLORS: Record<SessionStatus, string> = {
 };
 
 const AdminSessionsPage = () => {
-  const [sessions, setSessions] = useState<Session[]>([]);
-  const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState<SessionStatus | "all">("all");
 
-  useEffect(() => {
-    fetchSessions();
-  }, [statusFilter]);
+  const { data: sessions = [], isLoading } = useQuery({
+    queryKey: ["admin", "sessions", statusFilter],
+    queryFn: async () => {
+      let query = supabase
+        .from("cocoon_sessions")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(100);
+      if (statusFilter !== "all") query = query.eq("status", statusFilter);
+      const { data, error } = await query;
+      if (error) throw error;
+      return data as Session[];
+    },
+    staleTime: 15_000,
+  });
 
-  const fetchSessions = async () => {
-    setLoading(true);
-    let query = supabase.from("cocoon_sessions").select("*").order("created_at", { ascending: false }).limit(100);
-    if (statusFilter !== "all") query = query.eq("status", statusFilter);
-    const { data } = await query;
-    setSessions(data || []);
-    setLoading(false);
-  };
-
-  if (loading) return <PageSkeleton rows={5} />;
+  if (isLoading) return <PageSkeleton rows={5} />;
 
   const statuses: (SessionStatus | "all")[] = ["all", "requested", "matched", "active", "wrap_up", "closed", "cancelled"];
 

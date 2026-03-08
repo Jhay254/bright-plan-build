@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -14,56 +15,60 @@ interface VolunteerWithAlias extends VolunteerProfile {
 
 const AdminVolunteersPage = () => {
   const { toast } = useToast();
-  const [volunteers, setVolunteers] = useState<VolunteerWithAlias[]>([]);
-  const [loading, setLoading] = useState(true);
+  const qc = useQueryClient();
   const [filter, setFilter] = useState<"pending" | "approved" | "all">("pending");
 
-  useEffect(() => {
-    fetchVolunteers();
-  }, [filter]);
+  const { data: volunteers = [], isLoading } = useQuery({
+    queryKey: ["admin", "volunteers", filter],
+    queryFn: async () => {
+      // Fetch volunteers and profiles in parallel (batch — no N+1)
+      let vQuery = supabase
+        .from("volunteer_profiles")
+        .select("*")
+        .order("created_at", { ascending: false });
 
-  const fetchVolunteers = async () => {
-    setLoading(true);
-    let query = supabase.from("volunteer_profiles").select("*").order("created_at", { ascending: false });
+      if (filter === "pending") vQuery = vQuery.eq("is_approved", false);
+      else if (filter === "approved") vQuery = vQuery.eq("is_approved", true);
 
-    if (filter === "pending") query = query.eq("is_approved", false);
-    else if (filter === "approved") query = query.eq("is_approved", true);
+      const [vRes, pRes] = await Promise.all([
+        vQuery,
+        supabase.from("profiles").select("user_id, alias"),
+      ]);
 
-    const { data, error } = await query;
-    if (error) {
-      toast({ title: "Error", description: error.message, variant: "destructive" });
-      setLoading(false);
-      return;
-    }
+      if (vRes.error) throw vRes.error;
+      if (pRes.error) throw pRes.error;
 
-    // Enrich with aliases
-    const enriched: VolunteerWithAlias[] = [];
-    for (const v of data || []) {
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("alias")
-        .eq("user_id", v.user_id)
-        .single();
-      enriched.push({ ...v, alias: profile?.alias ?? "Unknown" });
-    }
-    setVolunteers(enriched);
-    setLoading(false);
-  };
+      const aliasMap = new Map<string, string>();
+      for (const p of pRes.data || []) {
+        aliasMap.set(p.user_id, p.alias);
+      }
 
-  const setApproval = async (userId: string, approved: boolean) => {
-    const { error } = await supabase.rpc("admin_set_volunteer_approval", {
-      _volunteer_user_id: userId,
-      _approved: approved,
-    });
-    if (error) {
-      toast({ title: "Error", description: error.message, variant: "destructive" });
-      return;
-    }
-    toast({ title: approved ? "Volunteer approved" : "Volunteer rejected" });
-    fetchVolunteers();
-  };
+      return (vRes.data || []).map((v) => ({
+        ...v,
+        alias: aliasMap.get(v.user_id) ?? "Unknown",
+      })) as VolunteerWithAlias[];
+    },
+    staleTime: 15_000,
+  });
 
-  if (loading) return <PageSkeleton rows={4} />;
+  const approvalMutation = useMutation({
+    mutationFn: async ({ userId, approved }: { userId: string; approved: boolean }) => {
+      const { error } = await supabase.rpc("admin_set_volunteer_approval", {
+        _volunteer_user_id: userId,
+        _approved: approved,
+      });
+      if (error) throw error;
+    },
+    onSuccess: (_, { approved }) => {
+      toast({ title: approved ? "Volunteer approved" : "Volunteer rejected" });
+      qc.invalidateQueries({ queryKey: ["admin", "volunteers"] });
+    },
+    onError: (e: any) => {
+      toast({ title: "Error", description: e.message, variant: "destructive" });
+    },
+  });
+
+  if (isLoading) return <PageSkeleton rows={4} />;
 
   return (
     <div className="p-6 max-w-3xl mx-auto">
@@ -102,12 +107,21 @@ const AdminVolunteersPage = () => {
                 </div>
                 <div className="flex gap-2">
                   {!v.is_approved && (
-                    <Button size="sm" onClick={() => setApproval(v.user_id, true)}>
+                    <Button
+                      size="sm"
+                      disabled={approvalMutation.isPending}
+                      onClick={() => approvalMutation.mutate({ userId: v.user_id, approved: true })}
+                    >
                       <CheckCircle2 className="h-4 w-4 mr-1" /> Approve
                     </Button>
                   )}
                   {v.is_approved && (
-                    <Button size="sm" variant="outline" onClick={() => setApproval(v.user_id, false)}>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      disabled={approvalMutation.isPending}
+                      onClick={() => approvalMutation.mutate({ userId: v.user_id, approved: false })}
+                    >
                       <XCircle className="h-4 w-4 mr-1" /> Revoke
                     </Button>
                   )}

@@ -1,21 +1,16 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { AlertTriangle, CheckCircle2, Clock, Shield } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { PageSkeleton } from "@/components/ui/skeleton-card";
-
-interface CrisisFlag {
-  id: string;
-  session_id: string;
-  message_id: string;
-  flagged_at: string;
-  resolved: boolean;
-  resolved_by: string | null;
-  resolved_at: string | null;
-  notes: string | null;
-}
+import {
+  fetchCrisisFlags,
+  resolveCrisisFlag,
+  type CrisisFlag,
+} from "@/lib/crisis-flags";
 
 interface FlagWithContext extends CrisisFlag {
   message_content?: string;
@@ -26,93 +21,80 @@ interface FlagWithContext extends CrisisFlag {
 const AdminCrisisPage = () => {
   const { user, role } = useAuth();
   const { toast } = useToast();
-  const [flags, setFlags] = useState<FlagWithContext[]>([]);
-  const [loading, setLoading] = useState(true);
+  const qc = useQueryClient();
   const [filter, setFilter] = useState<"unresolved" | "all">("unresolved");
 
-  useEffect(() => {
-    if (role !== "admin") return;
-    fetchFlags();
-  }, [role, filter]);
+  const { data: flags = [], isLoading } = useQuery({
+    queryKey: ["admin", "crisis-flags", filter],
+    enabled: role === "admin",
+    queryFn: async () => {
+      const rawFlags = await fetchCrisisFlags(filter === "unresolved");
+      if (rawFlags.length === 0) return [];
 
-  const fetchFlags = async () => {
-    setLoading(true);
-    try {
-      let query = (supabase as any)
-        .from("crisis_flags")
-        .select("*")
-        .order("flagged_at", { ascending: false });
+      // Batch-fetch all related data instead of N+1
+      const messageIds = rawFlags.map((f) => f.message_id);
+      const sessionIds = [...new Set(rawFlags.map((f) => f.session_id))];
 
-      if (filter === "unresolved") {
-        query = query.eq("resolved", false);
-      }
-
-      const { data, error } = await query;
-      if (error) throw error;
-
-      // Enrich with context
-      const enriched: FlagWithContext[] = [];
-      for (const flag of (data || []) as CrisisFlag[]) {
-        const item: FlagWithContext = { ...flag };
-
-        // Get message content
-        const { data: msg } = await supabase
+      const [messagesRes, sessionsRes] = await Promise.all([
+        supabase
           .from("session_messages")
-          .select("content")
-          .eq("id", flag.message_id)
-          .single();
-        if (msg) item.message_content = msg.content;
-
-        // Get session topic + seeker
-        const { data: sess } = await supabase
+          .select("id, content")
+          .in("id", messageIds),
+        supabase
           .from("cocoon_sessions")
-          .select("topic, seeker_id")
-          .eq("id", flag.session_id)
-          .single();
-        if (sess) {
-          item.session_topic = sess.topic;
-          const { data: profile } = await supabase
-            .from("profiles")
-            .select("alias")
-            .eq("user_id", sess.seeker_id)
-            .single();
-          if (profile) item.seeker_alias = profile.alias;
-        }
+          .select("id, topic, seeker_id")
+          .in("id", sessionIds),
+      ]);
 
-        enriched.push(item);
+      const msgMap = new Map<string, string>();
+      for (const m of messagesRes.data || []) {
+        msgMap.set(m.id, m.content);
       }
 
-      setFlags(enriched);
-    } catch (e: any) {
-      toast({ title: "Error loading flags", description: e.message, variant: "destructive" });
-    } finally {
-      setLoading(false);
-    }
-  };
+      const sessMap = new Map<string, { topic: string; seeker_id: string }>();
+      const seekerIds: string[] = [];
+      for (const s of sessionsRes.data || []) {
+        sessMap.set(s.id, { topic: s.topic, seeker_id: s.seeker_id });
+        seekerIds.push(s.seeker_id);
+      }
 
-  const resolveFlag = async (flagId: string, notes: string) => {
-    try {
-      const { error } = await (supabase as any)
-        .from("crisis_flags")
-        .update({
-          resolved: true,
-          resolved_by: user?.id,
-          resolved_at: new Date().toISOString(),
-          notes,
-        })
-        .eq("id", flagId);
-      if (error) throw error;
+      // Batch-fetch seeker aliases
+      const aliasMap = new Map<string, string>();
+      if (seekerIds.length > 0) {
+        const { data: profiles } = await supabase
+          .from("profiles")
+          .select("user_id, alias")
+          .in("user_id", [...new Set(seekerIds)]);
+        for (const p of profiles || []) {
+          aliasMap.set(p.user_id, p.alias);
+        }
+      }
 
-      setFlags((prev) =>
-        prev.map((f) =>
-          f.id === flagId ? { ...f, resolved: true, resolved_at: new Date().toISOString(), notes } : f
-        )
-      );
+      return rawFlags.map((flag): FlagWithContext => {
+        const sess = sessMap.get(flag.session_id);
+        return {
+          ...flag,
+          message_content: msgMap.get(flag.message_id),
+          session_topic: sess?.topic,
+          seeker_alias: sess ? aliasMap.get(sess.seeker_id) : undefined,
+        };
+      });
+    },
+    staleTime: 10_000,
+  });
+
+  const resolveMutation = useMutation({
+    mutationFn: async ({ flagId, notes }: { flagId: string; notes: string }) => {
+      await resolveCrisisFlag(flagId, user!.id, notes);
+    },
+    onSuccess: () => {
       toast({ title: "Flag resolved" });
-    } catch (e: any) {
+      qc.invalidateQueries({ queryKey: ["admin", "crisis-flags"] });
+    },
+    onError: (e: any) => {
       toast({ title: "Error", description: e.message, variant: "destructive" });
-    }
-  };
+    },
+  });
 
   if (role !== "admin") {
     return (
@@ -122,7 +104,7 @@ const AdminCrisisPage = () => {
     );
   }
 
-  if (loading) return <PageSkeleton rows={4} />;
+  if (isLoading) return <PageSkeleton rows={4} />;
 
   return (
     <div className="px-6 pt-8 pb-24 max-w-2xl mx-auto">
@@ -134,7 +116,6 @@ const AdminCrisisPage = () => {
         </div>
       </div>
 
-      {/* Filter tabs */}
       <div className="flex gap-2 mb-6">
         <Button
           variant={filter === "unresolved" ? "default" : "outline"}
@@ -163,7 +144,12 @@ const AdminCrisisPage = () => {
       ) : (
         <div className="space-y-4">
           {flags.map((flag) => (
-            <FlagCard key={flag.id} flag={flag} onResolve={resolveFlag} />
+            <FlagCard
+              key={flag.id}
+              flag={flag}
+              onResolve={(id, notes) => resolveMutation.mutate({ flagId: id, notes })}
+              isPending={resolveMutation.isPending}
+            />
           ))}
         </div>
       )}
@@ -174,9 +160,11 @@ const AdminCrisisPage = () => {
 const FlagCard = ({
   flag,
   onResolve,
+  isPending,
 }: {
   flag: FlagWithContext;
   onResolve: (id: string, notes: string) => void;
+  isPending: boolean;
 }) => {
   const [notes, setNotes] = useState("");
   const [showResolve, setShowResolve] = useState(false);
@@ -208,7 +196,6 @@ const FlagCard = ({
         )}
       </div>
 
-      {/* Flagged message */}
       <div className="bg-background rounded-echo-sm p-3 mb-3 border border-border">
         <p className="text-xs text-driftwood mb-1 flex items-center gap-1">
           <Clock className="h-3 w-3" /> Flagged message:
@@ -216,12 +203,10 @@ const FlagCard = ({
         <p className="text-sm text-bark">{flag.message_content || "Message not accessible"}</p>
       </div>
 
-      {/* Resolve notes */}
       {flag.resolved && flag.notes && (
         <p className="text-xs text-driftwood italic">Note: {flag.notes}</p>
       )}
 
-      {/* Resolve action */}
       {!flag.resolved && (
         <>
           {showResolve ? (
@@ -234,7 +219,7 @@ const FlagCard = ({
                 rows={2}
               />
               <div className="flex gap-2">
-                <Button size="sm" onClick={() => onResolve(flag.id, notes)}>
+                <Button size="sm" onClick={() => onResolve(flag.id, notes)} disabled={isPending}>
                   Confirm Resolved
                 </Button>
                 <Button size="sm" variant="ghost" onClick={() => setShowResolve(false)}>
