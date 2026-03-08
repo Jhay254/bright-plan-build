@@ -39,7 +39,7 @@ const Auth = () => {
         toast({ title: "Check your email", description: "We sent you a confirmation link." });
       } else {
         await signIn(email, password);
-        navigate("/app");
+        navigate("/onboarding");
       }
     } catch (e: any) {
       toast({ title: "Error", description: e.message, variant: "destructive" });
