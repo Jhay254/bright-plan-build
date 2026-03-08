@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { PageSkeleton } from "@/components/ui/skeleton-card";
+import QueryError from "@/components/ui/query-error";
 import { Helmet } from "react-helmet-async";
 import { LayoutDashboard, Users, UserCheck, MessageSquare, AlertTriangle, Clock, Activity } from "lucide-react";
 import { fetchCrisisFlags, type CrisisFlag } from "@/lib/crisis-flags";
@@ -171,7 +172,10 @@ const AdminDashboardPage = () => {
 
   const { data: activity = [], isLoading: activityLoading } = useActivityFeed();
 
+  const statsError = !statsLoading && !stats;
+
   if (statsLoading) return <PageSkeleton rows={3} />;
+  if (statsError) return <QueryError message="Failed to load dashboard stats." onRetry={() => qc.invalidateQueries({ queryKey: ["admin", "stats"] })} />;
 
   const cards = [
     { label: "Active Sessions", value: stats?.active_sessions ?? 0, icon: MessageSquare, color: "text-forest", link: "/admin/sessions" },

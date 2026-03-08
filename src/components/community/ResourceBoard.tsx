@@ -1,6 +1,7 @@
 import { useCommunityResources, type CommunityResource } from "@/hooks/use-community";
 import { ExternalLink } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import QueryError from "@/components/ui/query-error";
 
 const CATEGORY_LABELS: Record<string, string> = {
   crisis: "Crisis & Emergency",
@@ -13,7 +14,7 @@ const CATEGORY_LABELS: Record<string, string> = {
 const CATEGORY_ORDER = ["crisis", "learning", "self-care", "community", "general"];
 
 const ResourceBoard = () => {
-  const { data: resources, isLoading } = useCommunityResources();
+  const { data: resources, isLoading, isError, refetch } = useCommunityResources();
 
   if (isLoading) {
     return (
@@ -24,6 +25,9 @@ const ResourceBoard = () => {
       </div>
     );
   }
+
+  if (isError) return <QueryError message="Failed to load resources." onRetry={() => refetch()} />;
+
 
   const grouped = (resources ?? []).reduce<Record<string, CommunityResource[]>>((acc, r) => {
     (acc[r.category] ??= []).push(r);

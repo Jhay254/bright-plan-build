@@ -8,6 +8,7 @@ import { MessageCircle, Clock, Calendar, Loader2, XCircle } from "lucide-react";
 import ReapplyForm from "@/components/volunteer/ReapplyForm";
 import { useVolunteerProfile, useVolunteerActiveSessions } from "@/hooks/use-volunteer-data";
 import { DashboardSkeleton } from "@/components/ui/skeleton-card";
+import QueryError from "@/components/ui/query-error";
 import AvailabilityScheduler from "@/components/volunteer/AvailabilityScheduler";
 import TrainingChecklist from "@/components/volunteer/TrainingChecklist";
 import ImpactPortfolio from "@/components/volunteer/ImpactPortfolio";
@@ -17,8 +18,8 @@ import { useEffect, useState } from "react";
 const VolunteerDashboard = () => {
   const { user, profile, role, refreshProfile: refreshAuth } = useAuth();
   const navigate = useNavigate();
-  const { data: volProfile, isLoading: vpLoading, refetch: refetchProfile } = useVolunteerProfile(user?.id);
-  const { data: activeSessions = [], isLoading: sessionsLoading } = useVolunteerActiveSessions(user?.id);
+  const { data: volProfile, isLoading: vpLoading, isError: vpError, refetch: refetchProfile } = useVolunteerProfile(user?.id);
+  const { data: activeSessions = [], isLoading: sessionsLoading, isError: sessionsError } = useVolunteerActiveSessions(user?.id);
   const [showReapply, setShowReapply] = useState(false);
 
   // Auto-create volunteer profile only if user came through the volunteer auth flow
@@ -95,6 +96,7 @@ const VolunteerDashboard = () => {
   }
 
   if (vpLoading || sessionsLoading) return <DashboardSkeleton />;
+  if (vpError || sessionsError) return <QueryError message="Failed to load volunteer data." onRetry={() => refetchProfile()} />;
 
   // --- Approval gate ---
   if (volProfile && !volProfile.is_approved) {

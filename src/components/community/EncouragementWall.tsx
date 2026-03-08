@@ -14,7 +14,7 @@ const MAX_LENGTH = 280;
 
 const EncouragementWall = () => {
   const { user } = useAuth();
-  const { data: posts, isLoading } = usePeerEncouragements();
+  const { data: posts, isLoading, isError } = usePeerEncouragements();
   const postMutation = usePostEncouragement();
   const { toast } = useToast();
   const { t } = useTranslation();
@@ -79,6 +79,10 @@ const EncouragementWall = () => {
             <Skeleton key={i} className="h-16 rounded-echo-lg" />
           ))}
         </div>
+      ) : isError ? (
+        <p className="text-sm text-destructive text-center py-6">
+          Failed to load encouragements. Please try again later.
+        </p>
       ) : !posts?.length ? (
         <p className="text-sm text-muted-foreground text-center py-6">
           Be the first to share an encouragement 💚

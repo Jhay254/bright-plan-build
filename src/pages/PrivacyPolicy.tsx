@@ -8,6 +8,9 @@ const PrivacyPolicy = () => {
       <Helmet>
         <title>Privacy Policy — Echo</title>
         <meta name="description" content="Echo's privacy policy: what data we collect, how we use it, retention periods, and your rights." />
+        <meta property="og:title" content="Privacy Policy — Echo" />
+        <meta property="og:description" content="Echo's privacy policy: what data we collect, how we use it, retention periods, and your rights." />
+        <meta property="og:type" content="website" />
       </Helmet>
       <div className="min-h-screen bg-background">
         <div className="container mx-auto px-6 py-12 max-w-3xl">

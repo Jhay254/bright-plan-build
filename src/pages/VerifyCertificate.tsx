@@ -67,6 +67,9 @@ const VerifyCertificate = () => {
       <Helmet>
         <title>Certificate Verified — Echo</title>
         <meta name="description" content={`Verified CPD certificate for ${alias} with ${cert.total_hours} hours.`} />
+        <meta property="og:title" content="Certificate Verified — Echo" />
+        <meta property="og:description" content={`Verified CPD certificate for ${alias} with ${cert.total_hours} hours.`} />
+        <meta property="og:type" content="website" />
       </Helmet>
       <div className="min-h-screen bg-background">
         <div className="max-w-md mx-auto px-6 py-12">
