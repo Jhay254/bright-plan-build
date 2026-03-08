@@ -63,17 +63,20 @@ const Auth = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (cooldown > 0) return;
     setSubmitting(true);
     try {
       if (mode === "signup") {
         await signUp(email, password);
+        failCount.current = 0;
         toast({ title: t("auth.checkEmail"), description: t("auth.confirmLink") });
       } else {
         await signIn(email, password);
+        failCount.current = 0;
         navigate("/onboarding");
       }
     } catch (e: any) {
-      toast({ title: t("auth.error"), description: e.message, variant: "destructive" });
+      handleFailure(e);
     } finally {
       setSubmitting(false);
     }
