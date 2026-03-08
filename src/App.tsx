@@ -85,7 +85,7 @@ const App = () => (
                   <Route path="crisis" element={<AdminCrisisPage />} />
                 </Route>
                 <Route path="/privacy" element={<PrivacyPolicy />} />
-                <Route path="/portfolio/:odbc_volumeId" element={<PortfolioPublic />} />
+                <Route path="/portfolio/:volunteerId" element={<PortfolioPublic />} />
                 <Route path="/verify/:certCode" element={<VerifyCertificate />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
