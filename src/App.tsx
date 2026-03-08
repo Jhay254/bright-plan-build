@@ -29,6 +29,7 @@ import AdminVolunteersPage from "./pages/admin/AdminVolunteersPage";
 import AdminSessionsPage from "./pages/admin/AdminSessionsPage";
 import AdminUsersPage from "./pages/admin/AdminUsersPage";
 import AdminCrisisPage from "./pages/app/AdminCrisisPage";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -79,6 +80,7 @@ const App = () => (
                   <Route path="users" element={<AdminUsersPage />} />
                   <Route path="crisis" element={<AdminCrisisPage />} />
                 </Route>
+                <Route path="/privacy" element={<PrivacyPolicy />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </ErrorBoundary>
