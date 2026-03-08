@@ -23,7 +23,7 @@ const STATUS_COLORS: Record<SessionStatus, string> = {
 const AdminSessionsPage = () => {
   const [statusFilter, setStatusFilter] = useState<SessionStatus | "all">("all");
 
-  const { data: sessions = [], isLoading } = useQuery({
+  const { data: sessions = [], isLoading, isError, refetch } = useQuery({
     queryKey: ["admin", "sessions", statusFilter],
     queryFn: async () => {
       let query = supabase
