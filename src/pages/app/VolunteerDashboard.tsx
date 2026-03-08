@@ -14,7 +14,6 @@ import TrainingChecklist from "@/components/volunteer/TrainingChecklist";
 import ImpactPortfolio from "@/components/volunteer/ImpactPortfolio";
 import CpdLog from "@/components/volunteer/CpdLog";
 import { useEffect, useState } from "react";
-import { useEffect, useState } from "react";
 
 const VolunteerDashboard = () => {
   const { user, profile, role, refreshProfile: refreshAuth } = useAuth();
