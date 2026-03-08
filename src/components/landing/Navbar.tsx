@@ -43,8 +43,12 @@ const Navbar = () => {
       </div>
 
       {/* Mobile menu */}
-      {open && (
-        <div className="md:hidden bg-parchment border-t border-stone px-6 py-4 space-y-3 animate-fade-in-up">
+      <div
+        className={`md:hidden bg-parchment dark:bg-background border-t border-stone overflow-hidden transition-all duration-300 ease-in-out ${
+          open ? "max-h-64 opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
+        <div className="px-6 py-4 space-y-3">
           <a href="#how-it-works" onClick={() => setOpen(false)} className="block text-driftwood hover:text-forest text-sm font-medium">How It Works</a>
           <a href="#principles" onClick={() => setOpen(false)} className="block text-driftwood hover:text-forest text-sm font-medium">Principles</a>
           <a href="#for-volunteers" onClick={() => setOpen(false)} className="block text-driftwood hover:text-forest text-sm font-medium">For Volunteers</a>
@@ -57,7 +61,7 @@ const Navbar = () => {
             </Button>
           </div>
         </div>
-      )}
+      </div>
     </nav>
   );
 };
