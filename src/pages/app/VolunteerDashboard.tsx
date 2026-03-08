@@ -53,7 +53,12 @@ const VolunteerDashboard = () => {
   if (vpLoading || sessionsLoading) return <DashboardSkeleton />;
 
   return (
-    <div className="px-6 pt-8 pb-24 max-w-lg mx-auto">
+    <>
+      <Helmet>
+        <title>Volunteer Hub — Echo</title>
+        <meta name="description" content="Your volunteer dashboard. Manage sessions, training, and availability." />
+      </Helmet>
+      <div className="px-6 pt-8 pb-24 max-w-lg mx-auto">
       <div className="mb-6">
         <p className="text-sm text-driftwood font-medium">Welcome back,</p>
         <h1 className="font-heading text-2xl font-bold text-bark">{profile?.alias ?? "Volunteer"}</h1>
