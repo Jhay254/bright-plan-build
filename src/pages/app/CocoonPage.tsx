@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import QueryError from "@/components/ui/query-error";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserSessions, useAvailableSessions } from "@/hooks/use-sessions";
