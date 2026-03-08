@@ -5,26 +5,29 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Award, Clock, FileText, Download } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { Plus, Award, Clock, FileText, Download, ExternalLink } from "lucide-react";
 
 const CPD_CATEGORIES = ["training", "workshop", "supervision", "self-study", "conference", "certification"];
 
-const generateCertificateSvg = (totalHours: number, date: string): string => {
+const generateCertificateSvg = (totalHours: number, date: string, certCode: string, verifyUrl: string): string => {
   return `
 <svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
   <rect width="800" height="600" fill="#FAFAF8"/>
   <rect x="30" y="30" width="740" height="540" rx="16" fill="none" stroke="#2D6A4F" stroke-width="3"/>
   <rect x="40" y="40" width="720" height="520" rx="12" fill="none" stroke="#B7E4C7" stroke-width="1"/>
-  <text x="400" y="120" text-anchor="middle" font-family="Georgia, serif" font-size="36" fill="#2D6A4F">🌿 Project Echo</text>
-  <text x="400" y="175" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#6B6560">Certificate of Continuing Professional Development</text>
-  <line x1="200" y1="200" x2="600" y2="200" stroke="#B7E4C7" stroke-width="1"/>
-  <text x="400" y="280" text-anchor="middle" font-family="Georgia, serif" font-size="64" fill="#2D6A4F" font-weight="bold">${totalHours.toFixed(1)}</text>
-  <text x="400" y="320" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#6B6560">hours of professional development</text>
-  <text x="400" y="400" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#6B6560">This certifies that the volunteer has completed ${totalHours.toFixed(1)} hours</text>
-  <text x="400" y="425" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#6B6560">of professional development activities through Project Echo.</text>
-  <line x1="200" y1="470" x2="600" y2="470" stroke="#B7E4C7" stroke-width="1"/>
-  <text x="400" y="510" text-anchor="middle" font-family="Georgia, serif" font-size="12" fill="#999">Issued: ${date}</text>
-  <text x="400" y="535" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#999">Project Echo · Peer Support Platform</text>
+  <text x="400" y="110" text-anchor="middle" font-family="Georgia, serif" font-size="36" fill="#2D6A4F">🌿 Project Echo</text>
+  <text x="400" y="155" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#6B6560">Certificate of Continuing Professional Development</text>
+  <line x1="200" y1="180" x2="600" y2="180" stroke="#B7E4C7" stroke-width="1"/>
+  <text x="400" y="260" text-anchor="middle" font-family="Georgia, serif" font-size="64" fill="#2D6A4F" font-weight="bold">${totalHours.toFixed(1)}</text>
+  <text x="400" y="300" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#6B6560">hours of professional development</text>
+  <text x="400" y="370" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#6B6560">This certifies that the volunteer has completed ${totalHours.toFixed(1)} hours</text>
+  <text x="400" y="395" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#6B6560">of professional development activities through Project Echo.</text>
+  <line x1="200" y1="430" x2="600" y2="430" stroke="#B7E4C7" stroke-width="1"/>
+  <text x="400" y="470" text-anchor="middle" font-family="Georgia, serif" font-size="12" fill="#999">Issued: ${date}</text>
+  <text x="400" y="495" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#2D6A4F">Certificate ID: ${certCode}</text>
+  <text x="400" y="520" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#999">Verify at: ${verifyUrl}</text>
+  <text x="400" y="545" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#999">Project Echo · Peer Support Platform</text>
 </svg>`;
 };
 
@@ -59,8 +62,20 @@ const CpdLog = () => {
     }
   };
 
-  const downloadCertificate = () => {
-    const svg = generateCertificateSvg(totalHours, new Date().toLocaleDateString());
+  const downloadCertificate = async () => {
+    if (!user) return;
+    // Issue a verifiable cert record
+    const entryIds = entries.map((e) => e.id);
+    const { data: cert, error: certErr } = await supabase
+      .from("cpd_certificates")
+      .insert({ user_id: user.id, total_hours: totalHours, entry_ids: entryIds } as any)
+      .select("cert_code")
+      .single();
+
+    const certCode = (cert as any)?.cert_code ?? "N/A";
+    const verifyUrl = `${window.location.origin}/verify/${certCode}`;
+
+    const svg = generateCertificateSvg(totalHours, new Date().toLocaleDateString(), certCode, verifyUrl);
     const blob = new Blob([svg], { type: "image/svg+xml" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -68,7 +83,7 @@ const CpdLog = () => {
     a.download = `echo-cpd-certificate-${new Date().toISOString().slice(0, 10)}.svg`;
     a.click();
     URL.revokeObjectURL(url);
-    toast({ title: "Certificate downloaded!" });
+    toast({ title: "Certificate downloaded!", description: certErr ? "Certificate issued locally." : `Verify at ${verifyUrl}` });
   };
 
   if (isLoading) {

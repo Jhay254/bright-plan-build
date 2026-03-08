@@ -1,5 +1,8 @@
 import type { Database } from "@/integrations/supabase/types";
-import { Award, Clock, MessageCircle, Star } from "lucide-react";
+import { Award, Clock, MessageCircle, Star, Share2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 type VolunteerProfile = Database["public"]["Tables"]["volunteer_profiles"]["Row"];
 
@@ -8,15 +11,35 @@ interface ImpactPortfolioProps {
 }
 
 const ImpactPortfolio = ({ profile }: ImpactPortfolioProps) => {
+  const { user } = useAuth();
+  const { toast } = useToast();
+
   const stats = [
     { icon: MessageCircle, label: "Sessions", value: profile.total_sessions, color: "text-forest" },
     { icon: Clock, label: "Hours", value: profile.total_hours.toFixed(1), color: "text-fern" },
     { icon: Star, label: "Skills", value: profile.skills_endorsed?.length ?? 0, color: "text-sunlight" },
   ];
 
+  const handleShare = async () => {
+    const url = `${window.location.origin}/portfolio/${user?.id}`;
+    try {
+      await navigator.clipboard.writeText(url);
+      toast({ title: "Link copied!", description: "Share your public portfolio link." });
+    } catch {
+      toast({ title: "Copy failed", description: url, variant: "destructive" });
+    }
+  };
+
   return (
     <div>
-      <h2 className="font-heading text-lg font-semibold text-bark mb-4">Impact Portfolio</h2>
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="font-heading text-lg font-semibold text-bark">Impact Portfolio</h2>
+        {profile.is_approved && (
+          <Button variant="outline" size="sm" onClick={handleShare} className="gap-1.5">
+            <Share2 className="h-4 w-4" /> Share
+          </Button>
+        )}
+      </div>
 
       {/* Stats grid */}
       <div className="grid grid-cols-3 gap-3 mb-6">
