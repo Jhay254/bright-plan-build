@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Send, ArrowLeft, Clock, CheckCircle2, AlertTriangle } from "lucide-react";
 import { detectCrisisLanguage } from "@/lib/safety";
+import { insertCrisisFlag } from "@/lib/crisis-flags";
 import CrisisBanner from "./CrisisBanner";
 import SessionFeedback from "./SessionFeedback";
 import type { Database } from "@/integrations/supabase/types";
@@ -129,7 +130,12 @@ const ChatRoom = () => {
           filter: `id=eq.${sessionId}`,
         },
         (payload) => {
-          setSession(payload.new as Session);
+          const updated = payload.new as Session;
+          setSession(updated);
+          // 17.5: Proactive feedback — auto-show when session closes
+          if (updated.status === "closed") {
+            setShowFeedback(true);
+          }
         }
       )
       .subscribe();
@@ -194,9 +200,9 @@ const ChatRoom = () => {
         .single();
       if (error) throw error;
 
-      // 8.1: Write crisis flag to DB
+      // 8.1: Write crisis flag to DB (type-safe wrapper)
       if (isCrisis && msgData) {
-        await (supabase as any).from("crisis_flags").insert({
+        await insertCrisisFlag({
           session_id: sessionId,
           message_id: msgData.id,
         });

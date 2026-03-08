@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { PageSkeleton } from "@/components/ui/skeleton-card";
 import { LayoutDashboard, Users, UserCheck, MessageSquare, AlertTriangle, Clock } from "lucide-react";
@@ -14,20 +14,19 @@ interface Stats {
 }
 
 const AdminDashboardPage = () => {
-  const [stats, setStats] = useState<Stats | null>(null);
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetch = async () => {
+  const { data: stats, isLoading } = useQuery({
+    queryKey: ["admin", "stats"],
+    queryFn: async () => {
       const { data, error } = await supabase.rpc("admin_get_stats");
-      if (!error && data) setStats(data as unknown as Stats);
-      setLoading(false);
-    };
-    fetch();
-  }, []);
+      if (error) throw error;
+      return data as unknown as Stats;
+    },
+    staleTime: 30_000,
+  });
 
-  if (loading) return <PageSkeleton rows={3} />;
+  if (isLoading) return <PageSkeleton rows={3} />;
 
   const cards = [
     { label: "Active Sessions", value: stats?.active_sessions ?? 0, icon: MessageSquare, color: "text-forest", link: "/admin/sessions" },
