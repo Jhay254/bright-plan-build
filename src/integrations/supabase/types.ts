@@ -464,6 +464,7 @@ export type Database = {
           is_approved: boolean
           languages: string[] | null
           motivation: string | null
+          rejection_reason: string | null
           skills_endorsed: string[] | null
           specialisations: string[] | null
           total_hours: number
@@ -478,6 +479,7 @@ export type Database = {
           is_approved?: boolean
           languages?: string[] | null
           motivation?: string | null
+          rejection_reason?: string | null
           skills_endorsed?: string[] | null
           specialisations?: string[] | null
           total_hours?: number
@@ -492,6 +494,7 @@ export type Database = {
           is_approved?: boolean
           languages?: string[] | null
           motivation?: string | null
+          rejection_reason?: string | null
           skills_endorsed?: string[] | null
           specialisations?: string[] | null
           total_hours?: number
@@ -531,10 +534,19 @@ export type Database = {
         }
         Returns: boolean
       }
-      admin_set_volunteer_approval: {
-        Args: { _approved: boolean; _volunteer_user_id: string }
-        Returns: boolean
-      }
+      admin_set_volunteer_approval:
+        | {
+            Args: { _approved: boolean; _volunteer_user_id: string }
+            Returns: boolean
+          }
+        | {
+            Args: {
+              _approved: boolean
+              _rejection_reason?: string
+              _volunteer_user_id: string
+            }
+            Returns: boolean
+          }
       claim_volunteer_role: { Args: never; Returns: boolean }
       close_stale_sessions: { Args: never; Returns: number }
       delete_user_account: { Args: never; Returns: boolean }
