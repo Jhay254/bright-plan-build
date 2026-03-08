@@ -132,7 +132,14 @@
   },
   "community": {
     "title": "Communauté",
-    "comingSoon": "Les cercles communautaires et le soutien de groupe arrivent bientôt."
+    "subtitle": "Ressources, soutien et encouragements de ceux qui comprennent.",
+    "resourcesTab": "Ressources",
+    "encouragementsTab": "Encouragements",
+    "postEncouragement": "Partager un encouragement",
+    "encouragementPlaceholder": "Écrivez quelque chose de bienveillant pour quelqu'un qui en a besoin…",
+    "post": "Publier",
+    "posting": "Publication…",
+    "noEncouragements": "Aucun encouragement pour le moment. Soyez le premier à en partager un."
   },
   "profile": {
     "title": "Profil",
