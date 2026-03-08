@@ -19,8 +19,8 @@ import { useEffect, useState } from "react";
 const VolunteerDashboard = () => {
   const { user, profile, role, refreshProfile: refreshAuth } = useAuth();
   const navigate = useNavigate();
-  const { data: volProfile, isLoading: vpLoading, refetch: refetchProfile } = useVolunteerProfile(user?.id);
-  const { data: activeSessions = [], isLoading: sessionsLoading } = useVolunteerActiveSessions(user?.id);
+  const { data: volProfile, isLoading: vpLoading, isError: vpError, refetch: refetchProfile } = useVolunteerProfile(user?.id);
+  const { data: activeSessions = [], isLoading: sessionsLoading, isError: sessionsError } = useVolunteerActiveSessions(user?.id);
   const [showReapply, setShowReapply] = useState(false);
 
   // Auto-create volunteer profile only if user came through the volunteer auth flow
