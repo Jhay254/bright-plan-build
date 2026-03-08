@@ -132,7 +132,14 @@
   },
   "community": {
     "title": "المجتمع",
-    "comingSoon": "دوائر المجتمع والدعم الجماعي قادمة قريبًا."
+    "subtitle": "موارد ودعم وتشجيع من أولئك الذين يفهمون.",
+    "resourcesTab": "الموارد",
+    "encouragementsTab": "التشجيعات",
+    "postEncouragement": "شارك تشجيعًا",
+    "encouragementPlaceholder": "اكتب شيئًا لطيفًا لشخص يحتاجه…",
+    "post": "نشر",
+    "posting": "جارٍ النشر…",
+    "noEncouragements": "لا توجد تشجيعات بعد. كن أول من يشارك."
   },
   "profile": {
     "title": "الملف الشخصي",
