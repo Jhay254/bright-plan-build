@@ -14,7 +14,7 @@ const CATEGORY_LABELS: Record<string, string> = {
 const CATEGORY_ORDER = ["crisis", "learning", "self-care", "community", "general"];
 
 const ResourceBoard = () => {
-  const { data: resources, isLoading } = useCommunityResources();
+  const { data: resources, isLoading, isError, refetch } = useCommunityResources();
 
   if (isLoading) {
     return (
