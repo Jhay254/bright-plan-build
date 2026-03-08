@@ -82,6 +82,18 @@ const VolunteerDashboard = () => {
     claimRole();
   }, [user, vpLoading, volProfile, role, refreshAuth]);
 
+  // If user is not a volunteer and has no pending volunteer application, redirect to home
+  const hasPendingVolunteerData = (() => {
+    try {
+      const pending = localStorage.getItem("echo_volunteer_pending");
+      return pending ? !!JSON.parse(pending).motivation : false;
+    } catch { return false; }
+  })();
+
+  if (!vpLoading && !volProfile && !hasPendingVolunteerData) {
+    return <Navigate to="/app" replace />;
+  }
+
   if (vpLoading || sessionsLoading) return <DashboardSkeleton />;
 
   // --- Approval gate ---

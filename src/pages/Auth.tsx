@@ -68,6 +68,8 @@ const Auth = () => {
     }
     setSubmitting(true);
     try {
+      // Clear any stale volunteer data so seekers aren't misrouted
+      localStorage.removeItem("echo_volunteer_pending");
       await signInAnonymously();
       const { data: { user } } = await supabase.auth.getUser();
       if (user) await recordConsent(user.id);
