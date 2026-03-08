@@ -19,7 +19,28 @@
     "somethingWrong": "Quelque chose s'est mal passé",
     "consentRequired": "Veuillez accepter la politique de confidentialité pour continuer.",
     "consentLabel": "J'accepte la",
-    "privacyPolicy": "Politique de confidentialité"
+    "privacyPolicy": "Politique de confidentialité",
+    "forgotPassword": {
+      "trigger": "Mot de passe oublié ?",
+      "title": "Réinitialiser le mot de passe",
+      "desc": "Entrez votre email et nous vous enverrons un lien de réinitialisation.",
+      "sentDesc": "Si un compte existe avec cet email, un lien a été envoyé.",
+      "checkInbox": "Vérifiez votre boîte de réception.",
+      "sendLink": "Envoyer le lien"
+    },
+    "resetPassword": {
+      "title": "Nouveau mot de passe",
+      "subtitle": "Choisissez un nouveau mot de passe.",
+      "newPassword": "Nouveau mot de passe",
+      "confirmPassword": "Confirmer le mot de passe",
+      "updateButton": "Mettre à jour",
+      "minLength": "Le mot de passe doit contenir au moins 6 caractères.",
+      "mismatch": "Les mots de passe ne correspondent pas.",
+      "success": "Mot de passe mis à jour",
+      "successDesc": "Votre mot de passe a été réinitialisé.",
+      "invalidLink": "Ce lien est invalide ou a expiré.",
+      "backToSignIn": "Retour à la connexion"
+    }
   },
   "onboarding": {
     "safe": "Vous êtes en sécurité ici",

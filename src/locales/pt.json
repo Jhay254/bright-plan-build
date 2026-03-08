@@ -19,7 +19,28 @@
     "somethingWrong": "Algo deu errado",
     "consentRequired": "Por favor, aceite a Política de Privacidade para continuar.",
     "consentLabel": "Eu concordo com a",
-    "privacyPolicy": "Política de Privacidade"
+    "privacyPolicy": "Política de Privacidade",
+    "forgotPassword": {
+      "trigger": "Esqueceu a senha?",
+      "title": "Redefinir senha",
+      "desc": "Digite seu email e enviaremos um link para redefinir sua senha.",
+      "sentDesc": "Se existe uma conta com esse email, um link foi enviado.",
+      "checkInbox": "Verifique sua caixa de entrada.",
+      "sendLink": "Enviar link"
+    },
+    "resetPassword": {
+      "title": "Nova senha",
+      "subtitle": "Escolha uma nova senha para sua conta.",
+      "newPassword": "Nova senha",
+      "confirmPassword": "Confirmar senha",
+      "updateButton": "Atualizar senha",
+      "minLength": "A senha deve ter pelo menos 6 caracteres.",
+      "mismatch": "As senhas não coincidem.",
+      "success": "Senha atualizada",
+      "successDesc": "Sua senha foi redefinida com sucesso.",
+      "invalidLink": "Este link é inválido ou expirou.",
+      "backToSignIn": "Voltar para entrar"
+    }
   },
   "onboarding": {
     "safe": "Você está seguro aqui",
