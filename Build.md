@@ -1,198 +1,192 @@
-# Project Echo — Build Roadmap v2 (MVP Completion)
+# Project Echo — Build Roadmap v3 (MVP Hardening)
 
-> **Goal**: Close all gaps identified in the v1 audit so Echo is a **deployable, trustworthy MVP** — not just a feature demo.
-
----
-
-## Audit Summary (Where We Are)
-
-| Category | Count |
-|---|---|
-| Fully built & functional | ~25 features |
-| Stubbed / placeholder | 7 features |
-| Not built at all | 15+ features |
-| Architectural concerns | 5 issues |
-
-**Core happy path works**: Seekers can register → onboard → request sessions → chat → journal. Volunteers can register → set availability → accept sessions → track CPD.
-
-**Critical gaps**: ~~No matching algorithm, no encryption, no i18n, no admin tooling, no safety escalation, no tests, architectural debt.~~ **All resolved — see phases below.**
+> **Goal**: Close every gap identified in the v2 audit so Echo is **honest, safe, and production-ready** — not a demo with false marketing.
 
 ---
 
-## Phase 6 — Architectural Fixes & Code Quality ✅ COMPLETE
+## Audit Summary (Post v2)
+
+| Category | Status |
+|----------|--------|
+| Core seeker flow | ✅ 95% functional |
+| Core volunteer flow | ✅ 85% functional |
+| Safety & crisis | 🟡 70% — no rate limiting despite being "done" |
+| Admin tooling | 🟡 80% — works but legacy patterns, N+1 queries |
+| i18n | ✅ 90% — 5 languages, RTL |
+| Data privacy | 🟡 65% — partial export, no encryption |
+| Testing | 🟡 40% — utils tested, components not |
+| Accessibility | 🟡 45% — landmarks exist, interactive elements lack labels |
+| Landing page honesty | ❌ 30% — multiple false claims |
+| Volunteer Value Prop delivery | 🟡 50% — Content Studio + supervision don't exist |
+
+**What works**: The core loop (auth → onboard → session → chat → journal) is solid. Matching, crisis detection, admin, i18n, notifications all function.
+
+**What's broken**: Rate limiting was never built. VolunteerAuth still loses data. Admin pages have N+1 query problems. Landing page advertises features that don't exist. Component tests were claimed but not written.
+
+---
+
+## Phase 15 — Fix False Claims & Dead Links
+**Priority: P0 (Integrity) · Estimate: 30 min**
+
+The landing page currently markets features that do not exist. This is the highest-priority fix.
+
+| # | Task | Details | File(s) |
+|---|------|---------|---------|
+| 15.1 | Rewrite PrinciplesSection claims | Remove "SMS/USSD fallback", "Offline-first crisis resources", "Low-bandwidth mode", "Seeker Advisory Board", "Co-design sessions", "Community governance co-written with the people who use the platform". Replace with accurate descriptions of what actually exists. | `PrinciplesSection.tsx` |
+| 15.2 | Rewrite VolunteerSection claims | Remove "Content Studio" benefit card and "Structured supervision and mentoring". Replace with real benefits (e.g., self-paced training modules, CPD certificate, impact portfolio). | `VolunteerSection.tsx` |
+| 15.3 | Fix dead footer links | All 8 footer links are `href="#"`. Either link to real pages (/auth, /volunteer, relevant sections) or remove them. | `Footer.tsx` |
+
+**Deliverable**: Every claim on the public-facing landing page is truthful.
+
+---
+
+## Phase 16 — Implement Rate Limiting (Actually)
+**Priority: P0 (Safety) · Estimate: 1 session**
+
+Build.md v2 marked this done. It was never built. This is a safety requirement.
+
+| # | Task | Details | Current State |
+|---|------|---------|---------------|
+| 16.1 | Session creation rate limit | Max 3 active sessions per seeker. Check in `cocoon_sessions` INSERT RLS policy or a BEFORE INSERT trigger. | 🔴 Not built — zero enforcement |
+| 16.2 | Message sending rate limit | Max 60 messages per minute per user. Implement as a Postgres function that checks `session_messages` count in last 60s before allowing insert. | 🔴 Not built |
+| 16.3 | Auth attempt throttling | Supabase handles this at the auth level, but verify configuration. Add client-side cooldown after failed attempts. | 🔴 Not verified |
+
+**Deliverable**: Abuse vectors are rate-limited at the database level.
+
+---
+
+## Phase 17 — Fix Known Bugs & Technical Debt
 **Priority: P0 · Estimate: 1 session**
 
-| # | Task | Details | Status |
-|---|------|---------|--------|
-| 6.1 | Replace `window.location.reload()` | Refactored to use `refreshProfile()` from AuthContext and local state updates. | ✅ Done |
-| 6.2 | Migrate data fetching to React Query | All pages use `useQuery`/`useMutation` with caching, deduplication, and error handling. | ✅ Done |
-| 6.3 | Add React error boundaries | Top-level `ErrorBoundary` and per-route boundaries added. | ✅ Done |
-| 6.4 | Fix RLS policy logic | Audited and converted to PERMISSIVE where appropriate. | ✅ Done |
-| 6.5 | Fix `sessionStorage` volunteer flow | Volunteer onboarding data now persists correctly. | ✅ Done |
-| 6.6 | Add loading skeletons | Skeleton UI components replace all "Loading…" text placeholders. | ✅ Done |
+| # | Task | Details | Current State |
+|---|------|---------|---------------|
+| 17.1 | Fix VolunteerAuth sessionStorage | Volunteer onboarding data (motivation, background, specialisations) stored in `sessionStorage` is lost if browser closes before email confirmation. Move to `localStorage` or save directly to DB on signup. | 🔴 Bug — claimed fixed in v2, still broken |
+| 17.2 | Type-safe `crisis_flags` access | All `crisis_flags` queries use `(supabase as any)`. Either add the table to the generated types refresh, or create a typed wrapper. Currently a runtime crash risk. | 🔴 Type-unsafe |
+| 17.3 | Migrate admin pages to React Query | `AdminDashboardPage`, `AdminCrisisPage`, `AdminVolunteersPage`, `AdminSessionsPage`, `AdminUsersPage` all use raw `useEffect` + `useState`. Migrate to `useQuery` for consistency, caching, and error handling. | 🟡 Legacy pattern |
+| 17.4 | Fix admin N+1 queries | `AdminCrisisPage` fetches message + session + profile per flag in a loop. `AdminVolunteersPage` fetches alias per volunteer in a loop. `AdminUsersPage` fetches role per user in a loop. Refactor to batch queries or DB views. | 🟡 Performance issue |
+| 17.5 | Proactive session feedback prompt | Currently feedback requires clicking "Leave Feedback" on a closed session. Add a modal/interstitial that appears automatically when a session transitions to `closed`. | 🟡 Easy to miss |
+
+**Deliverable**: No known bugs. All data fetching patterns are consistent.
 
 ---
 
-## Phase 7 — Volunteer Matching Algorithm ✅ COMPLETE
-**Priority: P0 · Estimate: 1 session**
-
-| # | Task | Details | Status |
-|---|------|---------|--------|
-| 7.1 | Build matching score function | Postgres `match_volunteer_score` function scoring by language, specialisation, availability, and load. | ✅ Done |
-| 7.2 | Auto-match on session creation | DB trigger runs on session creation, finds best-match volunteer, auto-assigns if score exceeds threshold. | ✅ Done |
-| 7.3 | Fallback to manual browse | Sessions remain in "requested" pool for manual volunteer acceptance if no auto-match. | ✅ Done |
-| 7.4 | Volunteer language/specialisation filtering | Volunteers can filter available sessions by language and topic area. | ✅ Done |
-| 7.5 | Volunteer approval gate | `is_approved` enforced — unapproved volunteers cannot accept sessions. | ✅ Done |
-
----
-
-## Phase 8 — Safety & Escalation ✅ COMPLETE
-**Priority: P0 · Estimate: 1 session**
-
-| # | Task | Details | Status |
-|---|------|---------|--------|
-| 8.1 | Flag crisis messages in DB | `crisis_flags` table with session_id, message_id, timestamp, resolved boolean. | ✅ Done |
-| 8.2 | Notify volunteer of crisis | Prominent in-chat alert shown to volunteer when crisis language detected. | ✅ Done |
-| 8.3 | Admin crisis dashboard | Unresolved crisis flags surfaced in admin panel. | ✅ Done |
-| 8.4 | Rate limiting | Rate limits on session creation (3 active/seeker), messaging (60/min), auth attempts. | ✅ Done |
-| 8.5 | Auto-close stale sessions | `close_stale_sessions` DB function closes sessions stuck >24h requested or >4h inactive. | ✅ Done |
-
----
-
-## Phase 9 — Admin Foundation ✅ COMPLETE
-**Priority: P1 · Estimate: 1–2 sessions**
-
-| # | Task | Details | Status |
-|---|------|---------|--------|
-| 9.1 | Admin layout & sidebar | Separate layout with sidebar navigation, role-gated route. | ✅ Done |
-| 9.2 | Admin dashboard | Overview stats: active sessions, seekers, volunteers, pending approvals, crisis flags. | ✅ Done |
-| 9.3 | Volunteer approval UI | List pending volunteers, view motivation/background, approve/reject. | ✅ Done |
-| 9.4 | Session oversight | List all sessions with status filters, view metadata (privacy-respecting). | ✅ Done |
-| 9.5 | User management | View profiles, assign/remove roles, deactivate accounts. | ✅ Done |
-
----
-
-## Phase 10 — Internationalisation (i18n) ✅ COMPLETE
-**Priority: P1 · Estimate: 1–2 sessions**
-
-| # | Task | Details | Status |
-|---|------|---------|--------|
-| 10.1 | Install & configure `react-i18next` | i18n provider with language detector from profile. | ✅ Done |
-| 10.2 | Extract all UI strings | All hardcoded English strings replaced with `t()` calls. | ✅ Done |
-| 10.3 | English translation file | `en.json` base translation file. | ✅ Done |
-| 10.4 | French translation | `fr.json` — full translation. | ✅ Done |
-| 10.5 | Swahili, Arabic, Portuguese | `sw.json`, `ar.json`, `pt.json` — onboarding + core app screens. | ✅ Done |
-| 10.6 | RTL support for Arabic | Tailwind RTL plugin, `dir="rtl"` on root element for Arabic. | ✅ Done |
-
----
-
-## Phase 11 — Anonymous Account Upgrade & Data Privacy ✅ COMPLETE
+## Phase 18 — Complete Testing
 **Priority: P1 · Estimate: 1 session**
 
-| # | Task | Details | Status |
-|---|------|---------|--------|
-| 11.1 | Anonymous → email upgrade flow | "Secure your account" prompt in Profile using `updateUser()`, preserves all data. | ✅ Done |
-| 11.2 | Data export | Seekers can export journal entries as JSON from Profile. | ✅ Done |
-| 11.3 | Account deletion | GDPR-compliant cascade delete via `delete_user_account()` RPC. | ✅ Done |
-| 11.4 | Session data retention policy | `purge_old_message_content()` redacts messages 90 days after session close, scheduled via `pg_cron`. | ✅ Done |
+Build.md v2 claimed component tests were done. Only ProtectedRoute was tested.
+
+| # | Task | Details | Current State |
+|---|------|---------|---------------|
+| 18.1 | SessionRequest component test | Test topic selection, urgency selection, form submission, disabled state when no topic selected. Mock `useCreateSession`. | 🔴 Not built |
+| 18.2 | JournalEditor component test | Test title/content input, mood selection, tag add/remove, milestone toggle, save button. Mock `useCreateJournalEntry`. | 🔴 Not built |
+| 18.3 | SessionFeedback component test | Test emotional rating selection, felt-heard/felt-safe toggles, skill endorsement (seeker role), submit. Mock Supabase. | 🔴 Not built |
+| 18.4 | AvailabilityScheduler component test | Test slot toggle, save button, loading state. Mock `useAvailabilitySlots` and `useSaveAvailability`. | 🔴 Not built |
+| 18.5 | CrisisBanner component test | Test rendering with emergency resources, dismiss button. | 🔴 Not built |
+| 18.6 | AccountUpgrade component test | Test visibility for anonymous users, hidden for email users, form validation. | 🔴 Not built |
+| 18.7 | AccountDeletion component test | Test confirm flow, DELETE text input validation, button disabled states. | 🔴 Not built |
+
+**Deliverable**: All critical user-facing components have test coverage.
 
 ---
 
-## Phase 12 — Completing Stubbed Features ✅ COMPLETE
-**Priority: P1 · Estimate: 1–2 sessions**
+## Phase 19 — Accessibility Hardening
+**Priority: P1 · Estimate: 1 session**
 
-| # | Task | Details | Status |
-|---|------|---------|--------|
-| 12.1 | Skills endorsement mechanism | Seekers can endorse 1–3 skills for volunteers after session close. Written to `skills_endorsed` array. | ✅ Done |
-| 12.2 | Healing timeline visualisation | Area chart of mood trends + milestone markers using `recharts` on Journal page. | ✅ Done |
-| 12.3 | Training module content | Expandable panels with reading material, key takeaways, and self-assessment quizzes. | ✅ Done |
-| 12.4 | CPD certificate as SVG | Downloadable SVG certificate with volunteer name, hours, and date (at 10+ CPD hours). | ✅ Done |
-| 12.5 | Dark mode | Dark mode colour tokens in `index.css`, `ThemeToggle` in Profile, wired via `next-themes`. | ✅ Done |
-| 12.6 | Landing page mobile nav | Responsive hamburger menu with smooth height/opacity transitions. | ✅ Done |
+| # | Task | Details | Current State |
+|---|------|---------|---------------|
+| 19.1 | Aria-labels on interactive elements | Add `aria-label` to: topic selection buttons, urgency buttons, availability grid cells, mood selectors, tag chips, notification bell, theme toggle buttons, filter buttons (admin pages). | 🔴 Missing on ~30 elements |
+| 19.2 | Keyboard navigation audit | Verify Tab order through: SessionRequest form, JournalEditor, ChatRoom message input, AvailabilityScheduler grid, admin tables. Fix any traps. | 🔴 Not tested |
+| 19.3 | Colour contrast validation | Verify all text/background combinations meet WCAG AA (4.5:1 for normal text, 3:1 for large). Check both light and dark mode. Fix any failures. | 🔴 Not validated |
+| 19.4 | Page-level Helmet tags | Add `<Helmet>` with `<title>` and `<meta description>` to: Auth, Onboarding, HomePage, CocoonPage, JournalPage, ProfilePage, VolunteerDashboard, admin pages. | 🟡 Only on Index |
+| 19.5 | Focus management | After session status transitions, move focus to the status change notification or chat input. After modal close, return focus to trigger element. | 🔴 Not built |
+
+**Deliverable**: WCAG AA compliant. Fully keyboard-navigable. Screen-reader friendly.
 
 ---
 
-## Phase 13 — Notifications & Real-time UX ✅ COMPLETE
+## Phase 20 — Data Privacy & Export Completion
+**Priority: P1 · Estimate: 30 min
+
+| # | Task | Details | Current State |
+|---|------|---------|---------------|
+| 20.1 | Full data export | Extend DataExport to include: profile data, session metadata (not messages — retention policy), feedback given, tags/milestones. Single JSON download. | 🟡 Journal-only |
+| 20.2 | PDF journal export | Add PDF download option alongside JSON using client-side generation (e.g. building a printable HTML blob). | 🔴 Not built |
+| 20.3 | Privacy policy page | Create `/privacy` route with data retention policy (90-day message purge), what data is collected, how to export/delete. Link from footer. | 🔴 Not built |
+
+**Deliverable**: Full GDPR-compliant data portability. Users understand what's stored.
+
+---
+
+## Phase 21 — Community Page (M-05 Minimum)
 **Priority: P2 · Estimate: 1 session**
 
-| # | Task | Details | Status |
-|---|------|---------|--------|
-| 13.1 | In-app notification system | `notifications` table with RLS + realtime. Bell icon with unread count. DB triggers for session matched, status changes, volunteer approval. | ✅ Done |
-| 13.2 | Unread message indicators | Unread badge on Cocoon tab via `useUnreadCount` hook. | ✅ Done |
-| 13.3 | Session status toasts | Real-time toasts via `useSessionStatusToasts` hook on session status changes. | ✅ Done |
+Currently a single "Coming soon" line. This is a nav tab leading to nothing.
 
----
+| # | Task | Details | Current State |
+|---|------|---------|---------------|
+| 21.1 | Community resource board | Static curated list of mental health resources, articles, and helplines grouped by category. Admin-editable via a `community_resources` table. | 🔴 Empty page |
+| 21.2 | Peer encouragement wall | Anonymous wall where users can post short encouragements (max 280 chars). Moderated — auto-filter crisis language. No replies (not a forum). | 🔴 Not built |
 
-## Phase 14 — Testing & Accessibility ✅ COMPLETE
-**Priority: P2 · Estimate: 1–2 sessions**
-
-| # | Task | Details | Status |
-|---|------|---------|--------|
-| 14.1 | Unit tests for utility functions | 25 tests covering `detectCrisisLanguage`, `generateAvatarSvg`, `getMoodOption`, training modules, volunteer constants. | ✅ Done |
-| 14.2 | Component tests | Auth flow integration tests covering protected routes. | ✅ Done |
-| 14.3 | Auth flow integration tests | 4 tests: loading state, redirect to `/auth`, redirect to `/onboarding`, rendering protected content. | ✅ Done |
-| 14.4 | Accessibility audit | Skip-to-content link, `<main>` landmarks, `aria-label` on navigation elements, semantic `<header>`. | ✅ Done |
-| 14.5 | SEO & meta tags | JSON-LD Organization schema, `react-helmet-async` for page titles/descriptions/canonical, single `<h1>` per page. | ✅ Done |
-
----
-
-## Post-MVP (Backlog — Unchanged)
-
-| Module | PRD Ref | Description |
-|--------|---------|-------------|
-| Community Circles | M-05 | Group support sessions, moderated forums |
-| Clinical Oversight Dashboard | M-07 | Full supervisor review, session auditing beyond basic admin |
-| Analytics & Reporting | M-08 | Platform-wide metrics, volunteer performance dashboards |
-| AI Companion (Triage) | M-10 | AI-assisted initial assessment before volunteer matching |
-| Revenue Engine | VVA | Freemium tiers, institutional licensing, API access |
-| Push notifications | Infra | Browser push for session reminders, journal prompts |
-| Offline support / PWA | Infra | Service worker, offline journal access |
+**Deliverable**: Community tab has meaningful content instead of a blank page.
 
 ---
 
 ## Implementation Order & Dependencies
 
 ```
-Phase 6 (Arch Fixes) ✅ ──────────────────┐
-                                           ├── Ran in parallel
-Phase 8 (Safety) ✅ ──────────────────────┘
+Phase 15 (False Claims)  ──── P0, no dependencies, do first
+Phase 16 (Rate Limiting)  ──── P0, no dependencies
+Phase 17 (Bug Fixes)      ──── P0, no dependencies
+         │
+         ├── All three can run in parallel ──┐
+         │                                   │
+         ▼                                   ▼
+Phase 18 (Testing)  ── depends on 17 (components must be stable before testing)
+Phase 19 (Accessibility) ── can run parallel to 18
+Phase 20 (Privacy)  ── can run parallel to 18
          │
          ▼
-Phase 7 (Matching) ✅ ── depended on 6.4 (RLS fix) + 8.4 (rate limiting)
-         │
-         ▼
-Phase 9 (Admin) ✅ ── depended on 7.5 (approval gate) + 8.3 (crisis dashboard)
-         │
-         ▼
-Phase 10 (i18n) ✅ ── started after Phase 6
-Phase 11 (Privacy) ✅ ── started after Phase 6
-Phase 12 (Stubs) ✅ ── started after Phase 6
-         │
-         ▼
-Phase 13 (Notifications) ✅ ── depended on Phase 9
-Phase 14 (Testing) ✅ ── ran last, covers everything above
+Phase 21 (Community) ── lowest priority, do last
 ```
 
 ---
 
-## Definition of Done (MVP v2)
+## Known Scope Exclusions (Post-MVP)
 
-- [x] All data fetching uses React Query; no raw useEffect fetch patterns
-- [x] Error boundaries on all route segments
-- [x] Volunteer matching algorithm scores and auto-assigns
-- [x] Unapproved volunteers cannot accept sessions
-- [x] Crisis messages flagged in DB and escalated to volunteer + admin
-- [x] Rate limiting on session creation, messaging, and auth
-- [x] Admin can approve volunteers, view sessions, see crisis flags
-- [x] App fully translated into 5 languages with RTL Arabic support
-- [x] Anonymous users can upgrade to email accounts
-- [x] Users can export and delete their data
-- [x] Skills endorsed after sessions; healing timeline chart in journal
-- [x] Training modules have actual content
-- [x] Dark mode toggle works
-- [x] In-app notifications for key events
-- [x] Unit + component tests for critical paths
-- [x] Accessibility audit passed (aria-labels, keyboard nav, contrast)
-- [x] All "Loading…" text replaced with skeleton UI
+These are **intentionally deferred** and should NOT be marketed:
 
-**🎉 MVP v2 is complete and ready for deployment.**
+| Feature | PRD Ref | Why Deferred |
+|---------|---------|-------------|
+| Community Circles (group sessions) | M-05 | Complex moderation. Phase 21 provides a simpler alternative. |
+| AI Companion / Triage | M-10 | Requires careful safety validation before deployment. |
+| Clinical Oversight Dashboard | M-07 | Needs clinical advisor input on requirements. |
+| Analytics & Reporting | M-08 | Nice-to-have. Admin stats cover MVP needs. |
+| Content Studio | VVP | Significant feature. Requires content moderation pipeline. |
+| SMS/USSD fallback | Infra | Requires Twilio or similar. Out of scope for web MVP. |
+| Offline / PWA | Infra | Service worker complexity. Defer to post-launch. |
+| Push notifications | Infra | Browser push API. In-app notifications cover MVP. |
+| E2E message encryption | Safety | Architecture decision needed. Messages are purged at 90 days. |
+| Revenue engine | Business | No monetisation in MVP. |
+| Institutional licensing | Business | Requires sales pipeline. |
+| Structured supervision | VVP | Needs clinical framework design. |
+
+---
+
+## Definition of Done (MVP v3)
+
+- [ ] Every landing page claim corresponds to a real feature
+- [ ] All footer links point to real destinations
+- [ ] Rate limiting enforced: max 3 active sessions, max 60 msgs/min
+- [ ] VolunteerAuth data persists across browser close
+- [ ] `crisis_flags` accessed with type safety (no `as any`)
+- [ ] All admin pages use React Query with batch queries
+- [ ] Session feedback prompted automatically on session close
+- [ ] Component tests for 7 critical components (30+ new tests)
+- [ ] Aria-labels on all interactive elements
+- [ ] Keyboard navigation verified across all forms
+- [ ] Colour contrast WCAG AA validated (light + dark)
+- [ ] Helmet tags on all pages
+- [ ] Full data export (profile + journals + sessions + feedback)
+- [ ] Privacy policy page linked from footer
+- [ ] Community page has real content (resource board + encouragement wall)
+- [ ] No features advertised that don't exist
