@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, Navigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Helmet } from "react-helmet-async";
 import { Input } from "@/components/ui/input";
