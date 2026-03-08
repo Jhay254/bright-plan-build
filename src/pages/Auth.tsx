@@ -22,7 +22,7 @@ const Auth = () => {
     setSubmitting(true);
     try {
       await signInAnonymously();
-      navigate("/app");
+      navigate("/onboarding");
     } catch (e: any) {
       toast({ title: "Something went wrong", description: e.message, variant: "destructive" });
     } finally {
