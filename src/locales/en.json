@@ -132,7 +132,14 @@
   },
   "community": {
     "title": "Community",
-    "comingSoon": "Community circles and group support coming soon."
+    "subtitle": "Resources, support, and encouragement from those who understand.",
+    "resourcesTab": "Resources",
+    "encouragementsTab": "Encouragements",
+    "postEncouragement": "Share an encouragement",
+    "encouragementPlaceholder": "Write something kind for someone who needs it…",
+    "post": "Post",
+    "posting": "Posting…",
+    "noEncouragements": "No encouragements yet. Be the first to share one."
   },
   "profile": {
     "title": "Profile",
