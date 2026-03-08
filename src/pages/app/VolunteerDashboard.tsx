@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button";
-import { MessageCircle, Clock, Calendar } from "lucide-react";
+import { MessageCircle, Clock, Calendar, Loader2, XCircle } from "lucide-react";
 import { useVolunteerProfile, useVolunteerActiveSessions } from "@/hooks/use-volunteer-data";
 import { DashboardSkeleton } from "@/components/ui/skeleton-card";
 import AvailabilityScheduler from "@/components/volunteer/AvailabilityScheduler";
@@ -69,6 +69,51 @@ const VolunteerDashboard = () => {
   }, [user, vpLoading, volProfile, role, refreshAuth]);
 
   if (vpLoading || sessionsLoading) return <DashboardSkeleton />;
+
+  // --- Approval gate ---
+  if (volProfile && !volProfile.is_approved) {
+    const rejected = !!(volProfile as any).rejection_reason;
+
+    return (
+      <>
+        <Helmet><title>{rejected ? "Application Denied" : "Application Under Review"} — Echo</title></Helmet>
+        <div className="px-6 pt-16 pb-24 max-w-md mx-auto text-center">
+          {rejected ? (
+            <>
+              <XCircle className="h-14 w-14 text-destructive mx-auto mb-4" />
+              <h1 className="font-heading text-2xl font-bold text-bark mb-2">Application Not Approved</h1>
+              <p className="text-sm text-driftwood mb-4">
+                Unfortunately your volunteer application was not approved at this time.
+              </p>
+              <div className="bg-muted rounded-echo-md p-4 text-left mb-6">
+                <p className="text-xs text-driftwood font-medium mb-1">Reason</p>
+                <p className="text-sm text-bark">{(volProfile as any).rejection_reason}</p>
+              </div>
+              <p className="text-xs text-driftwood">
+                If you believe this was a mistake or your circumstances have changed, please reach out to our team.
+              </p>
+            </>
+          ) : (
+            <>
+              <Loader2 className="h-14 w-14 text-fern mx-auto mb-4 animate-spin" />
+              <h1 className="font-heading text-2xl font-bold text-bark mb-2">Application Under Review</h1>
+              <p className="text-sm text-driftwood mb-4">
+                Thank you for applying to volunteer with Echo! Our team is reviewing your application and you'll be notified once a decision is made.
+              </p>
+              <div className="bg-mist/30 rounded-echo-md p-4 text-left">
+                <p className="text-xs text-driftwood font-medium mb-1">What happens next?</p>
+                <ul className="text-sm text-bark space-y-1 list-disc list-inside">
+                  <li>An admin will review your motivation and background</li>
+                  <li>You'll receive a notification when approved</li>
+                  <li>Once approved, you can start accepting sessions</li>
+                </ul>
+              </div>
+            </>
+          )}
+        </div>
+      </>
+    );
+  }
 
   return (
     <>

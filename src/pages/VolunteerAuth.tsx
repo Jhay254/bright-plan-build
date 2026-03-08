@@ -10,10 +10,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { SPECIALISATIONS } from "@/lib/volunteer";
 import CookieBanner from "@/components/CookieBanner";
+import { CheckCircle2 } from "lucide-react";
 
 const VolunteerAuth = () => {
   const [mode, setMode] = useState<"signin" | "signup">("signup");
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(0); // 0 = credentials, 1 = onboarding info, 2 = submitted
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [motivation, setMotivation] = useState("");
@@ -51,9 +52,11 @@ const VolunteerAuth = () => {
         // Check if session was created immediately (auto-confirm enabled)
         const { data: { session } } = await supabase.auth.getSession();
         if (session) {
+          // Profile will be auto-created on dashboard, navigate there
           navigate("/app/volunteer");
         } else {
-          toast({ title: "Check your email", description: "Confirm your account, then sign in to complete volunteer setup." });
+          // Show "application submitted" confirmation
+          setStep(2);
         }
       } else {
         await signIn(email, password);
@@ -77,7 +80,26 @@ const VolunteerAuth = () => {
         </div>
 
         <div className="bg-card rounded-echo-lg shadow-echo-2 p-8">
-          {mode === "signup" && step === 1 ? (
+          {/* Step 2: Application submitted confirmation */}
+          {mode === "signup" && step === 2 ? (
+            <div className="text-center space-y-4">
+              <CheckCircle2 className="h-14 w-14 text-fern mx-auto" />
+              <h2 className="font-heading text-xl font-bold text-bark">Application Submitted!</h2>
+              <p className="text-sm text-driftwood">
+                Thank you for applying to volunteer with Echo. Please check your email to confirm your account, then sign in.
+              </p>
+              <p className="text-sm text-driftwood">
+                Once you sign in, your application will be reviewed by our team. You'll be notified when a decision is made.
+              </p>
+              <Button
+                variant="outline"
+                className="mt-4"
+                onClick={() => { setMode("signin"); setStep(0); }}
+              >
+                Go to Sign In
+              </Button>
+            </div>
+          ) : mode === "signup" && step === 1 ? (
             <div className="space-y-4">
               <div className="space-y-2">
                 <Label>Why do you want to volunteer?</Label>
@@ -161,17 +183,19 @@ const VolunteerAuth = () => {
             </form>
           )}
 
-          <p className="text-center text-sm text-driftwood mt-4">
-            {mode === "signup" ? (
-              <>Already a volunteer?{" "}
-                <button onClick={() => { setMode("signin"); setStep(0); }} className="text-forest font-medium hover:underline">Sign in</button>
-              </>
-            ) : (
-              <>New volunteer?{" "}
-                <button onClick={() => { setMode("signup"); setStep(0); }} className="text-forest font-medium hover:underline">Apply here</button>
-              </>
-            )}
-          </p>
+          {step !== 2 && (
+            <p className="text-center text-sm text-driftwood mt-4">
+              {mode === "signup" ? (
+                <>Already a volunteer?{" "}
+                  <button onClick={() => { setMode("signin"); setStep(0); }} className="text-forest font-medium hover:underline">Sign in</button>
+                </>
+              ) : (
+                <>New volunteer?{" "}
+                  <button onClick={() => { setMode("signup"); setStep(0); }} className="text-forest font-medium hover:underline">Apply here</button>
+                </>
+              )}
+            </p>
+          )}
         </div>
       </div>
     </div>
