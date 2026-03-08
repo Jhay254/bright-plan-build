@@ -4,14 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
-import { supabase } from "@/integrations/supabase/client";
 import echoLogo from "@/assets/echo-logo.png";
 import { useToast } from "@/hooks/use-toast";
 import { SPECIALISATIONS } from "@/lib/volunteer";
 
 const VolunteerAuth = () => {
   const [mode, setMode] = useState<"signin" | "signup">("signup");
-  const [step, setStep] = useState(0); // 0: credentials, 1: background (signup only)
+  const [step, setStep] = useState(0);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [motivation, setMotivation] = useState("");
@@ -38,12 +37,9 @@ const VolunteerAuth = () => {
     try {
       if (mode === "signup") {
         await signUp(email, password);
-        // After signup, the trigger creates a default 'seeker' role.
-        // We need to wait for confirmation, then on first login the volunteer
-        // onboarding page will create the volunteer_profile and add 'volunteer' role.
         toast({ title: "Check your email", description: "Confirm your account, then sign in to complete volunteer setup." });
-        // Store volunteer info in sessionStorage temporarily for post-confirm setup
-        sessionStorage.setItem("echo_volunteer_pending", JSON.stringify({
+        // Store in localStorage (survives browser close, unlike sessionStorage)
+        localStorage.setItem("echo_volunteer_pending", JSON.stringify({
           motivation, background, specialisations: selectedSpecs,
         }));
       } else {
@@ -68,7 +64,6 @@ const VolunteerAuth = () => {
 
         <div className="bg-card rounded-echo-lg shadow-echo-2 p-8">
           {mode === "signup" && step === 1 ? (
-            /* Step 2: Background info */
             <div className="space-y-4">
               <div className="space-y-2">
                 <Label>Why do you want to volunteer?</Label>
@@ -108,18 +103,12 @@ const VolunteerAuth = () => {
               </div>
               <div className="flex gap-2 pt-2">
                 <Button variant="ghost" className="flex-1" onClick={() => setStep(0)}>Back</Button>
-                <Button
-                  variant="hero"
-                  className="flex-1"
-                  onClick={handleSubmit}
-                  disabled={!motivation.trim() || submitting}
-                >
+                <Button variant="hero" className="flex-1" onClick={handleSubmit} disabled={!motivation.trim() || submitting}>
                   {submitting ? "Submitting…" : "Apply to Volunteer"}
                 </Button>
               </div>
             </div>
           ) : (
-            /* Step 1: Credentials */
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>

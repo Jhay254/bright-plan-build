@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
+import ErrorBoundary from "@/components/ErrorBoundary";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import VolunteerAuth from "./pages/VolunteerAuth";
@@ -22,7 +23,14 @@ import ChatRoom from "@/components/cocoon/ChatRoom";
 import JournalEditor from "@/components/journal/JournalEditor";
 import JournalDetail from "@/components/journal/JournalDetail";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60, // 1 minute
+      retry: 1,
+    },
+  },
+});
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -31,32 +39,34 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/auth" element={<Auth />} />
-            <Route path="/volunteer" element={<VolunteerAuth />} />
-            <Route path="/onboarding" element={<Onboarding />} />
-            <Route
-              path="/app"
-              element={
-                <ProtectedRoute>
-                  <AppShell />
-                </ProtectedRoute>
-              }
-            >
-              <Route index element={<HomePage />} />
-              <Route path="cocoon" element={<CocoonPage />} />
-              <Route path="cocoon/new" element={<SessionRequest />} />
-              <Route path="cocoon/:sessionId" element={<ChatRoom />} />
-              <Route path="journal" element={<JournalPage />} />
-              <Route path="journal/new" element={<JournalEditor />} />
-              <Route path="journal/:entryId" element={<JournalDetail />} />
-              <Route path="community" element={<CommunityPage />} />
-              <Route path="profile" element={<ProfilePage />} />
-              <Route path="volunteer" element={<VolunteerDashboard />} />
-            </Route>
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <ErrorBoundary>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route path="/volunteer" element={<VolunteerAuth />} />
+              <Route path="/onboarding" element={<Onboarding />} />
+              <Route
+                path="/app"
+                element={
+                  <ProtectedRoute>
+                    <AppShell />
+                  </ProtectedRoute>
+                }
+              >
+                <Route index element={<ErrorBoundary><HomePage /></ErrorBoundary>} />
+                <Route path="cocoon" element={<ErrorBoundary><CocoonPage /></ErrorBoundary>} />
+                <Route path="cocoon/new" element={<ErrorBoundary><SessionRequest /></ErrorBoundary>} />
+                <Route path="cocoon/:sessionId" element={<ErrorBoundary><ChatRoom /></ErrorBoundary>} />
+                <Route path="journal" element={<ErrorBoundary><JournalPage /></ErrorBoundary>} />
+                <Route path="journal/new" element={<ErrorBoundary><JournalEditor /></ErrorBoundary>} />
+                <Route path="journal/:entryId" element={<ErrorBoundary><JournalDetail /></ErrorBoundary>} />
+                <Route path="community" element={<ErrorBoundary><CommunityPage /></ErrorBoundary>} />
+                <Route path="profile" element={<ErrorBoundary><ProfilePage /></ErrorBoundary>} />
+                <Route path="volunteer" element={<ErrorBoundary><VolunteerDashboard /></ErrorBoundary>} />
+              </Route>
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </ErrorBoundary>
         </BrowserRouter>
       </TooltipProvider>
     </AuthProvider>

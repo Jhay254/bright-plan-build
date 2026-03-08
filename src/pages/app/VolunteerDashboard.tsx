@@ -1,85 +1,55 @@
-import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
-import { useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { MessageCircle, Clock, Calendar } from "lucide-react";
+import { useVolunteerProfile, useVolunteerActiveSessions } from "@/hooks/use-volunteer-data";
+import { DashboardSkeleton } from "@/components/ui/skeleton-card";
 import AvailabilityScheduler from "@/components/volunteer/AvailabilityScheduler";
 import TrainingChecklist from "@/components/volunteer/TrainingChecklist";
 import ImpactPortfolio from "@/components/volunteer/ImpactPortfolio";
 import CpdLog from "@/components/volunteer/CpdLog";
-import type { Database } from "@/integrations/supabase/types";
-
-type VolunteerProfile = Database["public"]["Tables"]["volunteer_profiles"]["Row"];
-type Session = Database["public"]["Tables"]["cocoon_sessions"]["Row"];
+import { useEffect } from "react";
 
 const VolunteerDashboard = () => {
   const { user, profile } = useAuth();
   const navigate = useNavigate();
-  const [volProfile, setVolProfile] = useState<VolunteerProfile | null>(null);
-  const [activeSessions, setActiveSessions] = useState<Session[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data: volProfile, isLoading: vpLoading, refetch: refetchProfile } = useVolunteerProfile(user?.id);
+  const { data: activeSessions = [], isLoading: sessionsLoading } = useVolunteerActiveSessions(user?.id);
 
+  // Auto-create volunteer profile if it doesn't exist
   useEffect(() => {
-    if (!user) return;
-    const fetch = async () => {
-      // Get or create volunteer profile
-      let { data: vp } = await supabase
+    if (!user || vpLoading || volProfile) return;
+
+    const createProfile = async () => {
+      const pending = localStorage.getItem("echo_volunteer_pending");
+      const parsed = pending ? JSON.parse(pending) : {};
+
+      await supabase
         .from("volunteer_profiles")
-        .select("*")
-        .eq("user_id", user.id)
-        .single();
-
-      if (!vp) {
-        // Check for pending signup data
-        const pending = sessionStorage.getItem("echo_volunteer_pending");
-        const parsed = pending ? JSON.parse(pending) : {};
-
-        const { data: created } = await supabase
-          .from("volunteer_profiles")
-          .insert({
-            user_id: user.id,
-            motivation: parsed.motivation || null,
-            background: parsed.background || null,
-            specialisations: parsed.specialisations || [],
-            languages: [profile?.language ?? "en"],
-          })
-          .select()
-          .single();
-        vp = created;
-        sessionStorage.removeItem("echo_volunteer_pending");
-
-        // Add volunteer role if not already present
-        await supabase.from("user_roles").upsert({
+        .insert({
           user_id: user.id,
-          role: "volunteer" as const,
-        }, { onConflict: "user_id,role" });
-      }
+          motivation: parsed.motivation || null,
+          background: parsed.background || null,
+          specialisations: parsed.specialisations || [],
+          languages: [profile?.language ?? "en"],
+        });
 
-      setVolProfile(vp);
+      localStorage.removeItem("echo_volunteer_pending");
 
-      // Fetch active sessions
-      const { data: sessions } = await supabase
-        .from("cocoon_sessions")
-        .select("*")
-        .eq("volunteer_id", user.id)
-        .in("status", ["matched", "active", "wrap_up"])
-        .order("created_at", { ascending: false });
-      if (sessions) setActiveSessions(sessions);
+      await supabase.from("user_roles").upsert(
+        { user_id: user.id, role: "volunteer" as const },
+        { onConflict: "user_id,role" }
+      );
 
-      setLoading(false);
+      refetchProfile();
     };
-    fetch();
-  }, [user, profile]);
 
-  if (loading) {
-    return (
-      <div className="px-6 pt-8">
-        <div className="animate-pulse-gentle text-forest font-heading text-sm">Loading dashboard…</div>
-      </div>
-    );
-  }
+    createProfile();
+  }, [user, vpLoading, volProfile, profile, refetchProfile]);
+
+  if (vpLoading || sessionsLoading) return <DashboardSkeleton />;
 
   return (
     <div className="px-6 pt-8 pb-24 max-w-lg mx-auto">
@@ -128,7 +98,7 @@ const VolunteerDashboard = () => {
         </div>
       )}
 
-      {/* Tabs for different sections */}
+      {/* Tabs */}
       <Tabs defaultValue="sessions" className="mt-6">
         <TabsList className="grid grid-cols-4 mb-6 h-auto bg-sand rounded-echo-md p-1">
           <TabsTrigger value="sessions" className="text-xs py-2 rounded-echo-sm data-[state=active]:bg-card data-[state=active]:text-forest">Sessions</TabsTrigger>
