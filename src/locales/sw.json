@@ -132,7 +132,14 @@
   },
   "community": {
     "title": "Jamii",
-    "comingSoon": "Vikundi vya jamii na msaada wa vikundi vinakuja hivi karibuni."
+    "subtitle": "Rasilimali, msaada na maneno ya kutia moyo kutoka kwa wale wanaolewa.",
+    "resourcesTab": "Rasilimali",
+    "encouragementsTab": "Maneno ya kutia moyo",
+    "postEncouragement": "Shiriki neno la kutia moyo",
+    "encouragementPlaceholder": "Andika kitu kizuri kwa mtu anayekihitaji…",
+    "post": "Chapisha",
+    "posting": "Inachapisha…",
+    "noEncouragements": "Hakuna maneno ya kutia moyo bado. Kuwa wa kwanza kushiriki."
   },
   "profile": {
     "title": "Wasifu",
