@@ -164,9 +164,9 @@
     },
     "export": {
       "title": "Hamisha Data Yako",
-      "desc": "Pakua maandishi yako ya jarida kama faili ya JSON.",
-      "button": "Hamisha Jarida",
-      "success": "Jarida limehamishwa!"
+      "desc": "Pakua data yako yote (wasifu, jarida, vikao, maoni) kama faili ya JSON.",
+      "button": "Hamisha Data",
+      "success": "Data imehamishwa!"
     },
     "deletion": {
       "title": "Futa Akaunti",

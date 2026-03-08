@@ -165,9 +165,9 @@
     },
     "export": {
       "title": "Export Your Data",
-      "desc": "Download your journal entries as a JSON file.",
-      "button": "Export Journal",
-      "success": "Journal exported!"
+      "desc": "Download all your data (profile, journal, sessions, feedback) as a JSON file.",
+      "button": "Export Data",
+      "success": "Data exported!"
     },
     "deletion": {
       "title": "Delete Account",

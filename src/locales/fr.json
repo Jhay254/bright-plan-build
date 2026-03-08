@@ -164,9 +164,9 @@
     },
     "export": {
       "title": "Exporter vos données",
-      "desc": "Téléchargez vos entrées de journal au format JSON.",
-      "button": "Exporter le journal",
-      "success": "Journal exporté !"
+      "desc": "Téléchargez toutes vos données (profil, journal, sessions, avis) au format JSON.",
+      "button": "Exporter les données",
+      "success": "Données exportées !"
     },
     "deletion": {
       "title": "Supprimer le compte",

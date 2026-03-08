@@ -164,9 +164,9 @@
     },
     "export": {
       "title": "Exportar seus dados",
-      "desc": "Baixe suas entradas de diário como arquivo JSON.",
-      "button": "Exportar diário",
-      "success": "Diário exportado!"
+      "desc": "Baixe todos os seus dados (perfil, diário, sessões, avaliações) como arquivo JSON.",
+      "button": "Exportar dados",
+      "success": "Dados exportados!"
     },
     "deletion": {
       "title": "Excluir conta",
