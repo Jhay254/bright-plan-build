@@ -55,7 +55,18 @@ const VolunteerDashboard = () => {
     };
 
     createProfile();
-  }, [user, vpLoading, volProfile, profile, refetchProfile]);
+  }, [user, vpLoading, volProfile, profile, refetchProfile, refreshAuth]);
+
+  // Ensure volunteer role is claimed even if profile already exists
+  useEffect(() => {
+    if (!user || vpLoading || !volProfile || role === "volunteer") return;
+
+    const claimRole = async () => {
+      await supabase.rpc("claim_volunteer_role");
+      refreshAuth();
+    };
+    claimRole();
+  }, [user, vpLoading, volProfile, role, refreshAuth]);
 
   if (vpLoading || sessionsLoading) return <DashboardSkeleton />;
 
