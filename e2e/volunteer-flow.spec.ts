@@ -3,50 +3,53 @@ import { signInVolunteer, TEST_VOLUNTEER } from "./helpers/auth";
 
 test.describe("Volunteer Happy Path", () => {
   test("Auth → Dashboard → Training → Availability → Portfolio", async ({ page }) => {
-    // 1. Sign in as volunteer
+    // 1. Sign in as volunteer (requires pre-seeded user)
     await signInVolunteer(page, TEST_VOLUNTEER.email, TEST_VOLUNTEER.password);
 
-    // 2. Should land on volunteer dashboard
+    // 2. Should land on or navigate to volunteer dashboard
     await page.goto("/app/volunteer");
     await expect(page).toHaveURL(/\/app\/volunteer/);
+    await page.waitForLoadState("networkidle");
 
     // 3. Training tab — complete a module
     const trainingTab = page.getByRole("tab", { name: /training/i });
-    if (await trainingTab.isVisible()) {
+    if (await trainingTab.isVisible({ timeout: 3_000 }).catch(() => false)) {
       await trainingTab.click();
-      // Look for an uncompleted module checkbox
+      await page.waitForTimeout(500);
+
       const checkbox = page.locator('button[role="checkbox"]').first();
-      if (await checkbox.isVisible()) {
+      if (await checkbox.isVisible({ timeout: 2_000 }).catch(() => false)) {
         const wasChecked = await checkbox.getAttribute("data-state");
         if (wasChecked === "unchecked") {
           await checkbox.click();
-          // Verify it flips
-          await expect(checkbox).toHaveAttribute("data-state", "checked");
+          await expect(checkbox).toHaveAttribute("data-state", "checked", { timeout: 3_000 });
         }
       }
     }
 
     // 4. Schedule tab — set availability
     const scheduleTab = page.getByRole("tab", { name: /schedule/i });
-    if (await scheduleTab.isVisible()) {
+    if (await scheduleTab.isVisible({ timeout: 2_000 }).catch(() => false)) {
       await scheduleTab.click();
-      await expect(page.getByText(/availability/i)).toBeVisible();
+      await page.waitForTimeout(500);
+      await expect(page.getByText(/availability/i)).toBeVisible({ timeout: 3_000 });
     }
 
     // 5. Portfolio tab — check share button
     const portfolioTab = page.getByRole("tab", { name: /portfolio/i });
-    if (await portfolioTab.isVisible()) {
+    if (await portfolioTab.isVisible({ timeout: 2_000 }).catch(() => false)) {
       await portfolioTab.click();
+      await page.waitForTimeout(500);
+
       const shareBtn = page.getByRole("button", { name: /share/i });
-      if (await shareBtn.isVisible()) {
+      if (await shareBtn.isVisible({ timeout: 2_000 }).catch(() => false)) {
         await shareBtn.click();
-        // Should show a toast or clipboard action
       }
     }
 
-    // 6. Sessions tab — check for available sessions
+    // 6. Sessions tab
     const sessionsTab = page.getByRole("tab", { name: /sessions/i });
-    if (await sessionsTab.isVisible()) {
+    if (await sessionsTab.isVisible({ timeout: 2_000 }).catch(() => false)) {
       await sessionsTab.click();
     }
 
