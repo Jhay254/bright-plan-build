@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -81,6 +81,18 @@ const VolunteerDashboard = () => {
     };
     claimRole();
   }, [user, vpLoading, volProfile, role, refreshAuth]);
+
+  // If user is not a volunteer and has no pending volunteer application, redirect to home
+  const hasPendingVolunteerData = (() => {
+    try {
+      const pending = localStorage.getItem("echo_volunteer_pending");
+      return pending ? !!JSON.parse(pending).motivation : false;
+    } catch { return false; }
+  })();
+
+  if (!vpLoading && !volProfile && !hasPendingVolunteerData) {
+    return <Navigate to="/app" replace />;
+  }
 
   if (vpLoading || sessionsLoading) return <DashboardSkeleton />;
 
