@@ -17,6 +17,7 @@ import AppShell from "@/components/app/AppShell";
 
 // Lazy-loaded pages
 const VolunteerAuth = lazy(() => import("./pages/VolunteerAuth"));
+const AuthCallback = lazy(() => import("./pages/AuthCallback"));
 const Onboarding = lazy(() => import("./pages/Onboarding"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const HomePage = lazy(() => import("./pages/app/HomePage"));
@@ -64,6 +65,7 @@ const App = () => (
                 <Routes>
                   <Route path="/" element={<Index />} />
                   <Route path="/auth" element={<Auth />} />
+                  <Route path="/auth/callback" element={<AuthCallback />} />
                   <Route path="/volunteer" element={<VolunteerAuth />} />
                   <Route path="/onboarding" element={<Onboarding />} />
                   <Route

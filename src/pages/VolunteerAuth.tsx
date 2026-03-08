@@ -45,7 +45,7 @@ const VolunteerAuth = () => {
     setSubmitting(true);
     try {
       if (mode === "signup") {
-        await signUp(email, password);
+        await signUp(email, password);  // emailRedirectTo is set in AuthContext
         localStorage.setItem("echo_volunteer_pending", JSON.stringify({
           motivation, background, specialisations: selectedSpecs,
         }));
