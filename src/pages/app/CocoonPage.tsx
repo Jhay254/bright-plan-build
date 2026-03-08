@@ -62,6 +62,7 @@ const CocoonPage = () => {
   }, [availableSessions, filterLang, filterTopic]);
 
   if (isLoading) return <PageSkeleton rows={4} />;
+  if (isError) return <QueryError onRetry={() => refetch()} />;
 
   return (
     <>
