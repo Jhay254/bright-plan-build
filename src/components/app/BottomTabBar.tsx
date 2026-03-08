@@ -23,7 +23,8 @@ const BottomTabBar = () => {
     { to: "/app/community", icon: Users, label: t("nav.community"), badge: 0 },
     ...(isAdmin
       ? [{ to: "/admin", icon: Shield, label: "Admin", end: false, badge: 0 }]
-      : [{ to: "/app/profile", icon: User, label: t("nav.profile"), end: false, badge: 0 }]),
+      : []),
+    { to: "/app/profile", icon: User, label: t("nav.profile"), end: false, badge: 0 },
   ];
 
   return (
