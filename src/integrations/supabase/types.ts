@@ -503,7 +503,24 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      visible_encouragements: {
+        Row: {
+          content: string | null
+          created_at: string | null
+          id: string | null
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string | null
+          id?: string | null
+        }
+        Update: {
+          content?: string | null
+          created_at?: string | null
+          id?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       admin_get_stats: { Args: never; Returns: Json }
@@ -548,6 +565,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      verify_certificate: { Args: { _cert_code: string }; Returns: Json }
       volunteer_accept_session: {
         Args: { _session_id: string }
         Returns: boolean
