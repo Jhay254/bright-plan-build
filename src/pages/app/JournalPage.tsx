@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Plus, BookOpen, Flag } from "lucide-react";
 import { getMoodOption } from "@/lib/journal";
 import { PageSkeleton } from "@/components/ui/skeleton-card";
+import HealingTimeline from "@/components/journal/HealingTimeline";
 
 const JournalPage = () => {
   const { user } = useAuth();
