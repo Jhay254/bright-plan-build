@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Send, ArrowLeft, Clock, CheckCircle2, AlertTriangle } from "lucide-react";
 import { detectCrisisLanguage } from "@/lib/safety";
+import { insertCrisisFlag } from "@/lib/crisis-flags";
 import CrisisBanner from "./CrisisBanner";
 import SessionFeedback from "./SessionFeedback";
 import type { Database } from "@/integrations/supabase/types";
