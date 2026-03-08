@@ -11,21 +11,19 @@ const VerifyCertificate = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ["verify-cert", certCode],
     queryFn: async () => {
-      const { data: cert, error: certErr } = await supabase
-        .from("cpd_certificates")
-        .select("*")
-        .eq("cert_code", certCode)
-        .single();
-      if (certErr || !cert) throw new Error("Certificate not found");
-
-      // Fetch volunteer alias
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("alias")
-        .eq("user_id", cert.user_id)
-        .single();
-
-      return { cert, alias: profile?.alias ?? "Volunteer" };
+      const { data: result, error: rpcErr } = await supabase
+        .rpc("verify_certificate", { _cert_code: certCode! });
+      if (rpcErr) throw new Error("Verification failed");
+      const parsed = result as { valid: boolean; total_hours: number | null; issued_at: string | null };
+      if (!parsed.valid) throw new Error("Certificate not found");
+      return {
+        cert: {
+          cert_code: certCode!,
+          total_hours: parsed.total_hours ?? 0,
+          issued_at: parsed.issued_at ?? new Date().toISOString(),
+        },
+        alias: "Verified Volunteer",
+      };
     },
     enabled: !!certCode,
   });
