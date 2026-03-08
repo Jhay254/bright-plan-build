@@ -4,7 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Send, ArrowLeft, Clock, CheckCircle2 } from "lucide-react";
+import { Send, ArrowLeft, Clock, CheckCircle2, AlertTriangle } from "lucide-react";
 import { detectCrisisLanguage } from "@/lib/safety";
 import CrisisBanner from "./CrisisBanner";
 import SessionFeedback from "./SessionFeedback";
@@ -35,6 +35,7 @@ const ChatRoom = () => {
   const [sending, setSending] = useState(false);
   const [showCrisis, setShowCrisis] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
+  const [volunteerCrisisAlert, setVolunteerCrisisAlert] = useState(false);
   const [participantAliases, setParticipantAliases] = useState<Record<string, string>>({});
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -143,24 +144,63 @@ const ChatRoom = () => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  // Subscribe to crisis flags for volunteer alerts
+  useEffect(() => {
+    if (!sessionId || !user) return;
+
+    const channel = supabase
+      .channel(`crisis-${sessionId}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "crisis_flags",
+          filter: `session_id=eq.${sessionId}`,
+        },
+        () => {
+          // Show alert to volunteer (the seeker already sees the CrisisBanner)
+          if (session && user.id === session.volunteer_id) {
+            setVolunteerCrisisAlert(true);
+          }
+        }
+      )
+      .subscribe();
+
+    return () => { supabase.removeChannel(channel); };
+  }, [sessionId, user, session]);
+
   const sendMessage = useCallback(async () => {
     if (!user || !sessionId || !newMessage.trim()) return;
     const content = newMessage.trim();
 
     // Crisis detection
-    if (detectCrisisLanguage(content)) {
+    const isCrisis = detectCrisisLanguage(content);
+    if (isCrisis) {
       setShowCrisis(true);
     }
 
     setSending(true);
     setNewMessage("");
     try {
-      const { error } = await supabase.from("session_messages").insert({
-        session_id: sessionId,
-        sender_id: user.id,
-        content,
-      });
+      const { data: msgData, error } = await supabase
+        .from("session_messages")
+        .insert({
+          session_id: sessionId,
+          sender_id: user.id,
+          content,
+        })
+        .select("id")
+        .single();
       if (error) throw error;
+
+      // 8.1: Write crisis flag to DB
+      if (isCrisis && msgData) {
+        await (supabase as any).from("crisis_flags").insert({
+          session_id: sessionId,
+          message_id: msgData.id,
+        });
+      }
     } catch (e: any) {
       toast({ title: "Failed to send", description: e.message, variant: "destructive" });
       setNewMessage(content);
@@ -257,8 +297,31 @@ const ChatRoom = () => {
         )}
       </div>
 
-      {/* Crisis Banner */}
+      {/* Crisis Banner (for seeker) */}
       {showCrisis && <CrisisBanner />}
+
+      {/* Volunteer crisis alert */}
+      {volunteerCrisisAlert && (
+        <div className="bg-ember/10 border-2 border-ember rounded-echo-md p-4 mx-4 mt-2 animate-fade-in-up">
+          <div className="flex items-center gap-2 mb-1">
+            <AlertTriangle className="h-5 w-5 text-ember" />
+            <p className="font-heading font-semibold text-bark text-sm">
+              Crisis language detected
+            </p>
+          </div>
+          <p className="text-xs text-driftwood">
+            The seeker may be experiencing a crisis. Follow the Echo crisis protocol: stay calm, listen actively, and refer to emergency resources if needed.
+          </p>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="mt-2 text-xs text-driftwood"
+            onClick={() => setVolunteerCrisisAlert(false)}
+          >
+            Acknowledge
+          </Button>
+        </div>
+      )}
 
       {/* Waiting state */}
       {session.status === "requested" && isSeeker && (

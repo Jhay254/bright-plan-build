@@ -18,6 +18,7 @@ import JournalPage from "./pages/app/JournalPage";
 import CommunityPage from "./pages/app/CommunityPage";
 import ProfilePage from "./pages/app/ProfilePage";
 import VolunteerDashboard from "./pages/app/VolunteerDashboard";
+import AdminCrisisPage from "./pages/app/AdminCrisisPage";
 import SessionRequest from "@/components/cocoon/SessionRequest";
 import ChatRoom from "@/components/cocoon/ChatRoom";
 import JournalEditor from "@/components/journal/JournalEditor";
@@ -63,6 +64,7 @@ const App = () => (
                 <Route path="community" element={<ErrorBoundary><CommunityPage /></ErrorBoundary>} />
                 <Route path="profile" element={<ErrorBoundary><ProfilePage /></ErrorBoundary>} />
                 <Route path="volunteer" element={<ErrorBoundary><VolunteerDashboard /></ErrorBoundary>} />
+                <Route path="admin/crisis" element={<ErrorBoundary><AdminCrisisPage /></ErrorBoundary>} />
               </Route>
               <Route path="*" element={<NotFound />} />
             </Routes>
