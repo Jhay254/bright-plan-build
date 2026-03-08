@@ -125,7 +125,7 @@ const JournalEditor = () => {
         </div>
         <div className="flex flex-wrap gap-1.5">
           {allSuggested.filter((t) => !tags.includes(t)).slice(0, 8).map((tag) => (
-            <button key={tag} onClick={() => addTag(tag)} className="text-[11px] px-2.5 py-1 rounded-echo-pill border border-stone text-driftwood hover:border-dusk/40 hover:text-dusk transition-colors">
+            <button key={tag} onClick={() => addTag(tag)} aria-label={`Add suggested tag ${tag}`} className="text-[11px] px-2.5 py-1 rounded-echo-pill border border-stone text-driftwood hover:border-dusk/40 hover:text-dusk transition-colors">
               + {tag}
             </button>
           ))}
