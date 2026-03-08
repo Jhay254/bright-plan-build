@@ -26,7 +26,7 @@ const WELCOME_KEYS = ["safe", "anonymous", "howItWorks"] as const;
 
 const Onboarding = () => {
   const [step, setStep] = useState(0);
-  const { user, profile } = useAuth();
+  const { user, profile, refreshProfile } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
   const { t, i18n } = useTranslation();
