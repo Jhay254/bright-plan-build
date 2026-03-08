@@ -5,10 +5,10 @@ const stages = [
   { icon: HandHeart, name: "Seek", description: "Register anonymously. Get matched with a vetted volunteer.", color: "text-fern" },
   { icon: Heart, name: "Heal", description: "Engage in safe, trauma-informed sessions at your own pace.", color: "text-sage" },
   { icon: BookOpen, name: "Document", description: "Record your journey privately in your Healing Journal.", color: "text-dusk" },
-  { icon: Users, name: "Connect", description: "Join anonymous peer communities. You are not alone.", color: "text-ember" },
-  { icon: Share2, name: "Share", description: "Choose to share your story with full editorial control.", color: "text-shore" },
-  { icon: Lightbulb, name: "Inspire", description: "Your story reaches someone who needs it. The flywheel turns.", color: "text-sunlight" },
-  { icon: Sparkles, name: "Advocate", description: "Become a volunteer yourself. Lived experience becomes power.", color: "text-forest" },
+  { icon: Users, name: "Connect", description: "Find curated mental health resources and share encouragements with others on the same journey.", color: "text-ember" },
+  { icon: Share2, name: "Reflect", description: "Reflect privately in your Healing Journal. Track your moods, milestones, and growth over time.", color: "text-shore" },
+  { icon: Lightbulb, name: "Encourage", description: "Your encouragements on the community wall reach someone who needs to hear them today.", color: "text-sunlight" },
+  { icon: Sparkles, name: "Advocate", description: "When you're ready, apply to become a volunteer. Your lived experience becomes the foundation for helping others.", color: "text-forest" },
 ];
 
 const FlywheelSection = () => {

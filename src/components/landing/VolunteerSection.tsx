@@ -5,7 +5,7 @@ const benefits = [
   { icon: Award, title: "Verified Impact Portfolio", description: "Build a credentialed record of your sessions, hours, and skill endorsements from seekers." },
   { icon: TrendingUp, title: "CPD & Certificates", description: "Log continuing professional development hours and generate verifiable PDF certificates." },
   { icon: BookOpen, title: "Self-Paced Training", description: "Complete structured training modules with quizzes before accepting your first session." },
-  { icon: Users, title: "Community of Purpose", description: "Join a global network of professionals who believe in accessible mental health support." },
+  { icon: Users, title: "Purposeful Impact", description: "Every session you give is tracked, endorsed, and contributes to your verified impact portfolio." },
 ];
 
 const VolunteerSection = () => {
