@@ -14,7 +14,7 @@ const JournalPage = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [filter, setFilter] = useState<"all" | "milestones">("all");
-  const { data: entries = [], isLoading } = useJournalEntries(user?.id, filter);
+  const { data: entries = [], isLoading, isError, refetch } = useJournalEntries(user?.id, filter);
 
   // Group entries by date
   const grouped = entries.reduce<Record<string, typeof entries>>((acc, entry) => {
