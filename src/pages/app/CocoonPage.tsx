@@ -181,7 +181,7 @@ const CocoonPage = () => {
       {/* Past sessions */}
       {pastSessions.length > 0 && (
         <div>
-          <h2 className="font-heading text-sm font-semibold text-driftwood uppercase tracking-wide mb-3">Past Sessions</h2>
+          <h2 className="font-heading text-sm font-semibold text-driftwood uppercase tracking-wide mb-3">{t("cocoon.pastSessions")}</h2>
           <div className="space-y-2">
             {pastSessions.slice(0, 10).map((s) => (
               <button
