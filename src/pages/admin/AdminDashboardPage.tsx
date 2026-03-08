@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { PageSkeleton } from "@/components/ui/skeleton-card";
+import QueryError from "@/components/ui/query-error";
 import { Helmet } from "react-helmet-async";
 import { LayoutDashboard, Users, UserCheck, MessageSquare, AlertTriangle, Clock, Activity } from "lucide-react";
 import { fetchCrisisFlags, type CrisisFlag } from "@/lib/crisis-flags";

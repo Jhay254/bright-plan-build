@@ -92,6 +92,9 @@ const PortfolioPublic = () => {
       <Helmet>
         <title>{alias}'s Portfolio — Echo</title>
         <meta name="description" content={`${alias} is a verified Echo volunteer with ${vp.total_sessions} sessions and ${vp.total_hours} hours of peer support.`} />
+        <meta property="og:title" content={`${alias}'s Portfolio — Echo`} />
+        <meta property="og:description" content={`${alias} is a verified Echo volunteer with ${vp.total_sessions} sessions and ${vp.total_hours} hours of peer support.`} />
+        <meta property="og:type" content="profile" />
       </Helmet>
       <div className="min-h-screen bg-background">
         <div className="max-w-md mx-auto px-6 py-12">

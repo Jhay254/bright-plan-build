@@ -97,6 +97,7 @@ const VolunteerDashboard = () => {
   }
 
   if (vpLoading || sessionsLoading) return <DashboardSkeleton />;
+  if (vpError || sessionsError) return <QueryError message="Failed to load volunteer data." onRetry={() => refetchProfile()} />;
 
   // --- Approval gate ---
   if (volProfile && !volProfile.is_approved) {

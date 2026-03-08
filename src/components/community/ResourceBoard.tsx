@@ -26,6 +26,9 @@ const ResourceBoard = () => {
     );
   }
 
+  if (isError) return <QueryError message="Failed to load resources." onRetry={() => refetch()} />;
+
+
   const grouped = (resources ?? []).reduce<Record<string, CommunityResource[]>>((acc, r) => {
     (acc[r.category] ??= []).push(r);
     return acc;
