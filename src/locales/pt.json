@@ -81,7 +81,9 @@
     "cocoon": "Cocoon",
     "journal": "Diário",
     "community": "Comunidade",
-    "profile": "Perfil"
+    "profile": "Perfil",
+    "hub": "Hub",
+    "admin": "Admin"
   },
   "home": {
     "welcomeBack": "Bem-vindo de volta,",
@@ -112,6 +114,38 @@
     "wrappingUp": "Finalizando",
     "ended": "Encerrado",
     "cancelled": "Cancelado"
+  },
+  "session": {
+    "requestTitle": "Solicitar uma sessão Cocoon",
+    "requestDesc": "Um voluntário será combinado para apoiá-lo.",
+    "topicLabel": "Sobre o que gostaria de conversar?",
+    "urgencyLabel": "Como você está se sentindo agora?",
+    "preferencesLabel": "Mais alguma coisa?",
+    "preferencesOptional": "opcional",
+    "preferencesPlaceholder": "Alguma preferência para seu voluntário ou contexto que possa ajudar…",
+    "requesting": "Solicitando…",
+    "requestButton": "Solicitar sessão",
+    "errorCreating": "Erro ao criar sessão",
+    "topics": {
+      "anxiety": "Ansiedade e preocupação",
+      "grief": "Luto e perda",
+      "relationships": "Desafios de relacionamento",
+      "stress": "Estresse e esgotamento",
+      "loneliness": "Solidão e isolamento",
+      "trauma": "Trauma e experiências passadas",
+      "selfEsteem": "Autoestima",
+      "transitions": "Transições de vida",
+      "family": "Preocupações familiares",
+      "other": "Outro"
+    },
+    "urgency": {
+      "low": "Estou bem",
+      "lowDesc": "Só quero conversar quando alguém estiver disponível",
+      "medium": "Preciso de apoio",
+      "mediumDesc": "Estou me sentindo inquieto e gostaria de ajuda em breve",
+      "high": "Estou com dificuldade",
+      "highDesc": "Estou passando por um momento difícil e preciso de alguém para conversar"
+    }
   },
   "chat": {
     "loading": "Carregando sessão…",
@@ -244,6 +278,7 @@
     "save": "Salvar",
     "cancel": "Cancelar",
     "delete": "Excluir",
-    "confirm": "Confirmar"
+    "confirm": "Confirmar",
+    "back": "Voltar"
   }
 }

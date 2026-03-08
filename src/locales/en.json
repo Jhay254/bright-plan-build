@@ -81,7 +81,9 @@
     "cocoon": "Cocoon",
     "journal": "Journal",
     "community": "Community",
-    "profile": "Profile"
+    "profile": "Profile",
+    "hub": "Hub",
+    "admin": "Admin"
   },
   "home": {
     "welcomeBack": "Welcome back,",
@@ -112,6 +114,38 @@
     "wrappingUp": "Wrapping up",
     "ended": "Ended",
     "cancelled": "Cancelled"
+  },
+  "session": {
+    "requestTitle": "Request a Cocoon Session",
+    "requestDesc": "A volunteer will be matched to support you.",
+    "topicLabel": "What would you like to talk about?",
+    "urgencyLabel": "How are you feeling right now?",
+    "preferencesLabel": "Anything else?",
+    "preferencesOptional": "optional",
+    "preferencesPlaceholder": "Any preferences for your volunteer, or context that might help...",
+    "requesting": "Requesting…",
+    "requestButton": "Request Session",
+    "errorCreating": "Error creating session",
+    "topics": {
+      "anxiety": "Anxiety & worry",
+      "grief": "Grief & loss",
+      "relationships": "Relationship challenges",
+      "stress": "Stress & burnout",
+      "loneliness": "Loneliness & isolation",
+      "trauma": "Trauma & past experiences",
+      "selfEsteem": "Self-esteem",
+      "transitions": "Life transitions",
+      "family": "Family concerns",
+      "other": "Other"
+    },
+    "urgency": {
+      "low": "I'm okay",
+      "lowDesc": "Just want to talk when someone's available",
+      "medium": "Could use support",
+      "mediumDesc": "Feeling unsettled and would appreciate help soon",
+      "high": "Struggling",
+      "highDesc": "Having a hard time and need someone to talk to"
+    }
   },
   "chat": {
     "loading": "Loading session…",
@@ -244,6 +278,7 @@
     "save": "Save",
     "cancel": "Cancel",
     "delete": "Delete",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "back": "Back"
   }
 }

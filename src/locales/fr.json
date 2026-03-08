@@ -81,7 +81,9 @@
     "cocoon": "Cocoon",
     "journal": "Journal",
     "community": "Communauté",
-    "profile": "Profil"
+    "profile": "Profil",
+    "hub": "Hub",
+    "admin": "Admin"
   },
   "home": {
     "welcomeBack": "Bon retour,",
@@ -112,6 +114,38 @@
     "wrappingUp": "Conclusion",
     "ended": "Terminé",
     "cancelled": "Annulé"
+  },
+  "session": {
+    "requestTitle": "Demander une session Cocoon",
+    "requestDesc": "Un bénévole sera jumelé pour vous soutenir.",
+    "topicLabel": "De quoi aimeriez-vous parler ?",
+    "urgencyLabel": "Comment vous sentez-vous en ce moment ?",
+    "preferencesLabel": "Autre chose ?",
+    "preferencesOptional": "optionnel",
+    "preferencesPlaceholder": "Des préférences pour votre bénévole ou du contexte qui pourrait aider…",
+    "requesting": "En cours…",
+    "requestButton": "Demander une session",
+    "errorCreating": "Erreur lors de la création de la session",
+    "topics": {
+      "anxiety": "Anxiété et inquiétude",
+      "grief": "Deuil et perte",
+      "relationships": "Défis relationnels",
+      "stress": "Stress et épuisement",
+      "loneliness": "Solitude et isolement",
+      "trauma": "Traumatisme et expériences passées",
+      "selfEsteem": "Estime de soi",
+      "transitions": "Transitions de vie",
+      "family": "Préoccupations familiales",
+      "other": "Autre"
+    },
+    "urgency": {
+      "low": "Ça va",
+      "lowDesc": "Je veux juste parler quand quelqu'un est disponible",
+      "medium": "Un soutien serait bienvenu",
+      "mediumDesc": "Je me sens perturbé(e) et j'aimerais de l'aide bientôt",
+      "high": "En difficulté",
+      "highDesc": "Je traverse un moment difficile et j'ai besoin de parler"
+    }
   },
   "chat": {
     "loading": "Chargement de la session…",
@@ -244,6 +278,7 @@
     "save": "Sauvegarder",
     "cancel": "Annuler",
     "delete": "Supprimer",
-    "confirm": "Confirmer"
+    "confirm": "Confirmer",
+    "back": "Retour"
   }
 }
