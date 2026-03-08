@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Award, Clock, FileText, Download } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { Plus, Award, Clock, FileText, Download, ExternalLink } from "lucide-react";
 
 const CPD_CATEGORIES = ["training", "workshop", "supervision", "self-study", "conference", "certification"];
 
