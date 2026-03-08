@@ -51,6 +51,9 @@ const JournalPage = () => {
         </span>
       </div>
 
+      {/* Healing Timeline */}
+      <HealingTimeline entries={entries} />
+
       {/* Filter */}
       <div className="flex gap-2 mb-6">
         {(["all", "milestones"] as const).map((f) => (

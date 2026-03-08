@@ -5,9 +5,28 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Award, Clock, FileText } from "lucide-react";
+import { Plus, Award, Clock, FileText, Download } from "lucide-react";
 
 const CPD_CATEGORIES = ["training", "workshop", "supervision", "self-study", "conference", "certification"];
+
+const generateCertificateSvg = (totalHours: number, date: string): string => {
+  return `
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <rect width="800" height="600" fill="#FAFAF8"/>
+  <rect x="30" y="30" width="740" height="540" rx="16" fill="none" stroke="#2D6A4F" stroke-width="3"/>
+  <rect x="40" y="40" width="720" height="520" rx="12" fill="none" stroke="#B7E4C7" stroke-width="1"/>
+  <text x="400" y="120" text-anchor="middle" font-family="Georgia, serif" font-size="36" fill="#2D6A4F">🌿 Project Echo</text>
+  <text x="400" y="175" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#6B6560">Certificate of Continuing Professional Development</text>
+  <line x1="200" y1="200" x2="600" y2="200" stroke="#B7E4C7" stroke-width="1"/>
+  <text x="400" y="280" text-anchor="middle" font-family="Georgia, serif" font-size="64" fill="#2D6A4F" font-weight="bold">${totalHours.toFixed(1)}</text>
+  <text x="400" y="320" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#6B6560">hours of professional development</text>
+  <text x="400" y="400" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#6B6560">This certifies that the volunteer has completed ${totalHours.toFixed(1)} hours</text>
+  <text x="400" y="425" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#6B6560">of professional development activities through Project Echo.</text>
+  <line x1="200" y1="470" x2="600" y2="470" stroke="#B7E4C7" stroke-width="1"/>
+  <text x="400" y="510" text-anchor="middle" font-family="Georgia, serif" font-size="12" fill="#999">Issued: ${date}</text>
+  <text x="400" y="535" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#999">Project Echo · Peer Support Platform</text>
+</svg>`;
+};
 
 const CpdLog = () => {
   const { user } = useAuth();
@@ -38,6 +57,18 @@ const CpdLog = () => {
     } catch (e: any) {
       toast({ title: "Error", description: e.message, variant: "destructive" });
     }
+  };
+
+  const downloadCertificate = () => {
+    const svg = generateCertificateSvg(totalHours, new Date().toLocaleDateString());
+    const blob = new Blob([svg], { type: "image/svg+xml" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `echo-cpd-certificate-${new Date().toISOString().slice(0, 10)}.svg`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast({ title: "Certificate downloaded!" });
   };
 
   if (isLoading) {
@@ -119,19 +150,14 @@ const CpdLog = () => {
           <Award className="h-8 w-8 text-forest mx-auto mb-2" />
           <p className="font-heading font-semibold text-bark text-sm">CPD Certificate Available</p>
           <p className="text-xs text-driftwood mt-1">{totalHours.toFixed(1)} hours of professional development completed</p>
-          <button
-            onClick={() => {
-              const w = window.open("", "_blank");
-              if (w) {
-                w.document.write(`<html><head><title>Echo CPD Certificate</title><style>body{font-family:Georgia,serif;text-align:center;padding:80px 40px;max-width:700px;margin:auto;}h1{color:#2D6A4F;font-size:28px;}h2{color:#6B6560;font-weight:normal;font-size:18px;}.hours{font-size:48px;color:#2D6A4F;font-weight:bold;margin:30px 0;}.border{border:3px solid #2D6A4F;padding:60px;border-radius:16px;}.date{color:#999;font-size:14px;margin-top:40px;}</style></head><body><div class="border"><h1>🌿 Project Echo</h1><h2>Certificate of Continuing Professional Development</h2><div class="hours">${totalHours.toFixed(1)} hours</div><p>This certifies that the volunteer has completed ${totalHours.toFixed(1)} hours of professional development activities.</p><p class="date">Issued: ${new Date().toLocaleDateString()}</p></div></body></html>`);
-                w.document.close();
-                w.print();
-              }
-            }}
-            className="mt-3 px-4 py-2 rounded-echo-pill text-sm font-medium bg-forest text-primary-foreground hover:bg-fern transition-colors"
+          <Button
+            variant="default"
+            size="sm"
+            className="mt-3"
+            onClick={downloadCertificate}
           >
-            Generate Certificate
-          </button>
+            <Download className="h-4 w-4 mr-1" /> Download Certificate
+          </Button>
         </div>
       )}
     </div>
