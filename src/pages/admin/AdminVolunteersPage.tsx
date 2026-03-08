@@ -21,7 +21,6 @@ type VolunteerProfile = Database["public"]["Tables"]["volunteer_profiles"]["Row"
 
 interface VolunteerWithAlias extends VolunteerProfile {
   alias?: string;
-  rejection_reason?: string | null;
 }
 
 const AdminVolunteersPage = () => {
