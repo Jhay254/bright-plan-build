@@ -1,12 +1,14 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useAuth } from "@/contexts/AuthContext";
 import echoLogo from "@/assets/echo-logo.png";
 import { useToast } from "@/hooks/use-toast";
 import { SPECIALISATIONS } from "@/lib/volunteer";
+import CookieBanner from "@/components/CookieBanner";
 
 const VolunteerAuth = () => {
   const [mode, setMode] = useState<"signin" | "signup">("signup");
@@ -16,6 +18,7 @@ const VolunteerAuth = () => {
   const [motivation, setMotivation] = useState("");
   const [background, setBackground] = useState("");
   const [selectedSpecs, setSelectedSpecs] = useState<string[]>([]);
+  const [consent, setConsent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const { signIn, signUp } = useAuth();
   const navigate = useNavigate();
@@ -30,6 +33,10 @@ const VolunteerAuth = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (mode === "signup" && step === 0) {
+      if (!consent) {
+        toast({ title: "Error", description: "Please agree to the Privacy Policy to continue.", variant: "destructive" });
+        return;
+      }
       setStep(1);
       return;
     }
@@ -38,7 +45,6 @@ const VolunteerAuth = () => {
       if (mode === "signup") {
         await signUp(email, password);
         toast({ title: "Check your email", description: "Confirm your account, then sign in to complete volunteer setup." });
-        // Store in localStorage (survives browser close, unlike sessionStorage)
         localStorage.setItem("echo_volunteer_pending", JSON.stringify({
           motivation, background, specialisations: selectedSpecs,
         }));
@@ -54,6 +60,7 @@ const VolunteerAuth = () => {
   };
 
   return (
+    <>
     <div className="min-h-screen bg-dawn flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
@@ -118,7 +125,30 @@ const VolunteerAuth = () => {
                 <Label htmlFor="password">Password</Label>
                 <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" minLength={6} required />
               </div>
-              <Button type="submit" variant="hero" className="w-full" disabled={submitting}>
+
+              {mode === "signup" && (
+                <div className="flex items-start gap-2">
+                  <Checkbox
+                    id="vol-consent"
+                    checked={consent}
+                    onCheckedChange={(v) => setConsent(v === true)}
+                    aria-required="true"
+                  />
+                  <Label htmlFor="vol-consent" className="text-xs text-driftwood leading-relaxed cursor-pointer">
+                    I agree to the{" "}
+                    <Link to="/privacy" className="text-forest underline" target="_blank" rel="noopener">
+                      Privacy Policy
+                    </Link>
+                  </Label>
+                </div>
+              )}
+
+              <Button
+                type="submit"
+                variant="hero"
+                className="w-full"
+                disabled={submitting || (mode === "signup" && !consent)}
+              >
                 {mode === "signup" ? "Continue" : submitting ? "Signing in…" : "Sign In"}
               </Button>
             </form>
@@ -138,6 +168,8 @@ const VolunteerAuth = () => {
         </div>
       </div>
     </div>
+    <CookieBanner />
+    </>
   );
 };
 
