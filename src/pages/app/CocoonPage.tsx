@@ -108,14 +108,14 @@ const CocoonPage = () => {
                 type="text"
                 value={filterTopic}
                 onChange={(e) => setFilterTopic(e.target.value)}
-                placeholder="Filter by topic…"
+                placeholder={t("cocoon.filterByTopic")}
                 className="text-sm border border-border rounded-echo-md px-3 py-1.5 bg-card text-bark placeholder:text-driftwood/60 focus:border-fern focus:outline-none flex-1 min-w-[140px]"
               />
             </div>
           )}
 
           {filteredAvailable.length === 0 ? (
-            <p className="text-sm text-driftwood">No sessions match your filters.</p>
+            <p className="text-sm text-driftwood">{t("cocoon.noMatchFilter")}</p>
           ) : (
             <div className="space-y-2">
               {filteredAvailable.map((s) => (
