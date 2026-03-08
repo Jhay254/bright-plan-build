@@ -380,6 +380,18 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_get_stats: { Args: never; Returns: Json }
+      admin_set_user_role: {
+        Args: {
+          _new_role: Database["public"]["Enums"]["app_role"]
+          _target_user_id: string
+        }
+        Returns: boolean
+      }
+      admin_set_volunteer_approval: {
+        Args: { _approved: boolean; _volunteer_user_id: string }
+        Returns: boolean
+      }
       close_stale_sessions: { Args: never; Returns: number }
       generate_alias: { Args: never; Returns: string }
       get_user_role: {

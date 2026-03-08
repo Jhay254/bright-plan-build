@@ -18,11 +18,16 @@ import JournalPage from "./pages/app/JournalPage";
 import CommunityPage from "./pages/app/CommunityPage";
 import ProfilePage from "./pages/app/ProfilePage";
 import VolunteerDashboard from "./pages/app/VolunteerDashboard";
-import AdminCrisisPage from "./pages/app/AdminCrisisPage";
 import SessionRequest from "@/components/cocoon/SessionRequest";
 import ChatRoom from "@/components/cocoon/ChatRoom";
 import JournalEditor from "@/components/journal/JournalEditor";
 import JournalDetail from "@/components/journal/JournalDetail";
+import AdminLayout from "@/components/admin/AdminLayout";
+import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
+import AdminVolunteersPage from "./pages/admin/AdminVolunteersPage";
+import AdminSessionsPage from "./pages/admin/AdminSessionsPage";
+import AdminUsersPage from "./pages/admin/AdminUsersPage";
+import AdminCrisisPage from "./pages/app/AdminCrisisPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -64,7 +69,13 @@ const App = () => (
                 <Route path="community" element={<ErrorBoundary><CommunityPage /></ErrorBoundary>} />
                 <Route path="profile" element={<ErrorBoundary><ProfilePage /></ErrorBoundary>} />
                 <Route path="volunteer" element={<ErrorBoundary><VolunteerDashboard /></ErrorBoundary>} />
-                <Route path="admin/crisis" element={<ErrorBoundary><AdminCrisisPage /></ErrorBoundary>} />
+              </Route>
+              <Route path="/admin" element={<ErrorBoundary><AdminLayout /></ErrorBoundary>}>
+                <Route index element={<AdminDashboardPage />} />
+                <Route path="volunteers" element={<AdminVolunteersPage />} />
+                <Route path="sessions" element={<AdminSessionsPage />} />
+                <Route path="users" element={<AdminUsersPage />} />
+                <Route path="crisis" element={<AdminCrisisPage />} />
               </Route>
               <Route path="*" element={<NotFound />} />
             </Routes>
