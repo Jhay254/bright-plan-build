@@ -1,0 +1,1 @@
+UPDATE volunteer_profiles SET is_approved = true WHERE user_id = '2e505a8d-b682-4f3e-acb8-b451aa098616';
