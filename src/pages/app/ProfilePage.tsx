@@ -119,7 +119,7 @@ const ProfilePage = () => {
           ) : (
             <div className="flex items-center gap-2">
               <p className="font-heading font-semibold text-bark text-lg">{profile?.alias ?? "—"}</p>
-              <button onClick={() => setEditingAlias(true)} className="text-driftwood hover:text-forest">
+              <button onClick={() => setEditingAlias(true)} aria-label="Edit alias" className="text-driftwood hover:text-forest">
                 <Edit2 className="h-4 w-4" />
               </button>
             </div>
