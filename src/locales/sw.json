@@ -81,7 +81,9 @@
     "cocoon": "Cocoon",
     "journal": "Jarida",
     "community": "Jamii",
-    "profile": "Wasifu"
+    "profile": "Wasifu",
+    "hub": "Kituo",
+    "admin": "Msimamizi"
   },
   "home": {
     "welcomeBack": "Karibu tena,",
@@ -112,6 +114,38 @@
     "wrappingUp": "Inahitimisha",
     "ended": "Imemalizika",
     "cancelled": "Imesitishwa"
+  },
+  "session": {
+    "requestTitle": "Omba kikao cha Cocoon",
+    "requestDesc": "Kujitolea atalinganishwa kukusaidia.",
+    "topicLabel": "Unataka kuzungumza kuhusu nini?",
+    "urgencyLabel": "Unajisikiaje sasa hivi?",
+    "preferencesLabel": "Kitu kingine?",
+    "preferencesOptional": "si lazima",
+    "preferencesPlaceholder": "Mapendeleo yoyote kwa kujitolea wako au muktadha unaoweza kusaidia…",
+    "requesting": "Inaomba…",
+    "requestButton": "Omba kikao",
+    "errorCreating": "Hitilafu katika kuunda kikao",
+    "topics": {
+      "anxiety": "Wasiwasi na hofu",
+      "grief": "Huzuni na kupoteza",
+      "relationships": "Changamoto za uhusiano",
+      "stress": "Msongo na uchovu",
+      "loneliness": "Upweke na kutengwa",
+      "trauma": "Kiwewe na uzoefu wa zamani",
+      "selfEsteem": "Kujithamini",
+      "transitions": "Mabadiliko ya maisha",
+      "family": "Wasiwasi wa kifamilia",
+      "other": "Nyingine"
+    },
+    "urgency": {
+      "low": "Niko sawa",
+      "lowDesc": "Nataka tu kuzungumza mtu anapokuwa huru",
+      "medium": "Ningependa msaada",
+      "mediumDesc": "Najisikia vibaya na ningeshukuru msaada hivi karibuni",
+      "high": "Ninajitahidi",
+      "highDesc": "Ninapitia wakati mgumu na ninahitaji mtu wa kuzungumza naye"
+    }
   },
   "chat": {
     "loading": "Inapakia kikao…",
@@ -244,6 +278,7 @@
     "save": "Hifadhi",
     "cancel": "Sitisha",
     "delete": "Futa",
-    "confirm": "Thibitisha"
+    "confirm": "Thibitisha",
+    "back": "Rudi"
   }
 }

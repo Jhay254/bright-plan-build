@@ -81,7 +81,9 @@
     "cocoon": "Cocoon",
     "journal": "اليوميات",
     "community": "المجتمع",
-    "profile": "الملف الشخصي"
+    "profile": "الملف الشخصي",
+    "hub": "المركز",
+    "admin": "الإدارة"
   },
   "home": {
     "welcomeBack": "مرحبًا بعودتك،",
@@ -112,6 +114,38 @@
     "wrappingUp": "جارٍ الختام",
     "ended": "انتهت",
     "cancelled": "ملغاة"
+  },
+  "session": {
+    "requestTitle": "طلب جلسة Cocoon",
+    "requestDesc": "سيتم مطابقتك مع متطوع لدعمك.",
+    "topicLabel": "عن ماذا تريد التحدث؟",
+    "urgencyLabel": "كيف تشعر الآن؟",
+    "preferencesLabel": "أي شيء آخر؟",
+    "preferencesOptional": "اختياري",
+    "preferencesPlaceholder": "أي تفضيلات للمتطوع أو سياق قد يساعد…",
+    "requesting": "جارٍ الطلب…",
+    "requestButton": "طلب جلسة",
+    "errorCreating": "خطأ في إنشاء الجلسة",
+    "topics": {
+      "anxiety": "القلق والتوتر",
+      "grief": "الحزن والفقدان",
+      "relationships": "تحديات العلاقات",
+      "stress": "الضغط والإرهاق",
+      "loneliness": "الوحدة والعزلة",
+      "trauma": "الصدمة والتجارب السابقة",
+      "selfEsteem": "تقدير الذات",
+      "transitions": "التحولات في الحياة",
+      "family": "المخاوف العائلية",
+      "other": "أخرى"
+    },
+    "urgency": {
+      "low": "أنا بخير",
+      "lowDesc": "أريد فقط التحدث عندما يكون شخص ما متاحًا",
+      "medium": "أحتاج بعض الدعم",
+      "mediumDesc": "أشعر بالاضطراب وأحتاج مساعدة قريبًا",
+      "high": "أعاني",
+      "highDesc": "أمر بوقت صعب وأحتاج شخصًا للتحدث معه"
+    }
   },
   "chat": {
     "loading": "جارٍ تحميل الجلسة…",
@@ -244,6 +278,7 @@
     "save": "حفظ",
     "cancel": "إلغاء",
     "delete": "حذف",
-    "confirm": "تأكيد"
+    "confirm": "تأكيد",
+    "back": "رجوع"
   }
 }
