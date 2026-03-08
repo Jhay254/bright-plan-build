@@ -95,7 +95,7 @@ const ProfilePage = () => {
           <button
             onClick={regenerateAvatar}
             className="absolute -bottom-1 ltr:-right-1 rtl:-left-1 w-7 h-7 rounded-full bg-forest text-primary-foreground flex items-center justify-center shadow-echo-1 hover:bg-fern transition-colors"
-            title={t("profile.regenerateAvatar")}
+            aria-label={t("profile.regenerateAvatar")}
           >
             <RefreshCw className="h-3.5 w-3.5" />
           </button>
