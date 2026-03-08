@@ -80,7 +80,7 @@ const CocoonPage = () => {
         <div className="mb-8">
           <div className="flex items-center justify-between mb-3">
             <h2 className="font-heading text-sm font-semibold text-forest uppercase tracking-wide">
-              Sessions Needing Support
+              {t("cocoon.needingSupport")}
             </h2>
             <Button
               variant="ghost"
@@ -88,8 +88,8 @@ const CocoonPage = () => {
               onClick={() => setShowFilters(!showFilters)}
               className="text-driftwood"
             >
-              <Filter className="h-4 w-4 mr-1" />
-              Filter
+              <Filter className="h-4 w-4 ltr:mr-1 rtl:ml-1" />
+              {t("cocoon.filter")}
             </Button>
           </div>
 
