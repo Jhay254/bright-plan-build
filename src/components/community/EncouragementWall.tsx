@@ -14,7 +14,7 @@ const MAX_LENGTH = 280;
 
 const EncouragementWall = () => {
   const { user } = useAuth();
-  const { data: posts, isLoading } = usePeerEncouragements();
+  const { data: posts, isLoading, isError } = usePeerEncouragements();
   const postMutation = usePostEncouragement();
   const { toast } = useToast();
   const { t } = useTranslation();
