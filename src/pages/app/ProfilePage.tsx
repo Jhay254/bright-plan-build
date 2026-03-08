@@ -158,8 +158,6 @@ const ProfilePage = () => {
           </div>
         </div>
 
-        {/* Theme */}
-        <ThemeToggle />
 
         {/* Healing Goals */}
         {profile?.healing_goals && profile.healing_goals.length > 0 && (
