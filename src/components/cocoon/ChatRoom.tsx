@@ -297,8 +297,31 @@ const ChatRoom = () => {
         )}
       </div>
 
-      {/* Crisis Banner */}
+      {/* Crisis Banner (for seeker) */}
       {showCrisis && <CrisisBanner />}
+
+      {/* Volunteer crisis alert */}
+      {volunteerCrisisAlert && (
+        <div className="bg-ember/10 border-2 border-ember rounded-echo-md p-4 mx-4 mt-2 animate-fade-in-up">
+          <div className="flex items-center gap-2 mb-1">
+            <AlertTriangle className="h-5 w-5 text-ember" />
+            <p className="font-heading font-semibold text-bark text-sm">
+              Crisis language detected
+            </p>
+          </div>
+          <p className="text-xs text-driftwood">
+            The seeker may be experiencing a crisis. Follow the Echo crisis protocol: stay calm, listen actively, and refer to emergency resources if needed.
+          </p>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="mt-2 text-xs text-driftwood"
+            onClick={() => setVolunteerCrisisAlert(false)}
+          >
+            Acknowledge
+          </Button>
+        </div>
+      )}
 
       {/* Waiting state */}
       {session.status === "requested" && isSeeker && (
