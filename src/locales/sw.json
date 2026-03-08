@@ -146,7 +146,34 @@
     "safetyResources": "Rasilimali za usalama",
     "safetyDesc": "Ikiwa wewe au mtu unayemjua yuko katika hatari ya moja kwa moja, tafadhali wasiliana na huduma za dharura za eneo lako.",
     "signOut": "Ondoka",
-    "anonymous": "Bila jina"
+    "anonymous": "Bila jina",
+    "upgrade": {
+      "title": "Linda Akaunti Yako",
+      "desc": "Ongeza barua pepe na nenosiri ili kulinda data yako. Maandishi yako yote yatahifadhiwa.",
+      "button": "Linda Akaunti",
+      "passwordMin": "Nenosiri lazima liwe na herufi 6 au zaidi",
+      "success": "Akaunti imelindwa!",
+      "successDesc": "Akaunti yako sasa imeunganishwa na barua pepe yako."
+    },
+    "export": {
+      "title": "Hamisha Data Yako",
+      "desc": "Pakua maandishi yako ya jarida kama faili ya JSON.",
+      "button": "Hamisha Jarida",
+      "success": "Jarida limehamishwa!"
+    },
+    "deletion": {
+      "title": "Futa Akaunti",
+      "desc": "Futa akaunti yako na data yote inayohusiana milele. Hatua hii haiwezi kutenduliwa.",
+      "button": "Futa Akaunti Yangu",
+      "warning": "Hii itafuta wasifu wako, maandishi ya jarida, historia ya vikao, na data nyingine yote milele. Hatua hii haiwezi kutenduliwa.",
+      "typeDelete": "Andika DELETE kuthibitisha:",
+      "confirmButton": "Futa Milele",
+      "success": "Akaunti imefutwa"
+    },
+    "retention": {
+      "title": "Uhifadhi wa Data",
+      "desc": "Maudhui ya ujumbe wa vikao yanafutwa kiotomatiki siku 90 baada ya kikao kumalizika. Metadata ya vikao inahifadhiwa kwa usimamizi wa usalama."
+    }
   },
   "crisis": {
     "title": "Inaonekana unaweza kupitia jambo zito",
