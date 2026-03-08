@@ -105,6 +105,7 @@ const Auth = () => {
   };
 
   const needsConsent = mode === "signup" || mode === "anonymous";
+  const showConsent = true; // Always show consent + anonymous entry
 
   return (
     <>
