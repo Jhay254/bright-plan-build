@@ -2,9 +2,9 @@ import { Button } from "@/components/ui/button";
 import { Award, TrendingUp, BookOpen, Users } from "lucide-react";
 
 const benefits = [
-  { icon: Award, title: "Verified Impact Portfolio", description: "Build a credentialed record of your impact — recognised by institutions and employers." },
-  { icon: TrendingUp, title: "CPD & Professional Growth", description: "Earn continuing professional development hours. Structured supervision and mentoring." },
-  { icon: BookOpen, title: "Content Studio", description: "Create and publish mental health content through your own professional channel." },
+  { icon: Award, title: "Verified Impact Portfolio", description: "Build a credentialed record of your sessions, hours, and skill endorsements from seekers." },
+  { icon: TrendingUp, title: "CPD & Certificates", description: "Log continuing professional development hours and generate verifiable PDF certificates." },
+  { icon: BookOpen, title: "Self-Paced Training", description: "Complete structured training modules with quizzes before accepting your first session." },
   { icon: Users, title: "Community of Purpose", description: "Join a global network of professionals who believe in accessible mental health support." },
 ];
 

@@ -10,19 +10,19 @@ const principles = [
   {
     icon: Globe,
     title: "Meaningful Access",
-    description: "5 languages at launch. SMS/USSD fallback. Offline-first crisis resources. Low-bandwidth mode. Zero financial barrier — free forever for seekers.",
+    description: "Available in 5 languages — English, French, Swahili, Arabic, and Portuguese. Zero financial barrier — free forever for seekers.",
     accent: "bg-shore/20 text-shore",
   },
   {
     icon: MessageCircleHeart,
     title: "Participation",
-    description: "Seeker Advisory Board. Co-design sessions. In-product feedback loops. Community governance co-written with the people who use the platform.",
+    description: "In-session feedback after every Cocoon conversation. Emotional check-ins and skill endorsements that directly shape volunteer development.",
     accent: "bg-ember/15 text-ember",
   },
   {
     icon: Zap,
     title: "Empowerment",
-    description: "Seeker-led goals. Personal data ownership. Psychoeducation library. A clear pathway from seeker to alumni to volunteer advocate.",
+    description: "Seeker-led healing goals. Full data ownership with export and deletion. A private journal to track your journey on your own terms.",
     accent: "bg-dusk/15 text-dusk",
   },
 ];
