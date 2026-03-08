@@ -63,7 +63,12 @@ const CocoonPage = () => {
   if (isLoading) return <PageSkeleton rows={4} />;
 
   return (
-    <div className="px-6 pt-8 pb-24">
+    <>
+      <Helmet>
+        <title>Cocoon — Echo</title>
+        <meta name="description" content="Your safe conversation space. Connect with trained volunteers." />
+      </Helmet>
+      <div className="px-6 pt-8 pb-24">
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="font-heading text-2xl font-bold text-bark">{t("cocoon.title")}</h1>
