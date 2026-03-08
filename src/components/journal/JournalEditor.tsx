@@ -137,6 +137,9 @@ const JournalEditor = () => {
         <label className="flex items-center gap-3 cursor-pointer">
           <button
             onClick={() => setIsMilestone(!isMilestone)}
+            role="checkbox"
+            aria-checked={isMilestone}
+            aria-label="Mark as milestone"
             className={`w-6 h-6 rounded-md border-2 flex items-center justify-center transition-all ${
               isMilestone ? "bg-dusk border-dusk text-white" : "border-stone"
             }`}

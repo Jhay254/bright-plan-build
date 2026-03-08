@@ -56,6 +56,7 @@ const NotificationBell = () => {
                 {count > 0 && (
                   <button
                     onClick={() => user && markAllRead.mutate(user.id)}
+                    aria-label="Mark all notifications as read"
                     className="text-xs text-driftwood hover:text-forest flex items-center gap-1"
                   >
                     <CheckCheck className="h-3.5 w-3.5" /> Mark all read

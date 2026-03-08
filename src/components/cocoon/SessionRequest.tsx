@@ -115,6 +115,7 @@ const SessionRequest = () => {
           value={preferences}
           onChange={(e) => setPreferences(e.target.value.slice(0, 300))}
           placeholder="Any preferences for your volunteer, or context that might help..."
+          aria-label="Session preferences"
           className="w-full h-24 px-4 py-3 rounded-echo-md border-2 border-stone bg-card text-bark placeholder:text-driftwood/60 focus:border-fern focus:outline-none resize-none text-sm"
         />
       </div>

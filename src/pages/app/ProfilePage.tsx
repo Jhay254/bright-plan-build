@@ -138,6 +138,8 @@ const ProfilePage = () => {
               <button
                 key={lang.code}
                 onClick={() => updateLanguage(lang.code)}
+                aria-label={`Language: ${lang.label}`}
+                aria-pressed={profile?.language === lang.code}
                 className={`px-3 py-1.5 rounded-echo-pill text-sm font-medium border transition-all ${
                   profile?.language === lang.code
                     ? "border-forest bg-mist text-forest"
