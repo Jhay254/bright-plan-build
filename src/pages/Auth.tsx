@@ -135,7 +135,12 @@ const Auth = () => {
               />
             </div>
 
-            <Button type="submit" variant="outline" className="w-full" disabled={submitting}>
+            {cooldown > 0 && (
+              <p className="text-sm text-ember text-center">
+                Too many attempts. Try again in {cooldown}s.
+              </p>
+            )}
+            <Button type="submit" variant="outline" className="w-full" disabled={isDisabled}>
               {mode === "signup" ? t("auth.createAccount") : t("auth.signIn")}
             </Button>
           </form>
