@@ -122,23 +122,21 @@ const Auth = () => {
         </div>
 
         <div className="bg-card rounded-echo-lg shadow-echo-2 p-8">
-          {/* Consent checkbox — shown for anonymous + signup */}
-          {needsConsent && (
-            <div className="flex items-start gap-2 mb-6">
-              <Checkbox
-                id="consent"
-                checked={consent}
-                onCheckedChange={(v) => setConsent(v === true)}
-                aria-required="true"
-              />
-              <Label htmlFor="consent" className="text-xs text-driftwood leading-relaxed cursor-pointer">
-                {t("auth.consentLabel")}{" "}
-                <Link to="/privacy" className="text-forest underline" target="_blank" rel="noopener">
-                  {t("auth.privacyPolicy")}
-                </Link>
-              </Label>
-            </div>
-          )}
+          {/* Consent + Anonymous entry — always visible */}
+          <div className="flex items-start gap-2 mb-6">
+            <Checkbox
+              id="consent"
+              checked={consent}
+              onCheckedChange={(v) => setConsent(v === true)}
+              aria-required="true"
+            />
+            <Label htmlFor="consent" className="text-xs text-driftwood leading-relaxed cursor-pointer">
+              {t("auth.consentLabel")}{" "}
+              <Link to="/privacy" className="text-forest underline" target="_blank" rel="noopener">
+                {t("auth.privacyPolicy")}
+              </Link>
+            </Label>
+          </div>
 
           <Button
             variant="hero"
