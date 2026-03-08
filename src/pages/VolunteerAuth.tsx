@@ -44,10 +44,16 @@ const VolunteerAuth = () => {
     try {
       if (mode === "signup") {
         await signUp(email, password);
-        toast({ title: "Check your email", description: "Confirm your account, then sign in to complete volunteer setup." });
         localStorage.setItem("echo_volunteer_pending", JSON.stringify({
           motivation, background, specialisations: selectedSpecs,
         }));
+        // Check if session was created immediately (auto-confirm enabled)
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) {
+          navigate("/app");
+        } else {
+          toast({ title: "Check your email", description: "Confirm your account, then sign in to complete volunteer setup." });
+        }
       } else {
         await signIn(email, password);
         navigate("/app");
