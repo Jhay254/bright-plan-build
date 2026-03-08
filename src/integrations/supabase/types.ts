@@ -59,6 +59,45 @@ export type Database = {
         }
         Relationships: []
       }
+      journal_entries: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          is_milestone: boolean
+          milestone_label: string | null
+          mood: Database["public"]["Enums"]["journal_mood"] | null
+          tags: string[] | null
+          title: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          is_milestone?: boolean
+          milestone_label?: string | null
+          mood?: Database["public"]["Enums"]["journal_mood"] | null
+          tags?: string[] | null
+          title?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          is_milestone?: boolean
+          milestone_label?: string | null
+          mood?: Database["public"]["Enums"]["journal_mood"] | null
+          tags?: string[] | null
+          title?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           alias: string
@@ -232,6 +271,15 @@ export type Database = {
     }
     Enums: {
       app_role: "seeker" | "volunteer" | "admin"
+      journal_mood:
+        | "joyful"
+        | "calm"
+        | "hopeful"
+        | "neutral"
+        | "anxious"
+        | "sad"
+        | "angry"
+        | "overwhelmed"
       session_status:
         | "requested"
         | "matched"
@@ -368,6 +416,16 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["seeker", "volunteer", "admin"],
+      journal_mood: [
+        "joyful",
+        "calm",
+        "hopeful",
+        "neutral",
+        "anxious",
+        "sad",
+        "angry",
+        "overwhelmed",
+      ],
       session_status: [
         "requested",
         "matched",
