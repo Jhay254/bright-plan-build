@@ -11,6 +11,7 @@ const BottomTabBar = () => {
   const { data: unreadCount = 0 } = useUnreadCount(user?.id);
 
   const isVolunteer = role === "volunteer";
+  const isAdmin = role === "admin";
 
   // Show badge on cocoon tab if there are unread session notifications
   const tabs = [
