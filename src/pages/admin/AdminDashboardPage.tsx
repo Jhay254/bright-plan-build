@@ -171,7 +171,10 @@ const AdminDashboardPage = () => {
 
   const { data: activity = [], isLoading: activityLoading } = useActivityFeed();
 
+  const statsError = !statsLoading && !stats;
+
   if (statsLoading) return <PageSkeleton rows={3} />;
+  if (statsError) return <QueryError message="Failed to load dashboard stats." onRetry={() => qc.invalidateQueries({ queryKey: ["admin", "stats"] })} />;
 
   const cards = [
     { label: "Active Sessions", value: stats?.active_sessions ?? 0, icon: MessageSquare, color: "text-forest", link: "/admin/sessions" },
