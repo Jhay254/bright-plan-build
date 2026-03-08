@@ -9,10 +9,12 @@ const AppShell = () => {
   return (
     <div className="min-h-screen bg-background pb-20">
       {/* Top bar with notification bell */}
-      <div className="sticky top-0 z-40 bg-background/80 backdrop-blur-md border-b border-border px-4 h-12 flex items-center justify-end">
+      <header className="sticky top-0 z-40 bg-background/80 backdrop-blur-md border-b border-border px-4 h-12 flex items-center justify-end">
         <NotificationBell />
-      </div>
-      <Outlet />
+      </header>
+      <main id="main-content">
+        <Outlet />
+      </main>
       <BottomTabBar />
     </div>
   );

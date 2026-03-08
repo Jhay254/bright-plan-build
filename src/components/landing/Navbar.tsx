@@ -8,7 +8,7 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-parchment/80 backdrop-blur-md border-b border-stone">
+    <nav aria-label="Site navigation" className="fixed top-0 left-0 right-0 z-50 bg-parchment/80 backdrop-blur-md border-b border-stone">
       <div className="container mx-auto flex items-center justify-between h-16 px-6">
         <Link to="/" className="flex items-center gap-2.5">
           <img src={echoLogo} alt="Echo" className="h-8 w-8" />
