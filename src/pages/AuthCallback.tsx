@@ -21,8 +21,9 @@ const AuthCallback = () => {
       return;
     }
 
-    // Volunteer → volunteer dashboard
-    if (role === "volunteer") {
+    // Volunteer (by role or pending application) → volunteer dashboard
+    const hasPendingVolunteer = !!localStorage.getItem("echo_volunteer_pending");
+    if (role === "volunteer" || hasPendingVolunteer) {
       navigate("/app/volunteer", { replace: true });
       return;
     }
