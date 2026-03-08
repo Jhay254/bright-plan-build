@@ -170,10 +170,10 @@ const CocoonPage = () => {
       {activeSessions.length === 0 && role === "seeker" && (
         <div className="bg-dawn rounded-echo-lg p-8 text-center mb-8">
           <MessageCircle className="h-10 w-10 text-fern mx-auto mb-3" />
-          <p className="font-heading font-semibold text-bark mb-1">No active sessions</p>
-          <p className="text-xs text-driftwood mb-4">Start a Cocoon session to connect with a volunteer.</p>
+          <p className="font-heading font-semibold text-bark mb-1">{t("cocoon.noActiveSessions")}</p>
+          <p className="text-xs text-driftwood mb-4">{t("cocoon.startCocoon")}</p>
           <Button variant="hero" onClick={() => navigate("/app/cocoon/new")}>
-            Request a Session
+            {t("cocoon.requestSession")}
           </Button>
         </div>
       )}
