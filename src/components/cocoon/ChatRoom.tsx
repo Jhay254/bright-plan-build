@@ -195,9 +195,9 @@ const ChatRoom = () => {
         .single();
       if (error) throw error;
 
-      // 8.1: Write crisis flag to DB
+      // 8.1: Write crisis flag to DB (type-safe wrapper)
       if (isCrisis && msgData) {
-        await (supabase as any).from("crisis_flags").insert({
+        await insertCrisisFlag({
           session_id: sessionId,
           message_id: msgData.id,
         });
