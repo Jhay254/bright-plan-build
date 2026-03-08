@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button";
 import { MessageCircle, Clock, Calendar, Loader2, XCircle } from "lucide-react";
+import ReapplyForm from "@/components/volunteer/ReapplyForm";
 import { useVolunteerProfile, useVolunteerActiveSessions } from "@/hooks/use-volunteer-data";
 import { DashboardSkeleton } from "@/components/ui/skeleton-card";
 import AvailabilityScheduler from "@/components/volunteer/AvailabilityScheduler";
