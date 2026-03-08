@@ -59,6 +59,42 @@ export type Database = {
         }
         Relationships: []
       }
+      cpd_entries: {
+        Row: {
+          category: string
+          certificate_url: string | null
+          completed_at: string
+          created_at: string
+          description: string | null
+          hours: number
+          id: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          category?: string
+          certificate_url?: string | null
+          completed_at?: string
+          created_at?: string
+          description?: string | null
+          hours: number
+          id?: string
+          title: string
+          user_id: string
+        }
+        Update: {
+          category?: string
+          certificate_url?: string | null
+          completed_at?: string
+          created_at?: string
+          description?: string | null
+          hours?: number
+          id?: string
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       journal_entries: {
         Row: {
           content: string
@@ -219,6 +255,33 @@ export type Database = {
           },
         ]
       }
+      training_progress: {
+        Row: {
+          completed: boolean
+          completed_at: string | null
+          created_at: string
+          id: string
+          module_key: string
+          user_id: string
+        }
+        Insert: {
+          completed?: boolean
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          module_key: string
+          user_id: string
+        }
+        Update: {
+          completed?: boolean
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          module_key?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -236,6 +299,78 @@ export type Database = {
           created_at?: string
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      volunteer_availability: {
+        Row: {
+          created_at: string
+          day_of_week: number
+          end_hour: number
+          id: string
+          start_hour: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          day_of_week: number
+          end_hour: number
+          id?: string
+          start_hour: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          day_of_week?: number
+          end_hour?: number
+          id?: string
+          start_hour?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      volunteer_profiles: {
+        Row: {
+          background: string | null
+          created_at: string
+          id: string
+          is_approved: boolean
+          languages: string[] | null
+          motivation: string | null
+          skills_endorsed: string[] | null
+          specialisations: string[] | null
+          total_hours: number
+          total_sessions: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          background?: string | null
+          created_at?: string
+          id?: string
+          is_approved?: boolean
+          languages?: string[] | null
+          motivation?: string | null
+          skills_endorsed?: string[] | null
+          specialisations?: string[] | null
+          total_hours?: number
+          total_sessions?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          background?: string | null
+          created_at?: string
+          id?: string
+          is_approved?: boolean
+          languages?: string[] | null
+          motivation?: string | null
+          skills_endorsed?: string[] | null
+          specialisations?: string[] | null
+          total_hours?: number
+          total_sessions?: number
+          updated_at?: string
           user_id?: string
         }
         Relationships: []
