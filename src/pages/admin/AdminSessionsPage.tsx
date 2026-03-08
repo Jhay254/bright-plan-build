@@ -6,7 +6,8 @@ import { Input } from "@/components/ui/input";
 import { PageSkeleton } from "@/components/ui/skeleton-card";
 import QueryError from "@/components/ui/query-error";
 import { Helmet } from "react-helmet-async";
-import { MessageSquare, Clock, Search, ChevronLeft, ChevronRight } from "lucide-react";
+import { MessageSquare, Clock, Search, ChevronLeft, ChevronRight, Download } from "lucide-react";
+import { downloadCsv } from "@/lib/csv-export";
 import type { Database } from "@/integrations/supabase/types";
 
 type Session = Database["public"]["Tables"]["cocoon_sessions"]["Row"];

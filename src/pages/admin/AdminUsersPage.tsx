@@ -6,7 +6,8 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { PageSkeleton } from "@/components/ui/skeleton-card";
 import { Helmet } from "react-helmet-async";
-import { Users, Shield, Search, ChevronLeft, ChevronRight } from "lucide-react";
+import { Users, Shield, Search, ChevronLeft, ChevronRight, Download } from "lucide-react";
+import { downloadCsv } from "@/lib/csv-export";
 import type { Database } from "@/integrations/supabase/types";
 
 type Profile = Database["public"]["Tables"]["profiles"]["Row"];
