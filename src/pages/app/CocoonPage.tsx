@@ -65,12 +65,12 @@ const CocoonPage = () => {
     <div className="px-6 pt-8 pb-24">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="font-heading text-2xl font-bold text-bark">Cocoon</h1>
-          <p className="text-driftwood text-sm">Your safe conversation space</p>
+          <h1 className="font-heading text-2xl font-bold text-bark">{t("cocoon.title")}</h1>
+          <p className="text-driftwood text-sm">{t("cocoon.subtitle")}</p>
         </div>
         {role === "seeker" && (
           <Button variant="default" size="sm" onClick={() => navigate("/app/cocoon/new")}>
-            <Plus className="h-4 w-4 mr-1" /> New Session
+            <Plus className="h-4 w-4 ltr:mr-1 rtl:ml-1" /> {t("cocoon.newSession")}
           </Button>
         )}
       </div>
