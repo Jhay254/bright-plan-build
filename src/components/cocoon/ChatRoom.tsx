@@ -196,7 +196,7 @@ const ChatRoom = () => {
 
       // 8.1: Write crisis flag to DB
       if (isCrisis && msgData) {
-        await supabase.from("crisis_flags").insert({
+        await (supabase as any).from("crisis_flags").insert({
           session_id: sessionId,
           message_id: msgData.id,
         });
