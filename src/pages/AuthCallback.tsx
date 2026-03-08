@@ -21,11 +21,29 @@ const AuthCallback = () => {
       return;
     }
 
-    // Volunteer (by role or pending application) → volunteer dashboard
-    const hasPendingVolunteer = !!localStorage.getItem("echo_volunteer_pending");
-    if (role === "volunteer" || hasPendingVolunteer) {
+    // Volunteer (by confirmed role only) → volunteer dashboard
+    // Only use localStorage as a hint if the role is already "volunteer"
+    // to prevent stale localStorage from misrouting seekers
+    if (role === "volunteer") {
       navigate("/app/volunteer", { replace: true });
       return;
+    }
+
+    // If there's a pending volunteer application, check if user actually
+    // came from the volunteer auth flow (localStorage set during VolunteerAuth)
+    const pendingVolunteer = localStorage.getItem("echo_volunteer_pending");
+    if (pendingVolunteer) {
+      try {
+        const parsed = JSON.parse(pendingVolunteer);
+        // Only redirect to volunteer if the pending data has motivation (from VolunteerAuth)
+        if (parsed.motivation) {
+          navigate("/app/volunteer", { replace: true });
+          return;
+        }
+      } catch {
+        // Invalid data, clear it
+        localStorage.removeItem("echo_volunteer_pending");
+      }
     }
 
     // Seeker without completed onboarding → onboarding

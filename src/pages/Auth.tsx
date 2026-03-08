@@ -95,7 +95,9 @@ const Auth = () => {
       } else {
         await signIn(email, password);
         failCount.current = 0;
-        navigate("/onboarding");
+        // Routing is handled by onAuthStateChange → ProtectedRoute
+        // ProtectedRoute will redirect to /onboarding if needed
+        navigate("/app", { replace: true });
       }
     } catch (e: any) {
       handleFailure(e);
