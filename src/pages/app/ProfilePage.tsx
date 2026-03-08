@@ -150,6 +150,9 @@ const ProfilePage = () => {
           </div>
         </div>
 
+        {/* Theme */}
+        <ThemeToggle />
+
         {/* Healing Goals */}
         {profile?.healing_goals && profile.healing_goals.length > 0 && (
           <div className="bg-card rounded-echo-lg p-5 shadow-echo-1 border border-border">
