@@ -26,7 +26,9 @@ const VolunteerSection = () => {
               "What do I get from this that I cannot get from my current life?" 
               The answer is real.
             </p>
-            <Button variant="hero">Become a Volunteer</Button>
+            <Button variant="hero" asChild>
+              <Link to="/volunteer">Become a Volunteer</Link>
+            </Button>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
