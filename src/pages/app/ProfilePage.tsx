@@ -86,7 +86,12 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="px-6 pt-8 pb-24 max-w-lg mx-auto">
+    <>
+      <Helmet>
+        <title>Profile — Echo</title>
+        <meta name="description" content="Manage your Echo profile, language, and account settings." />
+      </Helmet>
+      <div className="px-6 pt-8 pb-24 max-w-lg mx-auto">
       <h1 className="font-heading text-2xl font-bold text-bark mb-6">{t("profile.title")}</h1>
 
       {/* Avatar + Alias */}
