@@ -16,7 +16,10 @@
     "checkEmail": "Vérifiez votre email",
     "confirmLink": "Nous vous avons envoyé un lien de confirmation.",
     "error": "Erreur",
-    "somethingWrong": "Quelque chose s'est mal passé"
+    "somethingWrong": "Quelque chose s'est mal passé",
+    "consentRequired": "Veuillez accepter la politique de confidentialité pour continuer.",
+    "consentLabel": "J'accepte la",
+    "privacyPolicy": "Politique de confidentialité"
   },
   "onboarding": {
     "safe": "Vous êtes en sécurité ici",

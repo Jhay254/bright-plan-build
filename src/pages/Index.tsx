@@ -39,6 +39,7 @@ const Index = () => {
           <VolunteerSection />
         </main>
         <Footer />
+        <CookieBanner />
       </div>
     </>
   );

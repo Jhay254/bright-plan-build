@@ -16,7 +16,10 @@
     "checkEmail": "Angalia barua pepe yako",
     "confirmLink": "Tumekutumia kiungo cha uthibitisho.",
     "error": "Hitilafu",
-    "somethingWrong": "Kitu kimeenda vibaya"
+    "somethingWrong": "Kitu kimeenda vibaya",
+    "consentRequired": "Tafadhali kubali sera ya faragha ili kuendelea.",
+    "consentLabel": "Nakubali",
+    "privacyPolicy": "Sera ya Faragha"
   },
   "onboarding": {
     "safe": "Uko salama hapa",
