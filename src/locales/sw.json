@@ -151,6 +151,7 @@
     "aliasUpdated": "Jina bandia limesasishwa!",
     "languageUpdated": "Lugha imesasishwa!",
     "language": "Lugha",
+    "theme": "Mwonekano",
     "healingGoals": "Malengo ya kupona",
     "culturalContext": "Muktadha wa kitamaduni",
     "safetyResources": "Rasilimali za usalama",
@@ -184,6 +185,29 @@
       "title": "Uhifadhi wa Data",
       "desc": "Maudhui ya ujumbe wa vikao yanafutwa kiotomatiki siku 90 baada ya kikao kumalizika. Metadata ya vikao inahifadhiwa kwa usimamizi wa usalama."
     }
+  },
+  "feedback": {
+    "seekerTitle": "Unajisikiaje?",
+    "volunteerTitle": "Tafakari ya kikao",
+    "seekerDesc": "Maoni yako yanatusaidia kuboresha na kusaidia safari yako ya kupona.",
+    "volunteerDesc": "Tafakari kikao hiki kwa ukuaji wako.",
+    "howFeelAfter": "Unajisikiaje baada ya kikao hiki?",
+    "howSessionGo": "Kikao kilikwendaje?",
+    "feltHeard": "Je, ulihisi kusikika?",
+    "feltSafe": "Je, ulihisi salama?",
+    "yes": "Ndiyo",
+    "notReally": "Si sana",
+    "endorseSkills": "Pendekeza ujuzi wa kujitolea wako",
+    "endorseDesc": "Chagua hadi ujuzi 3 unaowaelezea kujitolea wako (si lazima).",
+    "anythingElse": "Kuna kitu kingine ungependa kushiriki?",
+    "selfReflection": "Maelezo ya kutafakari binafsi",
+    "optional": "si lazima",
+    "seekerPlaceholder": "Tunawezaje kuboresha uzoefu wako?",
+    "volunteerPlaceholder": "Nini kilifanya vizuri? Nini unaweza kuboresha?",
+    "submitting": "Inatuma…",
+    "submit": "Tuma maoni",
+    "skip": "Ruka kwa sasa",
+    "thanks": "Asante kwa maoni yako"
   },
   "crisis": {
     "title": "Inaonekana unaweza kupitia jambo zito",
