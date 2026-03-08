@@ -19,7 +19,28 @@
     "somethingWrong": "Something went wrong",
     "consentRequired": "Please agree to the Privacy Policy to continue.",
     "consentLabel": "I agree to the",
-    "privacyPolicy": "Privacy Policy"
+    "privacyPolicy": "Privacy Policy",
+    "forgotPassword": {
+      "trigger": "Forgot password?",
+      "title": "Reset Password",
+      "desc": "Enter your email and we'll send you a link to reset your password.",
+      "sentDesc": "If an account exists with that email, a reset link has been sent.",
+      "checkInbox": "Check your inbox for the reset link.",
+      "sendLink": "Send Reset Link"
+    },
+    "resetPassword": {
+      "title": "Set New Password",
+      "subtitle": "Choose a new password for your account.",
+      "newPassword": "New password",
+      "confirmPassword": "Confirm password",
+      "updateButton": "Update Password",
+      "minLength": "Password must be at least 6 characters.",
+      "mismatch": "Passwords do not match.",
+      "success": "Password updated",
+      "successDesc": "Your password has been reset successfully.",
+      "invalidLink": "This reset link is invalid or has expired. Please request a new one.",
+      "backToSignIn": "Back to Sign In"
+    }
   },
   "onboarding": {
     "safe": "You are safe here",

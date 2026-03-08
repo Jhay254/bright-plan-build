@@ -19,7 +19,28 @@
     "somethingWrong": "Kitu kimeenda vibaya",
     "consentRequired": "Tafadhali kubali sera ya faragha ili kuendelea.",
     "consentLabel": "Nakubali",
-    "privacyPolicy": "Sera ya Faragha"
+    "privacyPolicy": "Sera ya Faragha",
+    "forgotPassword": {
+      "trigger": "Umesahau nenosiri?",
+      "title": "Weka upya nenosiri",
+      "desc": "Weka barua pepe yako na tutakutumia kiungo cha kuweka upya.",
+      "sentDesc": "Ikiwa akaunti ipo na barua pepe hiyo, kiungo kimetumwa.",
+      "checkInbox": "Angalia kisanduku chako cha barua.",
+      "sendLink": "Tuma kiungo"
+    },
+    "resetPassword": {
+      "title": "Nenosiri jipya",
+      "subtitle": "Chagua nenosiri jipya la akaunti yako.",
+      "newPassword": "Nenosiri jipya",
+      "confirmPassword": "Thibitisha nenosiri",
+      "updateButton": "Sasisha nenosiri",
+      "minLength": "Nenosiri lazima liwe na herufi 6 au zaidi.",
+      "mismatch": "Manenosiri hayalingani.",
+      "success": "Nenosiri limesasishwa",
+      "successDesc": "Nenosiri lako limewekwa upya.",
+      "invalidLink": "Kiungo hiki ni batili au kimekwisha muda.",
+      "backToSignIn": "Rudi kwenye kuingia"
+    }
   },
   "onboarding": {
     "safe": "Uko salama hapa",

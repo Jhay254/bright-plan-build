@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 import CookieBanner from "@/components/CookieBanner";
+import ForgotPasswordDialog from "@/components/auth/ForgotPasswordDialog";
 
 type AuthMode = "signin" | "signup" | "anonymous";
 
@@ -179,7 +180,10 @@ const Auth = () => {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">{t("auth.password")}</Label>
+              <div className="flex items-center justify-between">
+                <Label htmlFor="password">{t("auth.password")}</Label>
+                {mode === "signin" && <ForgotPasswordDialog />}
+              </div>
               <Input
                 id="password"
                 type="password"

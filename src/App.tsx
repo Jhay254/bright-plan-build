@@ -40,6 +40,7 @@ const AdminCommunityPage = lazy(() => import("./pages/admin/AdminCommunityPage")
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const PortfolioPublic = lazy(() => import("./pages/PortfolioPublic"));
 const VerifyCertificate = lazy(() => import("./pages/VerifyCertificate"));
+const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -68,6 +69,7 @@ const App = () => (
                   <Route path="/auth/callback" element={<AuthCallback />} />
                   <Route path="/volunteer" element={<VolunteerAuth />} />
                   <Route path="/onboarding" element={<Onboarding />} />
+                  <Route path="/reset-password" element={<ResetPassword />} />
                   <Route
                     path="/app"
                     element={
