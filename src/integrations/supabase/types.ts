@@ -234,6 +234,7 @@ export type Database = {
         Row: {
           alias: string
           avatar_seed: string
+          consent_given_at: string | null
           created_at: string
           cultural_context: string | null
           healing_goals: string[] | null
@@ -247,6 +248,7 @@ export type Database = {
         Insert: {
           alias: string
           avatar_seed?: string
+          consent_given_at?: string | null
           created_at?: string
           cultural_context?: string | null
           healing_goals?: string[] | null
@@ -260,6 +262,7 @@ export type Database = {
         Update: {
           alias?: string
           avatar_seed?: string
+          consent_given_at?: string | null
           created_at?: string
           cultural_context?: string | null
           healing_goals?: string[] | null
