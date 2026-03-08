@@ -2,7 +2,7 @@ import { Navigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { user, profile, loading } = useAuth();
+  const { user, profile, role, loading } = useAuth();
 
   if (loading) {
     return (
@@ -14,8 +14,8 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
   if (!user) return <Navigate to="/auth" replace />;
 
-  // Redirect to onboarding if not complete
-  if (profile && !profile.onboarding_complete) {
+  // Volunteers skip seeker onboarding — they onboard via /volunteer auth flow
+  if (profile && !profile.onboarding_complete && role !== "volunteer") {
     return <Navigate to="/onboarding" replace />;
   }
 

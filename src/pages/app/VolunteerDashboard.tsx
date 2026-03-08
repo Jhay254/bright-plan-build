@@ -44,6 +44,14 @@ const VolunteerDashboard = () => {
         { onConflict: "user_id,role" }
       );
 
+      // Auto-complete seeker onboarding so volunteers aren't blocked
+      if (profile && !profile.onboarding_complete) {
+        await supabase
+          .from("profiles")
+          .update({ onboarding_complete: true })
+          .eq("user_id", user.id);
+      }
+
       refetchProfile();
     };
 
