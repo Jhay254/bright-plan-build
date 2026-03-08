@@ -11,7 +11,7 @@ import { Helmet } from "react-helmet-async";
 import AccountUpgrade from "@/components/profile/AccountUpgrade";
 import DataExport from "@/components/profile/DataExport";
 import AccountDeletion from "@/components/profile/AccountDeletion";
-import ThemeToggle from "@/components/profile/ThemeToggle";
+
 
 const LANGUAGES = [
   { code: "en", label: "English" },
