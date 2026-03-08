@@ -18,7 +18,7 @@ const BottomTabBar = () => {
     { to: "/app", icon: Home, label: t("nav.home"), end: true, badge: 0 },
     { to: "/app/cocoon", icon: MessageCircle, label: t("nav.cocoon"), badge: unreadCount },
     ...(isVolunteer
-      ? [{ to: "/app/volunteer", icon: HeartHandshake, label: "Hub", end: false, badge: 0 }]
+      ? [{ to: "/app/volunteer", icon: HeartHandshake, label: t("nav.hub"), end: false, badge: 0 }]
       : [{ to: "/app/journal", icon: BookOpen, label: t("nav.journal"), end: false, badge: 0 }]),
     { to: "/app/community", icon: Users, label: t("nav.community"), badge: 0 },
     ...(isAdmin
