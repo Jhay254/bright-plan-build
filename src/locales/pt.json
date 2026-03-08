@@ -146,7 +146,34 @@
     "safetyResources": "Recursos de segurança",
     "safetyDesc": "Se você ou alguém que conhece está em perigo imediato, entre em contato com os serviços de emergência locais.",
     "signOut": "Sair",
-    "anonymous": "Anônimo"
+    "anonymous": "Anônimo",
+    "upgrade": {
+      "title": "Proteja sua conta",
+      "desc": "Adicione um e-mail e senha para manter seus dados seguros. Todas as suas entradas de diário e histórico de sessões serão preservados.",
+      "button": "Proteger conta",
+      "passwordMin": "A senha deve ter pelo menos 6 caracteres",
+      "success": "Conta protegida!",
+      "successDesc": "Sua conta agora está vinculada ao seu e-mail."
+    },
+    "export": {
+      "title": "Exportar seus dados",
+      "desc": "Baixe suas entradas de diário como arquivo JSON.",
+      "button": "Exportar diário",
+      "success": "Diário exportado!"
+    },
+    "deletion": {
+      "title": "Excluir conta",
+      "desc": "Exclua permanentemente sua conta e todos os dados associados. Esta ação não pode ser desfeita.",
+      "button": "Excluir minha conta",
+      "warning": "Isso excluirá permanentemente seu perfil, entradas de diário, histórico de sessões e todos os outros dados. Isso não pode ser revertido.",
+      "typeDelete": "Digite DELETE para confirmar:",
+      "confirmButton": "Excluir permanentemente",
+      "success": "Conta excluída"
+    },
+    "retention": {
+      "title": "Retenção de dados",
+      "desc": "O conteúdo das mensagens de sessão é removido automaticamente 90 dias após o término da sessão. Os metadados são mantidos para supervisão de segurança."
+    }
   },
   "crisis": {
     "title": "Parece que você pode estar passando por algo sério",

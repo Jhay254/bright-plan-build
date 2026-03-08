@@ -146,7 +146,34 @@
     "safetyResources": "Ressources de sécurité",
     "safetyDesc": "Si vous ou quelqu'un que vous connaissez est en danger immédiat, veuillez contacter les services d'urgence locaux.",
     "signOut": "Déconnexion",
-    "anonymous": "Anonyme"
+    "anonymous": "Anonyme",
+    "upgrade": {
+      "title": "Sécurisez votre compte",
+      "desc": "Ajoutez un e-mail et un mot de passe pour protéger vos données. Toutes vos entrées de journal et votre historique seront conservés.",
+      "button": "Sécuriser le compte",
+      "passwordMin": "Le mot de passe doit comporter au moins 6 caractères",
+      "success": "Compte sécurisé !",
+      "successDesc": "Votre compte est maintenant lié à votre e-mail."
+    },
+    "export": {
+      "title": "Exporter vos données",
+      "desc": "Téléchargez vos entrées de journal au format JSON.",
+      "button": "Exporter le journal",
+      "success": "Journal exporté !"
+    },
+    "deletion": {
+      "title": "Supprimer le compte",
+      "desc": "Supprimez définitivement votre compte et toutes les données associées. Cette action est irréversible.",
+      "button": "Supprimer mon compte",
+      "warning": "Cela supprimera définitivement votre profil, vos entrées de journal, votre historique de sessions et toutes les autres données. Cette action est irréversible.",
+      "typeDelete": "Tapez DELETE pour confirmer :",
+      "confirmButton": "Supprimer définitivement",
+      "success": "Compte supprimé"
+    },
+    "retention": {
+      "title": "Conservation des données",
+      "desc": "Le contenu des messages de session est automatiquement supprimé 90 jours après la fin d'une session. Les métadonnées sont conservées pour la supervision."
+    }
   },
   "crisis": {
     "title": "Il semble que vous traversez quelque chose de grave",

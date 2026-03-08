@@ -393,6 +393,7 @@ export type Database = {
         Returns: boolean
       }
       close_stale_sessions: { Args: never; Returns: number }
+      delete_user_account: { Args: never; Returns: boolean }
       generate_alias: { Args: never; Returns: string }
       get_user_role: {
         Args: { _user_id: string }
@@ -413,6 +414,7 @@ export type Database = {
         }
         Returns: number
       }
+      purge_old_message_content: { Args: never; Returns: number }
       transition_session: {
         Args: {
           _new_status: Database["public"]["Enums"]["session_status"]

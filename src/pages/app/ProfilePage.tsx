@@ -7,6 +7,9 @@ import { useToast } from "@/hooks/use-toast";
 import { generateAvatarSvg } from "@/lib/avatar";
 import { LogOut, RefreshCw, Shield, Edit2, Check, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import AccountUpgrade from "@/components/profile/AccountUpgrade";
+import DataExport from "@/components/profile/DataExport";
+import AccountDeletion from "@/components/profile/AccountDeletion";
 
 const LANGUAGES = [
   { code: "en", label: "English" },
@@ -168,6 +171,12 @@ const ProfilePage = () => {
           </div>
         )}
 
+        {/* Account Upgrade (anonymous users only) */}
+        <AccountUpgrade />
+
+        {/* Data Export */}
+        <DataExport />
+
         {/* Safety Plan */}
         <div className="bg-dawn rounded-echo-lg p-5 border border-mist">
           <div className="flex items-center gap-2 mb-2">
@@ -183,6 +192,15 @@ const ProfilePage = () => {
             <p className="text-bark font-medium">🇬🇧 Samaritans: <span className="text-forest">116 123</span></p>
           </div>
         </div>
+
+        {/* Data Retention Notice */}
+        <div className="bg-card rounded-echo-lg p-5 shadow-echo-1 border border-border">
+          <p className="text-xs text-driftwood uppercase tracking-wide mb-2">{t("profile.retention.title")}</p>
+          <p className="text-sm text-driftwood">{t("profile.retention.desc")}</p>
+        </div>
+
+        {/* Account Deletion */}
+        <AccountDeletion />
       </div>
 
       <Button variant="ghost" className="mt-8 text-care-alert" onClick={signOut}>

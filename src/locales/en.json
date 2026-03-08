@@ -146,7 +146,34 @@
     "safetyResources": "Safety Resources",
     "safetyDesc": "If you or someone you know is in immediate danger, please reach out to local emergency services.",
     "signOut": "Sign Out",
-    "anonymous": "Anonymous"
+    "anonymous": "Anonymous",
+    "upgrade": {
+      "title": "Secure Your Account",
+      "desc": "Add an email and password to keep your data safe. All your journal entries and session history will be preserved.",
+      "button": "Secure Account",
+      "passwordMin": "Password must be at least 6 characters",
+      "success": "Account secured!",
+      "successDesc": "Your account is now linked to your email."
+    },
+    "export": {
+      "title": "Export Your Data",
+      "desc": "Download your journal entries as a JSON file.",
+      "button": "Export Journal",
+      "success": "Journal exported!"
+    },
+    "deletion": {
+      "title": "Delete Account",
+      "desc": "Permanently delete your account and all associated data. This action cannot be undone.",
+      "button": "Delete My Account",
+      "warning": "This will permanently delete your profile, journal entries, session history, and all other data. This cannot be reversed.",
+      "typeDelete": "Type DELETE to confirm:",
+      "confirmButton": "Permanently Delete",
+      "success": "Account deleted"
+    },
+    "retention": {
+      "title": "Data Retention",
+      "desc": "Session message content is automatically removed 90 days after a session ends. Session metadata is retained for safety oversight."
+    }
   },
   "crisis": {
     "title": "It sounds like you may be going through something serious",
