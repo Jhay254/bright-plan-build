@@ -73,6 +73,7 @@ const JournalEditor = () => {
         value={content}
         onChange={(e) => setContent(e.target.value.slice(0, 5000))}
         placeholder="What's on your mind today…"
+        aria-label="Journal entry content"
         className="w-full min-h-[200px] px-0 py-3 font-journal text-sm text-bark bg-transparent border-0 focus:outline-none resize-none placeholder:text-driftwood/50 leading-relaxed"
         autoFocus
       />
