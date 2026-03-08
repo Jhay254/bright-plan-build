@@ -19,14 +19,7 @@ const STATUS_ICON: Record<SessionStatus, React.ReactNode> = {
   cancelled: <CheckCircle2 className="h-4 w-4 text-care-alert" />,
 };
 
-const STATUS_LABEL: Record<SessionStatus, string> = {
-  requested: "Waiting",
-  matched: "Matched",
-  active: "Active",
-  wrap_up: "Wrapping up",
-  closed: "Ended",
-  cancelled: "Cancelled",
-};
+// Status labels are derived from translations inside component
 
 const LANGUAGE_OPTIONS = [
   { value: "", label: "All Languages" },
