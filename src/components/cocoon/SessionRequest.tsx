@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { supabase } from "@/integrations/supabase/client";
+import { useCreateSession } from "@/hooks/use-sessions";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowLeft } from "lucide-react";
@@ -29,33 +29,24 @@ const SessionRequest = () => {
   const { user, profile } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const createSession = useCreateSession();
   const [topic, setTopic] = useState("");
   const [urgency, setUrgency] = useState<"low" | "medium" | "high">("medium");
   const [preferences, setPreferences] = useState("");
-  const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async () => {
     if (!user || !topic) return;
-    setSubmitting(true);
     try {
-      const { data, error } = await supabase
-        .from("cocoon_sessions")
-        .insert({
-          seeker_id: user.id,
-          topic,
-          urgency,
-          language: profile?.language ?? "en",
-          preferences: preferences || null,
-        })
-        .select("id")
-        .single();
-
-      if (error) throw error;
+      const data = await createSession.mutateAsync({
+        seeker_id: user.id,
+        topic,
+        urgency,
+        language: profile?.language ?? "en",
+        preferences: preferences || null,
+      });
       navigate(`/app/cocoon/${data.id}`);
     } catch (e: any) {
       toast({ title: "Error creating session", description: e.message, variant: "destructive" });
-    } finally {
-      setSubmitting(false);
     }
   };
 
@@ -122,8 +113,8 @@ const SessionRequest = () => {
         />
       </div>
 
-      <Button variant="hero" className="w-full" onClick={handleSubmit} disabled={!topic || submitting}>
-        {submitting ? "Requesting…" : "Request Session"}
+      <Button variant="hero" className="w-full" onClick={handleSubmit} disabled={!topic || createSession.isPending}>
+        {createSession.isPending ? "Requesting…" : "Request Session"}
       </Button>
     </div>
   );

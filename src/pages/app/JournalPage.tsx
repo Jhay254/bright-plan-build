@@ -1,39 +1,20 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { supabase } from "@/integrations/supabase/client";
+import { useJournalEntries } from "@/hooks/use-journal";
 import { Button } from "@/components/ui/button";
 import { Plus, BookOpen, Flag } from "lucide-react";
 import { getMoodOption } from "@/lib/journal";
-import type { Database } from "@/integrations/supabase/types";
-
-type JournalEntry = Database["public"]["Tables"]["journal_entries"]["Row"];
+import { PageSkeleton } from "@/components/ui/skeleton-card";
 
 const JournalPage = () => {
-  const { user, profile } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
-  const [entries, setEntries] = useState<JournalEntry[]>([]);
-  const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<"all" | "milestones">("all");
-
-  useEffect(() => {
-    if (!user) return;
-    const fetch = async () => {
-      let q = supabase
-        .from("journal_entries")
-        .select("*")
-        .eq("user_id", user.id)
-        .order("created_at", { ascending: false });
-      if (filter === "milestones") q = q.eq("is_milestone", true);
-      const { data } = await q;
-      if (data) setEntries(data);
-      setLoading(false);
-    };
-    fetch();
-  }, [user, filter]);
+  const { data: entries = [], isLoading } = useJournalEntries(user?.id, filter);
 
   // Group entries by date
-  const grouped = entries.reduce<Record<string, JournalEntry[]>>((acc, entry) => {
+  const grouped = entries.reduce<Record<string, typeof entries>>((acc, entry) => {
     const date = new Date(entry.created_at).toLocaleDateString(undefined, {
       weekday: "long",
       month: "long",
@@ -45,9 +26,11 @@ const JournalPage = () => {
 
   const milestoneCount = entries.filter((e) => e.is_milestone).length;
 
+  if (isLoading) return <PageSkeleton rows={4} />;
+
   return (
     <div className="px-6 pt-8 pb-24 max-w-lg mx-auto">
-      {/* Header — Dusk/Sand theme accent */}
+      {/* Header */}
       <div className="flex items-center justify-between mb-2">
         <div>
           <h1 className="font-journal text-2xl font-semibold text-bark">Healing Journal</h1>
@@ -84,9 +67,7 @@ const JournalPage = () => {
         ))}
       </div>
 
-      {loading ? (
-        <div className="animate-pulse-gentle text-dusk font-journal text-sm">Loading…</div>
-      ) : entries.length === 0 ? (
+      {entries.length === 0 ? (
         <div className="bg-sand rounded-echo-lg p-8 text-center border border-stone">
           <BookOpen className="h-10 w-10 text-dusk mx-auto mb-3" />
           <p className="font-journal font-semibold text-bark mb-1">Your journal is empty</p>
@@ -110,7 +91,6 @@ const JournalPage = () => {
                       className="w-full text-left bg-card rounded-echo-md p-4 border border-stone hover:border-dusk/50 transition-colors group"
                     >
                       <div className="flex items-start gap-3">
-                        {/* Mood indicator */}
                         {mood && (
                           <div className={`w-9 h-9 rounded-full ${mood.color} border flex items-center justify-center text-lg shrink-0`}>
                             {mood.emoji}
@@ -121,9 +101,7 @@ const JournalPage = () => {
                             <p className="font-journal font-medium text-bark text-sm truncate">
                               {entry.title || "Untitled"}
                             </p>
-                            {entry.is_milestone && (
-                              <Flag className="h-3.5 w-3.5 text-dusk shrink-0" />
-                            )}
+                            {entry.is_milestone && <Flag className="h-3.5 w-3.5 text-dusk shrink-0" />}
                           </div>
                           <p className="text-xs text-driftwood mt-0.5 line-clamp-2">
                             {entry.content.slice(0, 120)}

@@ -1,69 +1,48 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { supabase } from "@/integrations/supabase/client";
+import { useCpdEntries, useAddCpdEntry } from "@/hooks/use-volunteer-data";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Plus, Award, Clock, FileText } from "lucide-react";
-import type { Database } from "@/integrations/supabase/types";
-
-type CpdEntry = Database["public"]["Tables"]["cpd_entries"]["Row"];
 
 const CPD_CATEGORIES = ["training", "workshop", "supervision", "self-study", "conference", "certification"];
 
 const CpdLog = () => {
   const { user } = useAuth();
   const { toast } = useToast();
-  const [entries, setEntries] = useState<CpdEntry[]>([]);
+  const { data: entries = [], isLoading } = useCpdEntries(user?.id);
+  const addEntry = useAddCpdEntry();
   const [showForm, setShowForm] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [hours, setHours] = useState("");
   const [category, setCategory] = useState("training");
-  const [saving, setSaving] = useState(false);
-
-  useEffect(() => {
-    if (!user) return;
-    const fetch = async () => {
-      const { data } = await supabase
-        .from("cpd_entries")
-        .select("*")
-        .eq("user_id", user.id)
-        .order("completed_at", { ascending: false });
-      if (data) setEntries(data);
-    };
-    fetch();
-  }, [user]);
 
   const totalHours = entries.reduce((sum, e) => sum + Number(e.hours), 0);
 
   const handleAdd = async () => {
     if (!user || !title.trim() || !hours) return;
-    setSaving(true);
     try {
-      const { data, error } = await supabase
-        .from("cpd_entries")
-        .insert({
-          user_id: user.id,
-          title: title.trim(),
-          description: description.trim() || null,
-          hours: parseFloat(hours),
-          category,
-        })
-        .select()
-        .single();
-      if (error) throw error;
-      setEntries([data, ...entries]);
+      await addEntry.mutateAsync({
+        user_id: user.id,
+        title: title.trim(),
+        description: description.trim() || null,
+        hours: parseFloat(hours),
+        category,
+      });
       setTitle(""); setDescription(""); setHours(""); setCategory("training");
       setShowForm(false);
       toast({ title: "CPD entry logged" });
     } catch (e: any) {
       toast({ title: "Error", description: e.message, variant: "destructive" });
-    } finally {
-      setSaving(false);
     }
   };
+
+  if (isLoading) {
+    return <div className="space-y-2">{Array.from({ length: 2 }).map((_, i) => <div key={i} className="h-16 bg-sand rounded-echo-md animate-pulse" />)}</div>;
+  }
 
   return (
     <div>
@@ -77,7 +56,6 @@ const CpdLog = () => {
         </Button>
       </div>
 
-      {/* Add form */}
       {showForm && (
         <div className="bg-dawn rounded-echo-md p-5 border border-mist mb-5 space-y-3">
           <div className="space-y-1.5">
@@ -91,36 +69,24 @@ const CpdLog = () => {
             </div>
             <div className="space-y-1.5">
               <Label className="text-xs">Category</Label>
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                className="w-full h-9 px-3 rounded-md border border-border bg-background text-sm text-bark"
-              >
-                {CPD_CATEGORIES.map((c) => (
-                  <option key={c} value={c}>{c.charAt(0).toUpperCase() + c.slice(1)}</option>
-                ))}
+              <select value={category} onChange={(e) => setCategory(e.target.value)} className="w-full h-9 px-3 rounded-md border border-border bg-background text-sm text-bark">
+                {CPD_CATEGORIES.map((c) => <option key={c} value={c}>{c.charAt(0).toUpperCase() + c.slice(1)}</option>)}
               </select>
             </div>
           </div>
           <div className="space-y-1.5">
             <Label className="text-xs">Description <span className="text-driftwood">(optional)</span></Label>
-            <textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value.slice(0, 300))}
-              placeholder="Brief notes about what you learned…"
-              className="w-full h-16 px-3 py-2 rounded-md border border-border bg-background text-sm text-bark resize-none focus:outline-none focus:border-fern"
-            />
+            <textarea value={description} onChange={(e) => setDescription(e.target.value.slice(0, 300))} placeholder="Brief notes about what you learned…" className="w-full h-16 px-3 py-2 rounded-md border border-border bg-background text-sm text-bark resize-none focus:outline-none focus:border-fern" />
           </div>
           <div className="flex gap-2 justify-end">
             <Button variant="ghost" size="sm" onClick={() => setShowForm(false)}>Cancel</Button>
-            <Button variant="default" size="sm" onClick={handleAdd} disabled={!title.trim() || !hours || saving}>
-              {saving ? "Saving…" : "Log Entry"}
+            <Button variant="default" size="sm" onClick={handleAdd} disabled={!title.trim() || !hours || addEntry.isPending}>
+              {addEntry.isPending ? "Saving…" : "Log Entry"}
             </Button>
           </div>
         </div>
       )}
 
-      {/* Entries list */}
       {entries.length === 0 ? (
         <div className="bg-sand rounded-echo-md p-6 text-center border border-stone">
           <FileText className="h-8 w-8 text-driftwood mx-auto mb-2" />
@@ -138,21 +104,16 @@ const CpdLog = () => {
                     <span className="inline-flex items-center gap-1 text-[10px] text-forest">
                       <Clock className="h-3 w-3" /> {Number(e.hours).toFixed(1)}h
                     </span>
-                    <span className="text-[10px] px-2 py-0.5 rounded-echo-pill bg-sand text-driftwood capitalize">
-                      {e.category}
-                    </span>
+                    <span className="text-[10px] px-2 py-0.5 rounded-echo-pill bg-sand text-driftwood capitalize">{e.category}</span>
                   </div>
                 </div>
-                <p className="text-[10px] text-driftwood shrink-0">
-                  {new Date(e.completed_at).toLocaleDateString()}
-                </p>
+                <p className="text-[10px] text-driftwood shrink-0">{new Date(e.completed_at).toLocaleDateString()}</p>
               </div>
             </div>
           ))}
         </div>
       )}
 
-      {/* Simple certificate section */}
       {totalHours >= 10 && (
         <div className="bg-dawn rounded-echo-md p-5 border border-mist mt-5 text-center">
           <Award className="h-8 w-8 text-forest mx-auto mb-2" />
@@ -160,24 +121,9 @@ const CpdLog = () => {
           <p className="text-xs text-driftwood mt-1">{totalHours.toFixed(1)} hours of professional development completed</p>
           <button
             onClick={() => {
-              // Simple certificate generation via print
               const w = window.open("", "_blank");
               if (w) {
-                w.document.write(`
-                  <html><head><title>Echo CPD Certificate</title>
-                  <style>body{font-family:Georgia,serif;text-align:center;padding:80px 40px;max-width:700px;margin:auto;}
-                  h1{color:#2D6A4F;font-size:28px;}h2{color:#6B6560;font-weight:normal;font-size:18px;}
-                  .hours{font-size:48px;color:#2D6A4F;font-weight:bold;margin:30px 0;}
-                  .border{border:3px solid #2D6A4F;padding:60px;border-radius:16px;}
-                  .date{color:#999;font-size:14px;margin-top:40px;}</style></head>
-                  <body><div class="border">
-                  <h1>🌿 Project Echo</h1>
-                  <h2>Certificate of Continuing Professional Development</h2>
-                  <div class="hours">${totalHours.toFixed(1)} hours</div>
-                  <p>This certifies that the volunteer has completed ${totalHours.toFixed(1)} hours of professional development activities.</p>
-                  <p class="date">Issued: ${new Date().toLocaleDateString()}</p>
-                  </div></body></html>
-                `);
+                w.document.write(`<html><head><title>Echo CPD Certificate</title><style>body{font-family:Georgia,serif;text-align:center;padding:80px 40px;max-width:700px;margin:auto;}h1{color:#2D6A4F;font-size:28px;}h2{color:#6B6560;font-weight:normal;font-size:18px;}.hours{font-size:48px;color:#2D6A4F;font-weight:bold;margin:30px 0;}.border{border:3px solid #2D6A4F;padding:60px;border-radius:16px;}.date{color:#999;font-size:14px;margin-top:40px;}</style></head><body><div class="border"><h1>🌿 Project Echo</h1><h2>Certificate of Continuing Professional Development</h2><div class="hours">${totalHours.toFixed(1)} hours</div><p>This certifies that the volunteer has completed ${totalHours.toFixed(1)} hours of professional development activities.</p><p class="date">Issued: ${new Date().toLocaleDateString()}</p></div></body></html>`);
                 w.document.close();
                 w.print();
               }

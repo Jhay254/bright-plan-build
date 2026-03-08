@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { supabase } from "@/integrations/supabase/client";
+import { useCreateJournalEntry } from "@/hooks/use-journal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
@@ -15,6 +15,7 @@ const JournalEditor = () => {
   const { user, profile } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const createEntry = useCreateJournalEntry();
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -23,27 +24,21 @@ const JournalEditor = () => {
   const [tagInput, setTagInput] = useState("");
   const [isMilestone, setIsMilestone] = useState(false);
   const [milestoneLabel, setMilestoneLabel] = useState("");
-  const [saving, setSaving] = useState(false);
 
-  // Merge suggested tags with user's healing goals
   const goalTags = profile?.healing_goals?.map((g) => g.toLowerCase().replace(/\s+/g, "-")) ?? [];
   const allSuggested = [...new Set([...SUGGESTED_TAGS, ...goalTags])];
 
   const addTag = (tag: string) => {
     const t = tag.trim().toLowerCase().slice(0, 30);
-    if (t && !tags.includes(t) && tags.length < 10) {
-      setTags([...tags, t]);
-    }
+    if (t && !tags.includes(t) && tags.length < 10) setTags([...tags, t]);
     setTagInput("");
   };
-
   const removeTag = (tag: string) => setTags(tags.filter((t) => t !== tag));
 
   const handleSave = async () => {
     if (!user || !content.trim()) return;
-    setSaving(true);
     try {
-      const { error } = await supabase.from("journal_entries").insert({
+      await createEntry.mutateAsync({
         user_id: user.id,
         title: title.trim() || null,
         content: content.trim(),
@@ -52,13 +47,10 @@ const JournalEditor = () => {
         is_milestone: isMilestone,
         milestone_label: isMilestone ? milestoneLabel.trim() || null : null,
       });
-      if (error) throw error;
       toast({ title: "Entry saved" });
       navigate("/app/journal");
     } catch (e: any) {
       toast({ title: "Error saving", description: e.message, variant: "destructive" });
-    } finally {
-      setSaving(false);
     }
   };
 
@@ -70,7 +62,6 @@ const JournalEditor = () => {
 
       <h1 className="font-journal text-2xl font-semibold text-bark mb-6">New Entry</h1>
 
-      {/* Title */}
       <Input
         value={title}
         onChange={(e) => setTitle(e.target.value.slice(0, 100))}
@@ -78,7 +69,6 @@ const JournalEditor = () => {
         className="font-journal text-lg border-0 border-b border-stone rounded-none px-0 focus-visible:ring-0 focus-visible:border-dusk mb-4 bg-transparent"
       />
 
-      {/* Content */}
       <textarea
         value={content}
         onChange={(e) => setContent(e.target.value.slice(0, 5000))}
@@ -97,13 +87,10 @@ const JournalEditor = () => {
               key={m.value}
               onClick={() => setMood(mood === m.value ? null : m.value)}
               className={`flex items-center gap-1.5 px-3 py-2 rounded-echo-pill text-sm border-2 transition-all ${
-                mood === m.value
-                  ? `${m.color} font-medium`
-                  : "border-stone text-driftwood hover:border-dusk/40"
+                mood === m.value ? `${m.color} font-medium` : "border-stone text-driftwood hover:border-dusk/40"
               }`}
             >
-              <span>{m.emoji}</span>
-              <span>{m.label}</span>
+              <span>{m.emoji}</span><span>{m.label}</span>
             </button>
           ))}
         </div>
@@ -117,9 +104,7 @@ const JournalEditor = () => {
             {tags.map((tag) => (
               <span key={tag} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-echo-pill text-xs font-medium bg-dusk/10 text-dusk border border-dusk/30">
                 {tag}
-                <button onClick={() => removeTag(tag)} className="hover:text-care-alert">
-                  <X className="h-3 w-3" />
-                </button>
+                <button onClick={() => removeTag(tag)} className="hover:text-care-alert"><X className="h-3 w-3" /></button>
               </span>
             ))}
           </div>
@@ -128,23 +113,15 @@ const JournalEditor = () => {
           <Input
             value={tagInput}
             onChange={(e) => setTagInput(e.target.value.slice(0, 30))}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") { e.preventDefault(); addTag(tagInput); }
-            }}
+            onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addTag(tagInput); } }}
             placeholder="Add a tag…"
             className="text-sm h-9"
           />
-          <Button variant="secondary" size="sm" onClick={() => addTag(tagInput)} disabled={!tagInput.trim()}>
-            Add
-          </Button>
+          <Button variant="secondary" size="sm" onClick={() => addTag(tagInput)} disabled={!tagInput.trim()}>Add</Button>
         </div>
         <div className="flex flex-wrap gap-1.5">
           {allSuggested.filter((t) => !tags.includes(t)).slice(0, 8).map((tag) => (
-            <button
-              key={tag}
-              onClick={() => addTag(tag)}
-              className="text-[11px] px-2.5 py-1 rounded-echo-pill border border-stone text-driftwood hover:border-dusk/40 hover:text-dusk transition-colors"
-            >
+            <button key={tag} onClick={() => addTag(tag)} className="text-[11px] px-2.5 py-1 rounded-echo-pill border border-stone text-driftwood hover:border-dusk/40 hover:text-dusk transition-colors">
               + {tag}
             </button>
           ))}
@@ -177,8 +154,8 @@ const JournalEditor = () => {
         )}
       </div>
 
-      <Button variant="hero" className="w-full" onClick={handleSave} disabled={!content.trim() || saving}>
-        {saving ? "Saving…" : "Save Entry"}
+      <Button variant="hero" className="w-full" onClick={handleSave} disabled={!content.trim() || createEntry.isPending}>
+        {createEntry.isPending ? "Saving…" : "Save Entry"}
       </Button>
     </div>
   );

@@ -16,27 +16,30 @@ const LANGUAGES = [
 ];
 
 const ProfilePage = () => {
-  const { profile, role, user, signOut } = useAuth();
+  const { profile, role, user, signOut, refreshProfile } = useAuth();
   const { toast } = useToast();
   const [editingAlias, setEditingAlias] = useState(false);
   const [aliasValue, setAliasValue] = useState(profile?.alias ?? "");
   const [saving, setSaving] = useState(false);
+  const [localAvatarSeed, setLocalAvatarSeed] = useState<string | null>(null);
 
-  const avatarSrc = generateAvatarSvg(profile?.avatar_seed ?? "default", 96);
+  const avatarSeed = localAvatarSeed ?? profile?.avatar_seed ?? "default";
+  const avatarSrc = generateAvatarSvg(avatarSeed, 96);
 
   const regenerateAvatar = async () => {
     if (!user) return;
     const newSeed = crypto.randomUUID();
+    setLocalAvatarSeed(newSeed); // Optimistic update
     const { error } = await supabase
       .from("profiles")
       .update({ avatar_seed: newSeed })
       .eq("user_id", user.id);
     if (error) {
+      setLocalAvatarSeed(null); // Revert
       toast({ title: "Error", description: error.message, variant: "destructive" });
     } else {
       toast({ title: "Avatar updated!" });
-      // Force reload profile
-      window.location.reload();
+      await refreshProfile();
     }
   };
 
@@ -53,7 +56,7 @@ const ProfilePage = () => {
     } else {
       setEditingAlias(false);
       toast({ title: "Alias updated!" });
-      window.location.reload();
+      await refreshProfile();
     }
     setSaving(false);
   };
@@ -68,7 +71,7 @@ const ProfilePage = () => {
       toast({ title: "Error", description: error.message, variant: "destructive" });
     } else {
       toast({ title: "Language updated!" });
-      window.location.reload();
+      await refreshProfile();
     }
   };
 
