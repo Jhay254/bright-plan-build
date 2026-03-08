@@ -30,6 +30,7 @@ const JournalPage = () => {
   const milestoneCount = entries.filter((e) => e.is_milestone).length;
 
   if (isLoading) return <PageSkeleton rows={4} />;
+  if (isError) return <QueryError onRetry={() => refetch()} />;
 
   return (
     <>

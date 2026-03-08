@@ -40,6 +40,7 @@ const AdminSessionsPage = () => {
   });
 
   if (isLoading) return <PageSkeleton rows={5} />;
+  if (isError) return <QueryError onRetry={() => refetch()} />;
 
   const statuses: (SessionStatus | "all")[] = ["all", "requested", "matched", "active", "wrap_up", "closed", "cancelled"];
 
