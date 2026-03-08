@@ -23,7 +23,7 @@ const Auth = () => {
   const [cooldown, setCooldown] = useState(0);
   const failCount = useRef(0);
   const cooldownTimer = useRef<ReturnType<typeof setInterval>>();
-  const { signIn, signUp, signInAnonymously } = useAuth();
+  const { user: existingUser, loading, signIn, signUp, signInAnonymously } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
   const { t } = useTranslation();
