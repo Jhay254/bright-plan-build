@@ -35,6 +35,7 @@ const ChatRoom = () => {
   const [sending, setSending] = useState(false);
   const [showCrisis, setShowCrisis] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
+  const [volunteerCrisisAlert, setVolunteerCrisisAlert] = useState(false);
   const [participantAliases, setParticipantAliases] = useState<Record<string, string>>({});
   const bottomRef = useRef<HTMLDivElement>(null);
 
