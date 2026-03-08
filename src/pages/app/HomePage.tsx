@@ -15,7 +15,12 @@ const HomePage = () => {
   }
 
   return (
-    <div className="px-6 pt-8">
+    <>
+      <Helmet>
+        <title>Home — Echo</title>
+        <meta name="description" content="Your safe space for healing. Start a session or open your journal." />
+      </Helmet>
+      <div className="px-6 pt-8">
       <div className="mb-8">
         <p className="text-sm text-driftwood font-medium">{t("home.welcomeBack")}</p>
         <h1 className="font-heading text-2xl font-bold text-bark">
