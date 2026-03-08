@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useAuth } from "@/contexts/AuthContext";
 import echoLogo from "@/assets/echo-logo.png";
+import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { SPECIALISATIONS } from "@/lib/volunteer";
 import CookieBanner from "@/components/CookieBanner";
