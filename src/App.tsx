@@ -18,6 +18,7 @@ import JournalPage from "./pages/app/JournalPage";
 import CommunityPage from "./pages/app/CommunityPage";
 import ProfilePage from "./pages/app/ProfilePage";
 import VolunteerDashboard from "./pages/app/VolunteerDashboard";
+import AdminCrisisPage from "./pages/app/AdminCrisisPage";
 import SessionRequest from "@/components/cocoon/SessionRequest";
 import ChatRoom from "@/components/cocoon/ChatRoom";
 import JournalEditor from "@/components/journal/JournalEditor";
