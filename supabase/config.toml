@@ -1,1 +1,4 @@
 project_id = "redbpniknprlcyxohysn"
+
+[functions.notify-volunteer-email]
+verify_jwt = false
