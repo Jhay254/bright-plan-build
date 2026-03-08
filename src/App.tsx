@@ -18,6 +18,8 @@ import CommunityPage from "./pages/app/CommunityPage";
 import ProfilePage from "./pages/app/ProfilePage";
 import SessionRequest from "@/components/cocoon/SessionRequest";
 import ChatRoom from "@/components/cocoon/ChatRoom";
+import JournalEditor from "@/components/journal/JournalEditor";
+import JournalDetail from "@/components/journal/JournalDetail";
 
 const queryClient = new QueryClient();
 
@@ -46,6 +48,8 @@ const App = () => (
               <Route path="cocoon/new" element={<SessionRequest />} />
               <Route path="cocoon/:sessionId" element={<ChatRoom />} />
               <Route path="journal" element={<JournalPage />} />
+              <Route path="journal/new" element={<JournalEditor />} />
+              <Route path="journal/:entryId" element={<JournalDetail />} />
               <Route path="community" element={<CommunityPage />} />
               <Route path="profile" element={<ProfilePage />} />
             </Route>
