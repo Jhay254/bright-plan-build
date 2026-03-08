@@ -130,6 +130,34 @@ const TYPE_BADGE: Record<ActivityItem["type"], { label: string; className: strin
 
 const AdminDashboardPage = () => {
   const navigate = useNavigate();
+  const qc = useQueryClient();
+
+  // Realtime: auto-refresh activity feed & stats on changes
+  useEffect(() => {
+    const channel = supabase
+      .channel("admin-dashboard-realtime")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "cocoon_sessions" },
+        () => {
+          qc.invalidateQueries({ queryKey: ["admin", "activity-feed"] });
+          qc.invalidateQueries({ queryKey: ["admin", "stats"] });
+        }
+      )
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "volunteer_profiles" },
+        () => {
+          qc.invalidateQueries({ queryKey: ["admin", "activity-feed"] });
+          qc.invalidateQueries({ queryKey: ["admin", "stats"] });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [qc]);
 
   const { data: stats, isLoading: statsLoading } = useQuery({
     queryKey: ["admin", "stats"],
