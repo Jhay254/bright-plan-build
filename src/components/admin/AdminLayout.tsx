@@ -14,13 +14,14 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { NavLink } from "@/components/NavLink";
-import { LayoutDashboard, Users, MessageSquare, UserCheck, AlertTriangle, ArrowLeft } from "lucide-react";
+import { LayoutDashboard, Users, MessageSquare, UserCheck, AlertTriangle, ArrowLeft, Heart } from "lucide-react";
 
 const NAV_ITEMS = [
   { title: "Dashboard", url: "/admin", icon: LayoutDashboard },
   { title: "Volunteers", url: "/admin/volunteers", icon: UserCheck },
   { title: "Sessions", url: "/admin/sessions", icon: MessageSquare },
   { title: "Users", url: "/admin/users", icon: Users },
+  { title: "Community", url: "/admin/community", icon: Heart },
   { title: "Crisis Flags", url: "/admin/crisis", icon: AlertTriangle },
 ];
 
