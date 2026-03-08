@@ -15,10 +15,39 @@ const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [cooldown, setCooldown] = useState(0);
+  const failCount = useRef(0);
+  const cooldownTimer = useRef<ReturnType<typeof setInterval>>();
   const { signIn, signUp, signInAnonymously } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
   const { t } = useTranslation();
+
+  const startCooldown = useCallback((seconds: number) => {
+    setCooldown(seconds);
+    if (cooldownTimer.current) clearInterval(cooldownTimer.current);
+    cooldownTimer.current = setInterval(() => {
+      setCooldown((prev) => {
+        if (prev <= 1) {
+          clearInterval(cooldownTimer.current);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  }, []);
+
+  const handleFailure = useCallback((e: any) => {
+    failCount.current += 1;
+    if (failCount.current >= 5) {
+      startCooldown(30);
+    } else if (failCount.current >= 3) {
+      startCooldown(10);
+    }
+    toast({ title: t("auth.error"), description: e.message, variant: "destructive" });
+  }, [startCooldown, toast, t]);
+
+  const isDisabled = submitting || cooldown > 0;
 
   const handleAnonymous = async () => {
     setSubmitting(true);
