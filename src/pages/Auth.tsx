@@ -96,7 +96,7 @@ const Auth = () => {
             variant="hero"
             className="w-full mb-6"
             onClick={handleAnonymous}
-            disabled={submitting}
+            disabled={isDisabled}
           >
             {t("auth.enterAnonymously")}
           </Button>
