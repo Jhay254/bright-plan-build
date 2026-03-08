@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import { Award, TrendingUp, BookOpen, Users } from "lucide-react";
 
 const benefits = [
