@@ -40,6 +40,7 @@ const SessionFeedback = ({ sessionId, volunteerId, role, onComplete }: SessionFe
   const { user } = useAuth();
   const { toast } = useToast();
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [rating, setRating] = useState<number | null>(null);
   const [feltHeard, setFeltHeard] = useState<boolean | null>(null);
   const [feltSafe, setFeltSafe] = useState<boolean | null>(null);
