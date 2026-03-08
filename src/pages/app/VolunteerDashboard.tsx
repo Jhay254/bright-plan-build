@@ -21,14 +21,26 @@ const VolunteerDashboard = () => {
   const { data: activeSessions = [], isLoading: sessionsLoading } = useVolunteerActiveSessions(user?.id);
   const [showReapply, setShowReapply] = useState(false);
 
-  // Auto-create volunteer profile if it doesn't exist
+  // Auto-create volunteer profile only if user came through the volunteer auth flow
+  // (indicated by having pending volunteer data with motivation in localStorage)
   useEffect(() => {
     if (!user || vpLoading || volProfile) return;
 
-    const createProfile = async () => {
-      const pending = localStorage.getItem("echo_volunteer_pending");
-      const parsed = pending ? JSON.parse(pending) : {};
+    const pending = localStorage.getItem("echo_volunteer_pending");
+    if (!pending) return; // No pending data = user didn't come from volunteer auth
 
+    let parsed: { motivation?: string; background?: string; specialisations?: string[] };
+    try {
+      parsed = JSON.parse(pending);
+    } catch {
+      localStorage.removeItem("echo_volunteer_pending");
+      return;
+    }
+
+    // Only auto-create if there's actual volunteer application data
+    if (!parsed.motivation) return;
+
+    const createProfile = async () => {
       await supabase
         .from("volunteer_profiles")
         .insert({
