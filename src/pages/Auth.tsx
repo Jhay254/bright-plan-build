@@ -54,6 +54,11 @@ const Auth = () => {
 
   const isDisabled = submitting || cooldown > 0;
 
+  // Redirect already-authenticated users away from auth page
+  if (!loading && existingUser) {
+    return <Navigate to="/app" replace />;
+  }
+
   const recordConsent = async (userId: string) => {
     await supabase
       .from("profiles")
