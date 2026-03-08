@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Plus, MessageCircle, Clock, CheckCircle2, Filter } from "lucide-react";
 import { PageSkeleton } from "@/components/ui/skeleton-card";
 import { useTranslation } from "react-i18next";
+import { Helmet } from "react-helmet-async";
 import type { Database } from "@/integrations/supabase/types";
 
 type SessionStatus = Database["public"]["Enums"]["session_status"];
@@ -62,7 +63,12 @@ const CocoonPage = () => {
   if (isLoading) return <PageSkeleton rows={4} />;
 
   return (
-    <div className="px-6 pt-8 pb-24">
+    <>
+      <Helmet>
+        <title>Cocoon — Echo</title>
+        <meta name="description" content="Your safe conversation space. Connect with trained volunteers." />
+      </Helmet>
+      <div className="px-6 pt-8 pb-24">
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="font-heading text-2xl font-bold text-bark">{t("cocoon.title")}</h1>
@@ -201,6 +207,7 @@ const CocoonPage = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 

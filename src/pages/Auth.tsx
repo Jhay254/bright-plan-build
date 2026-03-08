@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Helmet } from "react-helmet-async";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
@@ -83,8 +84,13 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-dawn flex items-center justify-center px-4">
-      <div className="w-full max-w-md">
+    <>
+      <Helmet>
+        <title>Sign In — Echo</title>
+        <meta name="description" content="Sign in or enter anonymously to access Echo's safe, dignified mental health support." />
+      </Helmet>
+      <div className="min-h-screen bg-dawn flex items-center justify-center px-4">
+        <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <img src={echoLogo} alt="Echo" className="h-12 w-12 mx-auto mb-3" />
           <h1 className="font-heading text-2xl font-bold text-bark">{t("auth.welcome")}</h1>
@@ -163,6 +169,7 @@ const Auth = () => {
         </p>
       </div>
     </div>
+    </>
   );
 };
 

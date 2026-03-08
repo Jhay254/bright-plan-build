@@ -63,24 +63,27 @@ const AvailabilityScheduler = () => {
         </button>
       </div>
 
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto" role="grid" aria-label="Weekly availability schedule">
         <div className="grid grid-cols-8 gap-1 min-w-[500px]">
-          <div />
+          <div role="columnheader" />
           {DAY_LABELS.map((d) => (
-            <div key={d} className="text-center text-xs font-medium text-driftwood py-1">{d}</div>
+            <div key={d} role="columnheader" className="text-center text-xs font-medium text-driftwood py-1">{d}</div>
           ))}
 
           {TIME_SLOTS.map((hour) => (
-            <div key={`row-${hour}`} className="contents">
-              <div className="text-xs text-driftwood text-right pr-2 py-2">
+            <div key={`row-${hour}`} className="contents" role="row">
+              <div role="rowheader" className="text-xs text-driftwood text-right pr-2 py-2">
                 {HOUR_LABELS[hour]}
               </div>
-              {DAY_LABELS.map((_, day) => {
+              {DAY_LABELS.map((dayLabel, day) => {
                 const active = slots.has(slotKey(day, hour));
                 return (
                   <button
                     key={slotKey(day, hour)}
                     onClick={() => toggleSlot(day, hour)}
+                    role="gridcell"
+                    aria-pressed={active}
+                    aria-label={`${dayLabel} ${HOUR_LABELS[hour]}: ${active ? "available" : "unavailable"}`}
                     className={`h-8 rounded-sm transition-all ${
                       active ? "bg-forest/80 hover:bg-forest" : "bg-sand hover:bg-mist border border-stone"
                     }`}

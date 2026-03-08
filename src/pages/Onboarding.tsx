@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Shield, Eye, Heart, ChevronRight, ChevronLeft, Globe, Compass, Target } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { Helmet } from "react-helmet-async";
 
 const LANGUAGES = [
   { code: "en", label: "English" },
@@ -81,7 +82,12 @@ const Onboarding = () => {
   const back = () => step > 0 && setStep(step - 1);
 
   return (
-    <div className="min-h-screen bg-dawn flex flex-col">
+    <>
+      <Helmet>
+        <title>Welcome — Echo</title>
+        <meta name="description" content="Set up your Echo profile. Choose your language, goals, and preferences." />
+      </Helmet>
+      <div className="min-h-screen bg-dawn flex flex-col">
       {/* Progress bar */}
       <div className="px-6 pt-6">
         <div className="flex gap-1.5">
@@ -213,6 +219,7 @@ const Onboarding = () => {
         </Button>
       </div>
     </div>
+    </>
   );
 };
 

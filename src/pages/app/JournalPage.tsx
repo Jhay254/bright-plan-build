@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Plus, BookOpen, Flag } from "lucide-react";
 import { getMoodOption } from "@/lib/journal";
 import { PageSkeleton } from "@/components/ui/skeleton-card";
+import { Helmet } from "react-helmet-async";
 import HealingTimeline from "@/components/journal/HealingTimeline";
 
 const JournalPage = () => {
@@ -30,7 +31,12 @@ const JournalPage = () => {
   if (isLoading) return <PageSkeleton rows={4} />;
 
   return (
-    <div className="px-6 pt-8 pb-24 max-w-lg mx-auto">
+    <>
+      <Helmet>
+        <title>Healing Journal — Echo</title>
+        <meta name="description" content="Private reflections on your healing journey." />
+      </Helmet>
+      <div className="px-6 pt-8 pb-24 max-w-lg mx-auto">
       {/* Header */}
       <div className="flex items-center justify-between mb-2">
         <div>
@@ -55,11 +61,13 @@ const JournalPage = () => {
       <HealingTimeline entries={entries} />
 
       {/* Filter */}
-      <div className="flex gap-2 mb-6">
+      <div className="flex gap-2 mb-6" role="tablist" aria-label="Journal filter">
         {(["all", "milestones"] as const).map((f) => (
           <button
             key={f}
             onClick={() => setFilter(f)}
+            role="tab"
+            aria-selected={filter === f}
             className={`px-4 py-1.5 rounded-echo-pill text-sm font-medium border-2 transition-all capitalize ${
               filter === f
                 ? "border-dusk bg-dusk/10 text-dusk"
@@ -133,6 +141,7 @@ const JournalPage = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 

@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { MessageCircle, BookOpen } from "lucide-react";
 import { useNavigate, Navigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { Helmet } from "react-helmet-async";
 
 const HomePage = () => {
   const { profile, role } = useAuth();
@@ -14,7 +15,12 @@ const HomePage = () => {
   }
 
   return (
-    <div className="px-6 pt-8">
+    <>
+      <Helmet>
+        <title>Home — Echo</title>
+        <meta name="description" content="Your safe space for healing. Start a session or open your journal." />
+      </Helmet>
+      <div className="px-6 pt-8">
       <div className="mb-8">
         <p className="text-sm text-driftwood font-medium">{t("home.welcomeBack")}</p>
         <h1 className="font-heading text-2xl font-bold text-bark">
@@ -39,7 +45,8 @@ const HomePage = () => {
           </Button>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 };
 

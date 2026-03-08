@@ -60,13 +60,16 @@ const SessionRequest = () => {
       <p className="text-driftwood text-sm mb-8">A volunteer will be matched to support you.</p>
 
       {/* Topic */}
-      <div className="mb-6">
-        <p className="text-sm font-medium text-bark mb-3">What would you like to talk about?</p>
-        <div className="flex flex-wrap gap-2">
+      <fieldset className="mb-6">
+        <legend className="text-sm font-medium text-bark mb-3">What would you like to talk about?</legend>
+        <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="Session topic">
           {TOPICS.map((t) => (
             <button
               key={t}
               onClick={() => setTopic(t)}
+              role="radio"
+              aria-checked={topic === t}
+              aria-label={`Topic: ${t}`}
               className={`px-4 py-2 rounded-echo-pill text-sm font-medium border-2 transition-all ${
                 topic === t
                   ? "border-forest bg-mist text-forest"
@@ -77,16 +80,19 @@ const SessionRequest = () => {
             </button>
           ))}
         </div>
-      </div>
+      </fieldset>
 
       {/* Urgency */}
-      <div className="mb-6">
-        <p className="text-sm font-medium text-bark mb-3">How are you feeling right now?</p>
-        <div className="space-y-2">
+      <fieldset className="mb-6">
+        <legend className="text-sm font-medium text-bark mb-3">How are you feeling right now?</legend>
+        <div className="space-y-2" role="radiogroup" aria-label="Urgency level">
           {URGENCY_OPTIONS.map((opt) => (
             <button
               key={opt.value}
               onClick={() => setUrgency(opt.value)}
+              role="radio"
+              aria-checked={urgency === opt.value}
+              aria-label={`${opt.label}: ${opt.description}`}
               className={`w-full text-left px-5 py-3.5 rounded-echo-md border-2 transition-all ${
                 urgency === opt.value
                   ? "border-forest bg-dawn"
@@ -100,7 +106,7 @@ const SessionRequest = () => {
             </button>
           ))}
         </div>
-      </div>
+      </fieldset>
 
       {/* Preferences */}
       <div className="mb-8">
@@ -109,6 +115,7 @@ const SessionRequest = () => {
           value={preferences}
           onChange={(e) => setPreferences(e.target.value.slice(0, 300))}
           placeholder="Any preferences for your volunteer, or context that might help..."
+          aria-label="Session preferences"
           className="w-full h-24 px-4 py-3 rounded-echo-md border-2 border-stone bg-card text-bark placeholder:text-driftwood/60 focus:border-fern focus:outline-none resize-none text-sm"
         />
       </div>

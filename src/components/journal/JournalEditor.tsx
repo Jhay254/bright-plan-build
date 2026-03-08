@@ -73,6 +73,7 @@ const JournalEditor = () => {
         value={content}
         onChange={(e) => setContent(e.target.value.slice(0, 5000))}
         placeholder="What's on your mind today…"
+        aria-label="Journal entry content"
         className="w-full min-h-[200px] px-0 py-3 font-journal text-sm text-bark bg-transparent border-0 focus:outline-none resize-none placeholder:text-driftwood/50 leading-relaxed"
         autoFocus
       />
@@ -81,11 +82,14 @@ const JournalEditor = () => {
       {/* Mood selector */}
       <div className="mb-6">
         <p className="text-sm font-medium text-bark mb-3">How are you feeling?</p>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="Mood selector">
           {MOOD_OPTIONS.map((m) => (
             <button
               key={m.value}
               onClick={() => setMood(mood === m.value ? null : m.value)}
+              role="radio"
+              aria-checked={mood === m.value}
+              aria-label={`Mood: ${m.label}`}
               className={`flex items-center gap-1.5 px-3 py-2 rounded-echo-pill text-sm border-2 transition-all ${
                 mood === m.value ? `${m.color} font-medium` : "border-stone text-driftwood hover:border-dusk/40"
               }`}
@@ -104,7 +108,7 @@ const JournalEditor = () => {
             {tags.map((tag) => (
               <span key={tag} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-echo-pill text-xs font-medium bg-dusk/10 text-dusk border border-dusk/30">
                 {tag}
-                <button onClick={() => removeTag(tag)} className="hover:text-care-alert"><X className="h-3 w-3" /></button>
+                <button onClick={() => removeTag(tag)} aria-label={`Remove tag ${tag}`} className="hover:text-care-alert"><X className="h-3 w-3" /></button>
               </span>
             ))}
           </div>
@@ -121,7 +125,7 @@ const JournalEditor = () => {
         </div>
         <div className="flex flex-wrap gap-1.5">
           {allSuggested.filter((t) => !tags.includes(t)).slice(0, 8).map((tag) => (
-            <button key={tag} onClick={() => addTag(tag)} className="text-[11px] px-2.5 py-1 rounded-echo-pill border border-stone text-driftwood hover:border-dusk/40 hover:text-dusk transition-colors">
+            <button key={tag} onClick={() => addTag(tag)} aria-label={`Add suggested tag ${tag}`} className="text-[11px] px-2.5 py-1 rounded-echo-pill border border-stone text-driftwood hover:border-dusk/40 hover:text-dusk transition-colors">
               + {tag}
             </button>
           ))}
@@ -133,6 +137,9 @@ const JournalEditor = () => {
         <label className="flex items-center gap-3 cursor-pointer">
           <button
             onClick={() => setIsMilestone(!isMilestone)}
+            role="checkbox"
+            aria-checked={isMilestone}
+            aria-label="Mark as milestone"
             className={`w-6 h-6 rounded-md border-2 flex items-center justify-center transition-all ${
               isMilestone ? "bg-dusk border-dusk text-white" : "border-stone"
             }`}

@@ -107,11 +107,14 @@ const SessionFeedback = ({ sessionId, volunteerId, role, onComplete }: SessionFe
         <p className="text-sm font-medium text-bark mb-3 text-center">
           {role === "seeker" ? t("feedback.howFeelAfter") : t("feedback.howSessionGo")}
         </p>
-        <div className="flex justify-center gap-3">
+        <div className="flex justify-center gap-3" role="radiogroup" aria-label="Emotional rating">
           {EMOTIONAL_LABELS.map((e) => (
             <button
               key={e.value}
               onClick={() => setRating(e.value)}
+              role="radio"
+              aria-checked={rating === e.value}
+              aria-label={`Rating: ${e.label}`}
               className={`flex flex-col items-center gap-1 p-2 rounded-echo-md transition-all ${
                 rating === e.value ? "bg-mist scale-110" : "hover:bg-dawn"
               }`}

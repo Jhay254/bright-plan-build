@@ -7,6 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { generateAvatarSvg } from "@/lib/avatar";
 import { LogOut, RefreshCw, Shield, Edit2, Check, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { Helmet } from "react-helmet-async";
 import AccountUpgrade from "@/components/profile/AccountUpgrade";
 import DataExport from "@/components/profile/DataExport";
 import AccountDeletion from "@/components/profile/AccountDeletion";
@@ -85,7 +86,12 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="px-6 pt-8 pb-24 max-w-lg mx-auto">
+    <>
+      <Helmet>
+        <title>Profile — Echo</title>
+        <meta name="description" content="Manage your Echo profile, language, and account settings." />
+      </Helmet>
+      <div className="px-6 pt-8 pb-24 max-w-lg mx-auto">
       <h1 className="font-heading text-2xl font-bold text-bark mb-6">{t("profile.title")}</h1>
 
       {/* Avatar + Alias */}
@@ -95,7 +101,7 @@ const ProfilePage = () => {
           <button
             onClick={regenerateAvatar}
             className="absolute -bottom-1 ltr:-right-1 rtl:-left-1 w-7 h-7 rounded-full bg-forest text-primary-foreground flex items-center justify-center shadow-echo-1 hover:bg-fern transition-colors"
-            title={t("profile.regenerateAvatar")}
+            aria-label={t("profile.regenerateAvatar")}
           >
             <RefreshCw className="h-3.5 w-3.5" />
           </button>
@@ -109,17 +115,17 @@ const ProfilePage = () => {
                 className="h-9 text-sm"
                 autoFocus
               />
-              <button onClick={saveAlias} disabled={saving} className="text-affirm hover:opacity-80">
+              <button onClick={saveAlias} disabled={saving} aria-label="Save alias" className="text-affirm hover:opacity-80">
                 <Check className="h-5 w-5" />
               </button>
-              <button onClick={() => { setEditingAlias(false); setAliasValue(profile?.alias ?? ""); }} className="text-driftwood hover:opacity-80">
+              <button onClick={() => { setEditingAlias(false); setAliasValue(profile?.alias ?? ""); }} aria-label="Cancel editing alias" className="text-driftwood hover:opacity-80">
                 <X className="h-5 w-5" />
               </button>
             </div>
           ) : (
             <div className="flex items-center gap-2">
               <p className="font-heading font-semibold text-bark text-lg">{profile?.alias ?? "—"}</p>
-              <button onClick={() => setEditingAlias(true)} className="text-driftwood hover:text-forest">
+              <button onClick={() => setEditingAlias(true)} aria-label="Edit alias" className="text-driftwood hover:text-forest">
                 <Edit2 className="h-4 w-4" />
               </button>
             </div>
@@ -138,6 +144,8 @@ const ProfilePage = () => {
               <button
                 key={lang.code}
                 onClick={() => updateLanguage(lang.code)}
+                aria-label={`Language: ${lang.label}`}
+                aria-pressed={profile?.language === lang.code}
                 className={`px-3 py-1.5 rounded-echo-pill text-sm font-medium border transition-all ${
                   profile?.language === lang.code
                     ? "border-forest bg-mist text-forest"
@@ -211,6 +219,7 @@ const ProfilePage = () => {
         <LogOut className="h-4 w-4 ltr:mr-2 rtl:ml-2" /> {t("profile.signOut")}
       </Button>
     </div>
+    </>
   );
 };
 

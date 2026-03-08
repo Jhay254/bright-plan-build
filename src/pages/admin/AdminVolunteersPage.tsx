@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { PageSkeleton } from "@/components/ui/skeleton-card";
+import { Helmet } from "react-helmet-async";
 import { UserCheck, CheckCircle2, XCircle } from "lucide-react";
 import type { Database } from "@/integrations/supabase/types";
 
@@ -71,7 +72,9 @@ const AdminVolunteersPage = () => {
   if (isLoading) return <PageSkeleton rows={4} />;
 
   return (
-    <div className="p-6 max-w-3xl mx-auto">
+    <>
+      <Helmet><title>Volunteers — Admin — Echo</title></Helmet>
+      <div className="p-6 max-w-3xl mx-auto">
       <div className="flex items-center gap-3 mb-6">
         <UserCheck className="h-6 w-6 text-fern" />
         <h1 className="font-heading text-2xl font-bold text-bark">Volunteers</h1>
@@ -154,6 +157,7 @@ const AdminVolunteersPage = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 

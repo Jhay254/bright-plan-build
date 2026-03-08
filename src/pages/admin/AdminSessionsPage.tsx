@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { PageSkeleton } from "@/components/ui/skeleton-card";
+import { Helmet } from "react-helmet-async";
 import { MessageSquare, Clock } from "lucide-react";
 import type { Database } from "@/integrations/supabase/types";
 
@@ -42,7 +43,9 @@ const AdminSessionsPage = () => {
   const statuses: (SessionStatus | "all")[] = ["all", "requested", "matched", "active", "wrap_up", "closed", "cancelled"];
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
+    <>
+      <Helmet><title>Sessions — Admin — Echo</title></Helmet>
+      <div className="p-6 max-w-4xl mx-auto">
       <div className="flex items-center gap-3 mb-6">
         <MessageSquare className="h-6 w-6 text-forest" />
         <h1 className="font-heading text-2xl font-bold text-bark">Sessions</h1>
@@ -103,6 +106,7 @@ const AdminSessionsPage = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 

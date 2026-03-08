@@ -20,6 +20,8 @@ const ThemeToggle = () => {
           <button
             key={value}
             onClick={() => setTheme(value)}
+            aria-label={`Theme: ${label}`}
+            aria-pressed={theme === value}
             className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-echo-pill text-sm font-medium border transition-all ${
               theme === value
                 ? "border-forest bg-mist text-forest"
