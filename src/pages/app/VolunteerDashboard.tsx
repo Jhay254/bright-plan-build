@@ -51,6 +51,7 @@ const VolunteerDashboard = () => {
       }
 
       refetchProfile();
+      refreshAuth();
     };
 
     createProfile();
