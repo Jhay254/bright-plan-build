@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, Navigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Helmet } from "react-helmet-async";
 import { Input } from "@/components/ui/input";
@@ -23,7 +23,7 @@ const Auth = () => {
   const [cooldown, setCooldown] = useState(0);
   const failCount = useRef(0);
   const cooldownTimer = useRef<ReturnType<typeof setInterval>>();
-  const { signIn, signUp, signInAnonymously } = useAuth();
+  const { user: existingUser, loading, signIn, signUp, signInAnonymously } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
   const { t } = useTranslation();
@@ -54,6 +54,11 @@ const Auth = () => {
 
   const isDisabled = submitting || cooldown > 0;
 
+  // Redirect already-authenticated users away from auth page
+  if (!loading && existingUser) {
+    return <Navigate to="/app" replace />;
+  }
+
   const recordConsent = async (userId: string) => {
     await supabase
       .from("profiles")
@@ -68,8 +73,9 @@ const Auth = () => {
     }
     setSubmitting(true);
     try {
-      // Clear any stale volunteer data so seekers aren't misrouted
+      // Clear any stale session and volunteer data so seekers aren't misrouted
       localStorage.removeItem("echo_volunteer_pending");
+      await supabase.auth.signOut();
       await signInAnonymously();
       const { data: { user } } = await supabase.auth.getUser();
       if (user) await recordConsent(user.id);
