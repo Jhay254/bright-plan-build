@@ -39,10 +39,8 @@ const VolunteerDashboard = () => {
 
       localStorage.removeItem("echo_volunteer_pending");
 
-      await supabase.from("user_roles").upsert(
-        { user_id: user.id, role: "volunteer" as const },
-        { onConflict: "user_id,role" }
-      );
+      // Claim volunteer role via security-definer function
+      await supabase.rpc("claim_volunteer_role");
 
       // Auto-complete seeker onboarding so volunteers aren't blocked
       if (profile && !profile.onboarding_complete) {
