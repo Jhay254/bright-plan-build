@@ -141,6 +141,7 @@ const JournalPage = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 
