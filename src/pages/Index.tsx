@@ -4,6 +4,7 @@ import FlywheelSection from "@/components/landing/FlywheelSection";
 import PrinciplesSection from "@/components/landing/PrinciplesSection";
 import VolunteerSection from "@/components/landing/VolunteerSection";
 import Footer from "@/components/landing/Footer";
+import CookieBanner from "@/components/CookieBanner";
 import { Helmet } from "react-helmet-async";
 
 const jsonLd = {
