@@ -1,5 +1,6 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { PageSkeleton } from "@/components/ui/skeleton-card";
 import { Helmet } from "react-helmet-async";
