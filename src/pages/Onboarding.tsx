@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Shield, Eye, Heart, ChevronRight, ChevronLeft, Globe, Compass, Target } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const LANGUAGES = [
   { code: "en", label: "English" },
@@ -14,42 +15,20 @@ const LANGUAGES = [
   { code: "pt", label: "Português" },
 ];
 
-const HEALING_GOALS = [
-  "Coping with stress",
-  "Processing grief",
-  "Managing anxiety",
-  "Building resilience",
-  "Healing from trauma",
-  "Improving relationships",
-  "Finding purpose",
-  "Self-acceptance",
-  "Emotional regulation",
-  "Overcoming isolation",
-];
+const GOAL_KEYS = [
+  "stress", "grief", "anxiety", "resilience", "trauma",
+  "relationships", "purpose", "selfAcceptance", "emotionalRegulation", "isolation",
+] as const;
 
-const WELCOME_STEPS = [
-  {
-    icon: Shield,
-    title: "You are safe here",
-    description: "Echo is a confidential space. Your conversations are private, encrypted, and never shared. You control what you share and when.",
-  },
-  {
-    icon: Eye,
-    title: "You are anonymous",
-    description: "No real names required. Your identity is protected by a generated alias. You can explore freely without fear of being identified.",
-  },
-  {
-    icon: Heart,
-    title: "How Echo works",
-    description: "When you're ready, you'll be matched with a trained volunteer for a private conversation called a Cocoon session. You can also journal, join community circles, and track your healing journey.",
-  },
-];
+const WELCOME_ICONS = [Shield, Eye, Heart];
+const WELCOME_KEYS = ["safe", "anonymous", "howItWorks"] as const;
 
 const Onboarding = () => {
-  const [step, setStep] = useState(0); // 0-2: welcome, 3: language, 4: cultural, 5: goals
+  const [step, setStep] = useState(0);
   const { user, profile } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { t, i18n } = useTranslation();
   const [language, setLanguage] = useState(profile?.language ?? "en");
   const [culturalContext, setCulturalContext] = useState("");
   const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
@@ -61,6 +40,13 @@ const Onboarding = () => {
     setSelectedGoals((prev) =>
       prev.includes(goal) ? prev.filter((g) => g !== goal) : prev.length < 5 ? [...prev, goal] : prev
     );
+  };
+
+  const handleLanguageSelect = (code: string) => {
+    setLanguage(code);
+    i18n.changeLanguage(code);
+    document.documentElement.dir = code === "ar" ? "rtl" : "ltr";
+    document.documentElement.lang = code;
   };
 
   const handleComplete = async () => {
@@ -79,7 +65,7 @@ const Onboarding = () => {
       if (error) throw error;
       navigate("/app", { replace: true });
     } catch (e: any) {
-      toast({ title: "Error saving preferences", description: e.message, variant: "destructive" });
+      toast({ title: t("onboarding.errorSaving"), description: e.message, variant: "destructive" });
     } finally {
       setSaving(false);
     }
@@ -116,7 +102,7 @@ const Onboarding = () => {
           {step < 3 && (
             <div className="text-center">
               {(() => {
-                const Icon = WELCOME_STEPS[step].icon;
+                const Icon = WELCOME_ICONS[step];
                 return (
                   <div className="mx-auto w-16 h-16 rounded-full bg-mist flex items-center justify-center mb-6">
                     <Icon className="h-8 w-8 text-forest" />
@@ -124,10 +110,10 @@ const Onboarding = () => {
                 );
               })()}
               <h1 className="font-heading text-2xl font-bold text-bark mb-4">
-                {WELCOME_STEPS[step].title}
+                {t(`onboarding.${WELCOME_KEYS[step]}`)}
               </h1>
               <p className="text-driftwood leading-relaxed">
-                {WELCOME_STEPS[step].description}
+                {t(`onboarding.${WELCOME_KEYS[step]}Desc`)}
               </p>
             </div>
           )}
@@ -138,13 +124,13 @@ const Onboarding = () => {
               <div className="mx-auto w-16 h-16 rounded-full bg-mist flex items-center justify-center mb-6 text-center">
                 <Globe className="h-8 w-8 text-forest" />
               </div>
-              <h1 className="font-heading text-2xl font-bold text-bark mb-2 text-center">Choose your language</h1>
-              <p className="text-driftwood text-sm mb-6 text-center">You can change this anytime in settings.</p>
+              <h1 className="font-heading text-2xl font-bold text-bark mb-2 text-center">{t("onboarding.chooseLanguage")}</h1>
+              <p className="text-driftwood text-sm mb-6 text-center">{t("onboarding.changeAnytime")}</p>
               <div className="space-y-2">
                 {LANGUAGES.map((lang) => (
                   <button
                     key={lang.code}
-                    onClick={() => setLanguage(lang.code)}
+                    onClick={() => handleLanguageSelect(lang.code)}
                     className={`w-full text-left px-5 py-3.5 rounded-echo-md border-2 transition-all font-medium ${
                       language === lang.code
                         ? "border-forest bg-dawn text-forest"
@@ -164,17 +150,17 @@ const Onboarding = () => {
               <div className="mx-auto w-16 h-16 rounded-full bg-mist flex items-center justify-center mb-6 text-center">
                 <Compass className="h-8 w-8 text-forest" />
               </div>
-              <h1 className="font-heading text-2xl font-bold text-bark mb-2 text-center">Cultural context</h1>
+              <h1 className="font-heading text-2xl font-bold text-bark mb-2 text-center">{t("onboarding.culturalContext")}</h1>
               <p className="text-driftwood text-sm mb-6 text-center">
-                Optional — helps us match you with a volunteer who understands your background.
+                {t("onboarding.culturalContextDesc")}
               </p>
               <textarea
                 value={culturalContext}
                 onChange={(e) => setCulturalContext(e.target.value.slice(0, 500))}
-                placeholder="Share anything about your cultural background, faith, community, or identity that might help us support you better..."
+                placeholder={t("onboarding.culturalPlaceholder")}
                 className="w-full h-32 px-4 py-3 rounded-echo-md border-2 border-stone bg-card text-bark placeholder:text-driftwood/60 focus:border-fern focus:outline-none resize-none text-sm"
               />
-              <p className="text-xs text-driftwood mt-2">{culturalContext.length}/500 · This is completely optional</p>
+              <p className="text-xs text-driftwood mt-2">{culturalContext.length}/500 · {t("onboarding.optional")}</p>
             </div>
           )}
 
@@ -184,26 +170,29 @@ const Onboarding = () => {
               <div className="mx-auto w-16 h-16 rounded-full bg-mist flex items-center justify-center mb-6 text-center">
                 <Target className="h-8 w-8 text-forest" />
               </div>
-              <h1 className="font-heading text-2xl font-bold text-bark mb-2 text-center">Your healing goals</h1>
+              <h1 className="font-heading text-2xl font-bold text-bark mb-2 text-center">{t("onboarding.healingGoals")}</h1>
               <p className="text-driftwood text-sm mb-6 text-center">
-                Select up to 5 areas you'd like to focus on.
+                {t("onboarding.selectGoals")}
               </p>
               <div className="flex flex-wrap gap-2">
-                {HEALING_GOALS.map((goal) => (
-                  <button
-                    key={goal}
-                    onClick={() => toggleGoal(goal)}
-                    className={`px-4 py-2 rounded-echo-pill text-sm font-medium border-2 transition-all ${
-                      selectedGoals.includes(goal)
-                        ? "border-forest bg-mist text-forest"
-                        : "border-stone bg-card text-driftwood hover:border-fern"
-                    }`}
-                  >
-                    {goal}
-                  </button>
-                ))}
+                {GOAL_KEYS.map((key) => {
+                  const label = t(`onboarding.goals.${key}`);
+                  return (
+                    <button
+                      key={key}
+                      onClick={() => toggleGoal(label)}
+                      className={`px-4 py-2 rounded-echo-pill text-sm font-medium border-2 transition-all ${
+                        selectedGoals.includes(label)
+                          ? "border-forest bg-mist text-forest"
+                          : "border-stone bg-card text-driftwood hover:border-fern"
+                      }`}
+                    >
+                      {label}
+                    </button>
+                  );
+                })}
               </div>
-              <p className="text-xs text-driftwood mt-3">{selectedGoals.length}/5 selected</p>
+              <p className="text-xs text-driftwood mt-3">{selectedGoals.length}/5 {t("onboarding.selected")}</p>
             </div>
           )}
         </div>
@@ -213,14 +202,14 @@ const Onboarding = () => {
       <div className="px-6 pb-8 flex items-center justify-between max-w-md mx-auto w-full">
         {step > 0 ? (
           <Button variant="ghost" onClick={back} size="sm">
-            <ChevronLeft className="h-4 w-4 mr-1" /> Back
+            <ChevronLeft className="h-4 w-4 ltr:mr-1 rtl:ml-1" /> {t("onboarding.back")}
           </Button>
         ) : (
           <div />
         )}
         <Button variant="hero" onClick={next} disabled={saving}>
-          {step === totalSteps - 1 ? (saving ? "Saving…" : "Get Started") : "Continue"}
-          {step < totalSteps - 1 && <ChevronRight className="h-4 w-4 ml-1" />}
+          {step === totalSteps - 1 ? (saving ? t("onboarding.saving") : t("onboarding.getStarted")) : t("onboarding.continue")}
+          {step < totalSteps - 1 && <ChevronRight className="h-4 w-4 ltr:ml-1 rtl:mr-1" />}
         </Button>
       </div>
     </div>
