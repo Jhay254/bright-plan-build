@@ -79,6 +79,7 @@ const App = () => (
                   <Route path="volunteers" element={<AdminVolunteersPage />} />
                   <Route path="sessions" element={<AdminSessionsPage />} />
                   <Route path="users" element={<AdminUsersPage />} />
+                  <Route path="community" element={<AdminCommunityPage />} />
                   <Route path="crisis" element={<AdminCrisisPage />} />
                 </Route>
                 <Route path="/privacy" element={<PrivacyPolicy />} />
