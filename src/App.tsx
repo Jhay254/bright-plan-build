@@ -69,7 +69,13 @@ const App = () => (
                 <Route path="community" element={<ErrorBoundary><CommunityPage /></ErrorBoundary>} />
                 <Route path="profile" element={<ErrorBoundary><ProfilePage /></ErrorBoundary>} />
                 <Route path="volunteer" element={<ErrorBoundary><VolunteerDashboard /></ErrorBoundary>} />
-                <Route path="admin/crisis" element={<ErrorBoundary><AdminCrisisPage /></ErrorBoundary>} />
+              </Route>
+              <Route path="/admin" element={<ErrorBoundary><AdminLayout /></ErrorBoundary>}>
+                <Route index element={<AdminDashboardPage />} />
+                <Route path="volunteers" element={<AdminVolunteersPage />} />
+                <Route path="sessions" element={<AdminSessionsPage />} />
+                <Route path="users" element={<AdminUsersPage />} />
+                <Route path="crisis" element={<AdminCrisisPage />} />
               </Route>
               <Route path="*" element={<NotFound />} />
             </Routes>
