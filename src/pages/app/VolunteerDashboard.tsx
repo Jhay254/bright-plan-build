@@ -8,10 +8,12 @@ import { MessageCircle, Clock, Calendar, Loader2, XCircle } from "lucide-react";
 import ReapplyForm from "@/components/volunteer/ReapplyForm";
 import { useVolunteerProfile, useVolunteerActiveSessions } from "@/hooks/use-volunteer-data";
 import { DashboardSkeleton } from "@/components/ui/skeleton-card";
+import QueryError from "@/components/ui/query-error";
 import AvailabilityScheduler from "@/components/volunteer/AvailabilityScheduler";
 import TrainingChecklist from "@/components/volunteer/TrainingChecklist";
 import ImpactPortfolio from "@/components/volunteer/ImpactPortfolio";
 import CpdLog from "@/components/volunteer/CpdLog";
+import { useEffect, useState } from "react";
 import { useEffect, useState } from "react";
 
 const VolunteerDashboard = () => {
