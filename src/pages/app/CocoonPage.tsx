@@ -75,30 +75,67 @@ const CocoonPage = () => {
       {/* Volunteer: available sessions to accept */}
       {role === "volunteer" && availableSessions.length > 0 && (
         <div className="mb-8">
-          <h2 className="font-heading text-sm font-semibold text-forest uppercase tracking-wide mb-3">
-            Sessions Needing Support
-          </h2>
-          <div className="space-y-2">
-            {availableSessions.map((s) => (
-              <button
-                key={s.id}
-                onClick={() => navigate(`/app/cocoon/${s.id}`)}
-                className="w-full text-left bg-dawn rounded-echo-md p-4 border border-mist hover:border-forest transition-colors"
-              >
-                <p className="font-medium text-bark text-sm">{s.topic}</p>
-                <div className="flex items-center gap-2 mt-1">
-                  <span className={`text-xs font-medium px-2 py-0.5 rounded-echo-pill ${
-                    s.urgency === "high" ? "bg-ember/20 text-ember" :
-                    s.urgency === "medium" ? "bg-sunlight/20 text-bark" :
-                    "bg-mist text-fern"
-                  }`}>
-                    {s.urgency}
-                  </span>
-                  <span className="text-xs text-driftwood">{s.language.toUpperCase()}</span>
-                </div>
-              </button>
-            ))}
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="font-heading text-sm font-semibold text-forest uppercase tracking-wide">
+              Sessions Needing Support
+            </h2>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowFilters(!showFilters)}
+              className="text-driftwood"
+            >
+              <Filter className="h-4 w-4 mr-1" />
+              Filter
+            </Button>
           </div>
+
+          {showFilters && (
+            <div className="flex flex-wrap gap-2 mb-3">
+              <select
+                value={filterLang}
+                onChange={(e) => setFilterLang(e.target.value)}
+                className="text-sm border border-border rounded-echo-md px-3 py-1.5 bg-card text-bark focus:border-fern focus:outline-none"
+              >
+                {LANGUAGE_OPTIONS.map((opt) => (
+                  <option key={opt.value} value={opt.value}>{opt.label}</option>
+                ))}
+              </select>
+              <input
+                type="text"
+                value={filterTopic}
+                onChange={(e) => setFilterTopic(e.target.value)}
+                placeholder="Filter by topic…"
+                className="text-sm border border-border rounded-echo-md px-3 py-1.5 bg-card text-bark placeholder:text-driftwood/60 focus:border-fern focus:outline-none flex-1 min-w-[140px]"
+              />
+            </div>
+          )}
+
+          {filteredAvailable.length === 0 ? (
+            <p className="text-sm text-driftwood">No sessions match your filters.</p>
+          ) : (
+            <div className="space-y-2">
+              {filteredAvailable.map((s) => (
+                <button
+                  key={s.id}
+                  onClick={() => navigate(`/app/cocoon/${s.id}`)}
+                  className="w-full text-left bg-dawn rounded-echo-md p-4 border border-mist hover:border-forest transition-colors"
+                >
+                  <p className="font-medium text-bark text-sm">{s.topic}</p>
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className={`text-xs font-medium px-2 py-0.5 rounded-echo-pill ${
+                      s.urgency === "high" ? "bg-ember/20 text-ember" :
+                      s.urgency === "medium" ? "bg-sunlight/20 text-bark" :
+                      "bg-mist text-fern"
+                    }`}>
+                      {s.urgency}
+                    </span>
+                    <span className="text-xs text-driftwood">{s.language.toUpperCase()}</span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       )}
 
