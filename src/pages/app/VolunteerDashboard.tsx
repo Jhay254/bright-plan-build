@@ -5,19 +5,21 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button";
 import { MessageCircle, Clock, Calendar, Loader2, XCircle } from "lucide-react";
+import ReapplyForm from "@/components/volunteer/ReapplyForm";
 import { useVolunteerProfile, useVolunteerActiveSessions } from "@/hooks/use-volunteer-data";
 import { DashboardSkeleton } from "@/components/ui/skeleton-card";
 import AvailabilityScheduler from "@/components/volunteer/AvailabilityScheduler";
 import TrainingChecklist from "@/components/volunteer/TrainingChecklist";
 import ImpactPortfolio from "@/components/volunteer/ImpactPortfolio";
 import CpdLog from "@/components/volunteer/CpdLog";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const VolunteerDashboard = () => {
   const { user, profile, role, refreshProfile: refreshAuth } = useAuth();
   const navigate = useNavigate();
   const { data: volProfile, isLoading: vpLoading, refetch: refetchProfile } = useVolunteerProfile(user?.id);
   const { data: activeSessions = [], isLoading: sessionsLoading } = useVolunteerActiveSessions(user?.id);
+  const [showReapply, setShowReapply] = useState(false);
 
   // Auto-create volunteer profile if it doesn't exist
   useEffect(() => {
@@ -89,9 +91,23 @@ const VolunteerDashboard = () => {
                 <p className="text-xs text-driftwood font-medium mb-1">Reason</p>
                 <p className="text-sm text-bark">{volProfile.rejection_reason}</p>
               </div>
-              <p className="text-xs text-driftwood">
-                If you believe this was a mistake or your circumstances have changed, please reach out to our team.
-              </p>
+
+              {showReapply ? (
+                <ReapplyForm
+                  userId={user!.id}
+                  currentMotivation={volProfile.motivation}
+                  currentBackground={volProfile.background}
+                  currentSpecialisations={volProfile.specialisations}
+                  onSuccess={() => {
+                    setShowReapply(false);
+                    refetchProfile();
+                  }}
+                />
+              ) : (
+                <Button variant="hero" className="mt-2" onClick={() => setShowReapply(true)}>
+                  Update & Re-apply
+                </Button>
+              )}
             </>
           ) : (
             <>
