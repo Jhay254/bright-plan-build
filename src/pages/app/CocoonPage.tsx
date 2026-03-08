@@ -27,14 +27,34 @@ const STATUS_LABEL: Record<SessionStatus, string> = {
   cancelled: "Cancelled",
 };
 
+const LANGUAGE_OPTIONS = [
+  { value: "", label: "All Languages" },
+  { value: "en", label: "English" },
+  { value: "fr", label: "French" },
+  { value: "sw", label: "Swahili" },
+  { value: "ar", label: "Arabic" },
+  { value: "pt", label: "Portuguese" },
+];
+
 const CocoonPage = () => {
   const { user, role } = useAuth();
   const navigate = useNavigate();
   const { data: sessions = [], isLoading } = useUserSessions(user?.id);
   const { data: availableSessions = [] } = useAvailableSessions(user?.id, role === "volunteer");
 
+  const [filterLang, setFilterLang] = useState("");
+  const [filterTopic, setFilterTopic] = useState("");
+  const [showFilters, setShowFilters] = useState(false);
+
   const activeSessions = sessions.filter((s) => !["closed", "cancelled"].includes(s.status));
   const pastSessions = sessions.filter((s) => ["closed", "cancelled"].includes(s.status));
+
+  const filteredAvailable = useMemo(() => {
+    let result = availableSessions;
+    if (filterLang) result = result.filter((s) => s.language === filterLang);
+    if (filterTopic) result = result.filter((s) => s.topic.toLowerCase().includes(filterTopic.toLowerCase()));
+    return result;
+  }, [availableSessions, filterLang, filterTopic]);
 
   if (isLoading) return <PageSkeleton rows={4} />;
 
