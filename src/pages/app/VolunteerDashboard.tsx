@@ -72,7 +72,7 @@ const VolunteerDashboard = () => {
 
   // --- Approval gate ---
   if (volProfile && !volProfile.is_approved) {
-    const rejected = !!(volProfile as any).rejection_reason;
+    const rejected = !!volProfile.rejection_reason;
 
     return (
       <>
