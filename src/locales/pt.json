@@ -132,7 +132,14 @@
   },
   "community": {
     "title": "Comunidade",
-    "comingSoon": "Círculos comunitários e suporte em grupo chegando em breve."
+    "subtitle": "Recursos, apoio e incentivo de quem entende.",
+    "resourcesTab": "Recursos",
+    "encouragementsTab": "Incentivos",
+    "postEncouragement": "Compartilhar um incentivo",
+    "encouragementPlaceholder": "Escreva algo gentil para alguém que precisa…",
+    "post": "Publicar",
+    "posting": "Publicando…",
+    "noEncouragements": "Nenhum incentivo ainda. Seja o primeiro a compartilhar."
   },
   "profile": {
     "title": "Perfil",
@@ -157,9 +164,9 @@
     },
     "export": {
       "title": "Exportar seus dados",
-      "desc": "Baixe suas entradas de diário como arquivo JSON.",
-      "button": "Exportar diário",
-      "success": "Diário exportado!"
+      "desc": "Baixe todos os seus dados (perfil, diário, sessões, avaliações) como arquivo JSON.",
+      "button": "Exportar dados",
+      "success": "Dados exportados!"
     },
     "deletion": {
       "title": "Excluir conta",

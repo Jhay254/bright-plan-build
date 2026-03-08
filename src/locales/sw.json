@@ -132,7 +132,14 @@
   },
   "community": {
     "title": "Jamii",
-    "comingSoon": "Vikundi vya jamii na msaada wa vikundi vinakuja hivi karibuni."
+    "subtitle": "Rasilimali, msaada na maneno ya kutia moyo kutoka kwa wale wanaolewa.",
+    "resourcesTab": "Rasilimali",
+    "encouragementsTab": "Maneno ya kutia moyo",
+    "postEncouragement": "Shiriki neno la kutia moyo",
+    "encouragementPlaceholder": "Andika kitu kizuri kwa mtu anayekihitaji…",
+    "post": "Chapisha",
+    "posting": "Inachapisha…",
+    "noEncouragements": "Hakuna maneno ya kutia moyo bado. Kuwa wa kwanza kushiriki."
   },
   "profile": {
     "title": "Wasifu",
@@ -157,9 +164,9 @@
     },
     "export": {
       "title": "Hamisha Data Yako",
-      "desc": "Pakua maandishi yako ya jarida kama faili ya JSON.",
-      "button": "Hamisha Jarida",
-      "success": "Jarida limehamishwa!"
+      "desc": "Pakua data yako yote (wasifu, jarida, vikao, maoni) kama faili ya JSON.",
+      "button": "Hamisha Data",
+      "success": "Data imehamishwa!"
     },
     "deletion": {
       "title": "Futa Akaunti",
