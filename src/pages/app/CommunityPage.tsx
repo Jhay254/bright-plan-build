@@ -1,6 +1,6 @@
+import { useTranslation } from "react-i18next";
+
 const CommunityPage = () => {
-  // Using dynamic import to avoid build issues — lightweight component
-  const { useTranslation } = require("react-i18next");
   const { t } = useTranslation();
 
   return (
