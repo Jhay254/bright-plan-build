@@ -98,6 +98,33 @@ export type Database = {
         }
         Relationships: []
       }
+      cpd_certificates: {
+        Row: {
+          cert_code: string
+          entry_ids: string[]
+          id: string
+          issued_at: string
+          total_hours: number
+          user_id: string
+        }
+        Insert: {
+          cert_code?: string
+          entry_ids?: string[]
+          id?: string
+          issued_at?: string
+          total_hours: number
+          user_id: string
+        }
+        Update: {
+          cert_code?: string
+          entry_ids?: string[]
+          id?: string
+          issued_at?: string
+          total_hours?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       cpd_entries: {
         Row: {
           category: string
