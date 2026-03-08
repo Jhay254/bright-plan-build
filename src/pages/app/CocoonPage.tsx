@@ -5,6 +5,7 @@ import { useUserSessions, useAvailableSessions } from "@/hooks/use-sessions";
 import { Button } from "@/components/ui/button";
 import { Plus, MessageCircle, Clock, CheckCircle2, Filter } from "lucide-react";
 import { PageSkeleton } from "@/components/ui/skeleton-card";
+import { useTranslation } from "react-i18next";
 import type { Database } from "@/integrations/supabase/types";
 
 type SessionStatus = Database["public"]["Enums"]["session_status"];
@@ -18,14 +19,7 @@ const STATUS_ICON: Record<SessionStatus, React.ReactNode> = {
   cancelled: <CheckCircle2 className="h-4 w-4 text-care-alert" />,
 };
 
-const STATUS_LABEL: Record<SessionStatus, string> = {
-  requested: "Waiting",
-  matched: "Matched",
-  active: "Active",
-  wrap_up: "Wrapping up",
-  closed: "Ended",
-  cancelled: "Cancelled",
-};
+// Status labels are derived from translations inside component
 
 const LANGUAGE_OPTIONS = [
   { value: "", label: "All Languages" },
@@ -39,9 +33,18 @@ const LANGUAGE_OPTIONS = [
 const CocoonPage = () => {
   const { user, role } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { data: sessions = [], isLoading } = useUserSessions(user?.id);
   const { data: availableSessions = [] } = useAvailableSessions(user?.id, role === "volunteer");
 
+  const STATUS_LABEL: Record<SessionStatus, string> = {
+    requested: t("cocoon.waiting"),
+    matched: t("cocoon.matched"),
+    active: t("cocoon.activeStatus"),
+    wrap_up: t("cocoon.wrappingUp"),
+    closed: t("cocoon.ended"),
+    cancelled: t("cocoon.cancelled"),
+  };
   const [filterLang, setFilterLang] = useState("");
   const [filterTopic, setFilterTopic] = useState("");
   const [showFilters, setShowFilters] = useState(false);
@@ -62,12 +65,12 @@ const CocoonPage = () => {
     <div className="px-6 pt-8 pb-24">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="font-heading text-2xl font-bold text-bark">Cocoon</h1>
-          <p className="text-driftwood text-sm">Your safe conversation space</p>
+          <h1 className="font-heading text-2xl font-bold text-bark">{t("cocoon.title")}</h1>
+          <p className="text-driftwood text-sm">{t("cocoon.subtitle")}</p>
         </div>
         {role === "seeker" && (
           <Button variant="default" size="sm" onClick={() => navigate("/app/cocoon/new")}>
-            <Plus className="h-4 w-4 mr-1" /> New Session
+            <Plus className="h-4 w-4 ltr:mr-1 rtl:ml-1" /> {t("cocoon.newSession")}
           </Button>
         )}
       </div>
@@ -77,7 +80,7 @@ const CocoonPage = () => {
         <div className="mb-8">
           <div className="flex items-center justify-between mb-3">
             <h2 className="font-heading text-sm font-semibold text-forest uppercase tracking-wide">
-              Sessions Needing Support
+              {t("cocoon.needingSupport")}
             </h2>
             <Button
               variant="ghost"
@@ -85,8 +88,8 @@ const CocoonPage = () => {
               onClick={() => setShowFilters(!showFilters)}
               className="text-driftwood"
             >
-              <Filter className="h-4 w-4 mr-1" />
-              Filter
+              <Filter className="h-4 w-4 ltr:mr-1 rtl:ml-1" />
+              {t("cocoon.filter")}
             </Button>
           </div>
 
@@ -105,14 +108,14 @@ const CocoonPage = () => {
                 type="text"
                 value={filterTopic}
                 onChange={(e) => setFilterTopic(e.target.value)}
-                placeholder="Filter by topic…"
+                placeholder={t("cocoon.filterByTopic")}
                 className="text-sm border border-border rounded-echo-md px-3 py-1.5 bg-card text-bark placeholder:text-driftwood/60 focus:border-fern focus:outline-none flex-1 min-w-[140px]"
               />
             </div>
           )}
 
           {filteredAvailable.length === 0 ? (
-            <p className="text-sm text-driftwood">No sessions match your filters.</p>
+            <p className="text-sm text-driftwood">{t("cocoon.noMatchFilter")}</p>
           ) : (
             <div className="space-y-2">
               {filteredAvailable.map((s) => (
@@ -142,7 +145,7 @@ const CocoonPage = () => {
       {/* Active sessions */}
       {activeSessions.length > 0 && (
         <div className="mb-8">
-          <h2 className="font-heading text-sm font-semibold text-bark uppercase tracking-wide mb-3">Active</h2>
+          <h2 className="font-heading text-sm font-semibold text-bark uppercase tracking-wide mb-3">{t("cocoon.active")}</h2>
           <div className="space-y-2">
             {activeSessions.map((s) => (
               <button
@@ -167,10 +170,10 @@ const CocoonPage = () => {
       {activeSessions.length === 0 && role === "seeker" && (
         <div className="bg-dawn rounded-echo-lg p-8 text-center mb-8">
           <MessageCircle className="h-10 w-10 text-fern mx-auto mb-3" />
-          <p className="font-heading font-semibold text-bark mb-1">No active sessions</p>
-          <p className="text-xs text-driftwood mb-4">Start a Cocoon session to connect with a volunteer.</p>
+          <p className="font-heading font-semibold text-bark mb-1">{t("cocoon.noActiveSessions")}</p>
+          <p className="text-xs text-driftwood mb-4">{t("cocoon.startCocoon")}</p>
           <Button variant="hero" onClick={() => navigate("/app/cocoon/new")}>
-            Request a Session
+            {t("cocoon.requestSession")}
           </Button>
         </div>
       )}
@@ -178,7 +181,7 @@ const CocoonPage = () => {
       {/* Past sessions */}
       {pastSessions.length > 0 && (
         <div>
-          <h2 className="font-heading text-sm font-semibold text-driftwood uppercase tracking-wide mb-3">Past Sessions</h2>
+          <h2 className="font-heading text-sm font-semibold text-driftwood uppercase tracking-wide mb-3">{t("cocoon.pastSessions")}</h2>
           <div className="space-y-2">
             {pastSessions.slice(0, 10).map((s) => (
               <button

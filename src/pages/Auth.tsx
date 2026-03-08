@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
 import echoLogo from "@/assets/echo-logo.png";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from "react-i18next";
 
 type AuthMode = "signin" | "signup" | "anonymous";
 
@@ -17,6 +18,7 @@ const Auth = () => {
   const { signIn, signUp, signInAnonymously } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   const handleAnonymous = async () => {
     setSubmitting(true);
@@ -24,7 +26,7 @@ const Auth = () => {
       await signInAnonymously();
       navigate("/onboarding");
     } catch (e: any) {
-      toast({ title: "Something went wrong", description: e.message, variant: "destructive" });
+      toast({ title: t("auth.somethingWrong"), description: e.message, variant: "destructive" });
     } finally {
       setSubmitting(false);
     }
@@ -36,13 +38,13 @@ const Auth = () => {
     try {
       if (mode === "signup") {
         await signUp(email, password);
-        toast({ title: "Check your email", description: "We sent you a confirmation link." });
+        toast({ title: t("auth.checkEmail"), description: t("auth.confirmLink") });
       } else {
         await signIn(email, password);
         navigate("/onboarding");
       }
     } catch (e: any) {
-      toast({ title: "Error", description: e.message, variant: "destructive" });
+      toast({ title: t("auth.error"), description: e.message, variant: "destructive" });
     } finally {
       setSubmitting(false);
     }
@@ -53,19 +55,18 @@ const Auth = () => {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <img src={echoLogo} alt="Echo" className="h-12 w-12 mx-auto mb-3" />
-          <h1 className="font-heading text-2xl font-bold text-bark">Welcome to Echo</h1>
-          <p className="text-driftwood mt-1 text-sm">A safe space for healing</p>
+          <h1 className="font-heading text-2xl font-bold text-bark">{t("auth.welcome")}</h1>
+          <p className="text-driftwood mt-1 text-sm">{t("auth.safeSpace")}</p>
         </div>
 
         <div className="bg-card rounded-echo-lg shadow-echo-2 p-8">
-          {/* Anonymous entry — the primary path */}
           <Button
             variant="hero"
             className="w-full mb-6"
             onClick={handleAnonymous}
             disabled={submitting}
           >
-            Enter Anonymously
+            {t("auth.enterAnonymously")}
           </Button>
 
           <div className="relative mb-6">
@@ -73,13 +74,13 @@ const Auth = () => {
               <span className="w-full border-t border-stone" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-card px-3 text-driftwood">or use email</span>
+              <span className="bg-card px-3 text-driftwood">{t("auth.orUseEmail")}</span>
             </div>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t("auth.email")}</Label>
               <Input
                 id="email"
                 type="email"
@@ -90,7 +91,7 @@ const Auth = () => {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">{t("auth.password")}</Label>
               <Input
                 id="password"
                 type="password"
@@ -103,25 +104,25 @@ const Auth = () => {
             </div>
 
             <Button type="submit" variant="outline" className="w-full" disabled={submitting}>
-              {mode === "signup" ? "Create Account" : "Sign In"}
+              {mode === "signup" ? t("auth.createAccount") : t("auth.signIn")}
             </Button>
           </form>
 
           <p className="text-center text-sm text-driftwood mt-4">
             {mode === "signup" ? (
-              <>Already have an account?{" "}
-                <button onClick={() => setMode("signin")} className="text-forest font-medium hover:underline">Sign in</button>
+              <>{t("auth.alreadyHaveAccount")}{" "}
+                <button onClick={() => setMode("signin")} className="text-forest font-medium hover:underline">{t("auth.signInLink")}</button>
               </>
             ) : (
-              <>Want to create an account?{" "}
-                <button onClick={() => setMode("signup")} className="text-forest font-medium hover:underline">Sign up</button>
+              <>{t("auth.wantToCreate")}{" "}
+                <button onClick={() => setMode("signup")} className="text-forest font-medium hover:underline">{t("auth.signUp")}</button>
               </>
             )}
           </p>
         </div>
 
         <p className="text-center text-xs text-driftwood mt-6">
-          Your identity is protected. Anonymous sessions leave no trace.
+          {t("auth.identityProtected")}
         </p>
       </div>
     </div>

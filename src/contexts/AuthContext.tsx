@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, useCallback } from "react";
 import { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
+import i18n from "@/i18n";
 import type { Database } from "@/integrations/supabase/types";
 
 type AppRole = Database["public"]["Enums"]["app_role"];
@@ -33,7 +34,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       supabase.from("profiles").select("*").eq("user_id", userId).single(),
       supabase.rpc("get_user_role", { _user_id: userId }),
     ]);
-    if (profileRes.data) setProfile(profileRes.data);
+    if (profileRes.data) {
+      setProfile(profileRes.data);
+      // Sync i18n language and RTL direction
+      const lang = profileRes.data.language || "en";
+      if (i18n.language !== lang) {
+        i18n.changeLanguage(lang);
+      }
+      document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+      document.documentElement.lang = lang;
+    }
     if (roleRes.data) setRole(roleRes.data);
   }, []);
 
