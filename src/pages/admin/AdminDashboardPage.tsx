@@ -63,6 +63,7 @@ const AdminDashboardPage = () => {
         ))}
       </div>
     </div>
+    </>
   );
 };
 
