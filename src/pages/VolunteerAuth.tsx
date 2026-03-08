@@ -57,7 +57,7 @@ const VolunteerAuth = () => {
         }
       } else {
         await signIn(email, password);
-        navigate("/app");
+        navigate("/app/volunteer");
       }
     } catch (e: any) {
       toast({ title: "Error", description: e.message, variant: "destructive" });
