@@ -219,6 +219,7 @@ const Onboarding = () => {
         </Button>
       </div>
     </div>
+    </>
   );
 };
 
