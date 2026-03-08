@@ -1,6 +1,7 @@
 import { useCommunityResources, type CommunityResource } from "@/hooks/use-community";
 import { ExternalLink } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import QueryError from "@/components/ui/query-error";
 
 const CATEGORY_LABELS: Record<string, string> = {
   crisis: "Crisis & Emergency",
