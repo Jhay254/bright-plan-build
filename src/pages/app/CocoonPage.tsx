@@ -33,9 +33,18 @@ const LANGUAGE_OPTIONS = [
 const CocoonPage = () => {
   const { user, role } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { data: sessions = [], isLoading } = useUserSessions(user?.id);
   const { data: availableSessions = [] } = useAvailableSessions(user?.id, role === "volunteer");
 
+  const STATUS_LABEL: Record<SessionStatus, string> = {
+    requested: t("cocoon.waiting"),
+    matched: t("cocoon.matched"),
+    active: t("cocoon.activeStatus"),
+    wrap_up: t("cocoon.wrappingUp"),
+    closed: t("cocoon.ended"),
+    cancelled: t("cocoon.cancelled"),
+  };
   const [filterLang, setFilterLang] = useState("");
   const [filterTopic, setFilterTopic] = useState("");
   const [showFilters, setShowFilters] = useState(false);
