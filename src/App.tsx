@@ -31,6 +31,8 @@ import AdminUsersPage from "./pages/admin/AdminUsersPage";
 import AdminCrisisPage from "./pages/app/AdminCrisisPage";
 import AdminCommunityPage from "./pages/admin/AdminCommunityPage";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import PortfolioPublic from "./pages/PortfolioPublic";
+import VerifyCertificate from "./pages/VerifyCertificate";
 
 const queryClient = new QueryClient({
   defaultOptions: {
