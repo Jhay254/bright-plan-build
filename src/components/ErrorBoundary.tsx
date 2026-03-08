@@ -24,6 +24,15 @@ class ErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error("[ErrorBoundary]", error, errorInfo);
+
+    // Auto-reload on stale dynamic import failures (happens after redeployment)
+    if (
+      error.message?.includes("Failed to fetch dynamically imported module") ||
+      error.message?.includes("Importing a module script failed")
+    ) {
+      window.location.reload();
+      return;
+    }
   }
 
   handleReset = () => {
