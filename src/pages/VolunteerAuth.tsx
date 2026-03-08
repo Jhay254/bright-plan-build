@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useAuth } from "@/contexts/AuthContext";
 import echoLogo from "@/assets/echo-logo.png";
+import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { SPECIALISATIONS } from "@/lib/volunteer";
 import CookieBanner from "@/components/CookieBanner";
@@ -44,10 +45,16 @@ const VolunteerAuth = () => {
     try {
       if (mode === "signup") {
         await signUp(email, password);
-        toast({ title: "Check your email", description: "Confirm your account, then sign in to complete volunteer setup." });
         localStorage.setItem("echo_volunteer_pending", JSON.stringify({
           motivation, background, specialisations: selectedSpecs,
         }));
+        // Check if session was created immediately (auto-confirm enabled)
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) {
+          navigate("/app/volunteer");
+        } else {
+          toast({ title: "Check your email", description: "Confirm your account, then sign in to complete volunteer setup." });
+        }
       } else {
         await signIn(email, password);
         navigate("/app");
