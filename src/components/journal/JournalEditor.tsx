@@ -1,12 +1,13 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useMemo } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCreateJournalEntry } from "@/hooks/use-journal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowLeft, Flag, X } from "lucide-react";
+import { ArrowLeft, Flag, X, Lightbulb, RefreshCw } from "lucide-react";
 import { MOOD_OPTIONS, SUGGESTED_TAGS } from "@/lib/journal";
+import { getRandomPrompts, getPostSessionPrompt } from "@/lib/journal-prompts";
 import type { Database } from "@/integrations/supabase/types";
 
 type JournalMood = Database["public"]["Enums"]["journal_mood"];
@@ -16,6 +17,18 @@ const JournalEditor = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const createEntry = useCreateJournalEntry();
+  const [searchParams] = useSearchParams();
+
+  const isPostSession = searchParams.get("prompt") === "post-session";
+
+  // Prompt state
+  const [prompts, setPrompts] = useState(() =>
+    isPostSession ? [getPostSessionPrompt()] : getRandomPrompts(3)
+  );
+
+  const refreshPrompts = () => {
+    setPrompts(isPostSession ? [getPostSessionPrompt()] : getRandomPrompts(3));
+  };
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -34,6 +47,10 @@ const JournalEditor = () => {
     setTagInput("");
   };
   const removeTag = (tag: string) => setTags(tags.filter((t) => t !== tag));
+
+  const usePrompt = (text: string) => {
+    setContent((prev) => (prev ? prev + "\n\n" + text : text));
+  };
 
   const handleSave = async () => {
     if (!user || !content.trim()) return;
@@ -60,7 +77,41 @@ const JournalEditor = () => {
         <ArrowLeft className="h-4 w-4" /> Back
       </button>
 
-      <h1 className="font-journal text-2xl font-semibold text-bark mb-6">New Entry</h1>
+      <h1 className="font-journal text-2xl font-semibold text-bark mb-6">
+        {isPostSession ? "Reflect on Your Session" : "New Entry"}
+      </h1>
+
+      {/* Prompt suggestions */}
+      {!content && (
+        <div className="bg-dawn rounded-echo-md p-4 border border-mist mb-6">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-1.5 text-dusk">
+              <Lightbulb className="h-4 w-4" />
+              <p className="text-xs font-medium uppercase tracking-wide">
+                {isPostSession ? "Session reflection" : "Need inspiration?"}
+              </p>
+            </div>
+            <button
+              onClick={refreshPrompts}
+              className="text-driftwood hover:text-dusk transition-colors"
+              aria-label="Refresh prompts"
+            >
+              <RefreshCw className="h-3.5 w-3.5" />
+            </button>
+          </div>
+          <div className="space-y-2">
+            {prompts.map((p) => (
+              <button
+                key={p.id}
+                onClick={() => usePrompt(p.text)}
+                className="w-full text-left text-sm text-bark bg-card rounded-echo-md px-3 py-2.5 border border-border hover:border-dusk/40 hover:bg-mist/30 transition-colors"
+              >
+                {p.text}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       <Input
         value={title}
