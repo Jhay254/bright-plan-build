@@ -14,7 +14,7 @@ import CpdLog from "@/components/volunteer/CpdLog";
 import { useEffect } from "react";
 
 const VolunteerDashboard = () => {
-  const { user, profile } = useAuth();
+  const { user, profile, role, refreshProfile: refreshAuth } = useAuth();
   const navigate = useNavigate();
   const { data: volProfile, isLoading: vpLoading, refetch: refetchProfile } = useVolunteerProfile(user?.id);
   const { data: activeSessions = [], isLoading: sessionsLoading } = useVolunteerActiveSessions(user?.id);
@@ -39,10 +39,8 @@ const VolunteerDashboard = () => {
 
       localStorage.removeItem("echo_volunteer_pending");
 
-      await supabase.from("user_roles").upsert(
-        { user_id: user.id, role: "volunteer" as const },
-        { onConflict: "user_id,role" }
-      );
+      // Claim volunteer role via security-definer function
+      await supabase.rpc("claim_volunteer_role");
 
       // Auto-complete seeker onboarding so volunteers aren't blocked
       if (profile && !profile.onboarding_complete) {
@@ -53,10 +51,22 @@ const VolunteerDashboard = () => {
       }
 
       refetchProfile();
+      refreshAuth();
     };
 
     createProfile();
-  }, [user, vpLoading, volProfile, profile, refetchProfile]);
+  }, [user, vpLoading, volProfile, profile, refetchProfile, refreshAuth]);
+
+  // Ensure volunteer role is claimed even if profile already exists
+  useEffect(() => {
+    if (!user || vpLoading || !volProfile || role === "volunteer") return;
+
+    const claimRole = async () => {
+      await supabase.rpc("claim_volunteer_role");
+      refreshAuth();
+    };
+    claimRole();
+  }, [user, vpLoading, volProfile, role, refreshAuth]);
 
   if (vpLoading || sessionsLoading) return <DashboardSkeleton />;
 
