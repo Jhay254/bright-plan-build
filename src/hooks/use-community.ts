@@ -15,9 +15,7 @@ export interface CommunityResource {
 
 export interface PeerEncouragement {
   id: string;
-  user_id: string;
   content: string;
-  is_visible: boolean;
   created_at: string;
 }
 
@@ -41,9 +39,8 @@ export function usePeerEncouragements() {
     queryKey: ["peer-encouragements"],
     queryFn: async () => {
       const { data, error } = await (supabase as any)
-        .from("peer_encouragements")
+        .from("visible_encouragements")
         .select("*")
-        .eq("is_visible", true)
         .order("created_at", { ascending: false })
         .limit(50);
       if (error) throw error;
