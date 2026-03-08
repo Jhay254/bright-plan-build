@@ -60,8 +60,20 @@ const CpdLog = () => {
     }
   };
 
-  const downloadCertificate = () => {
-    const svg = generateCertificateSvg(totalHours, new Date().toLocaleDateString());
+  const downloadCertificate = async () => {
+    if (!user) return;
+    // Issue a verifiable cert record
+    const entryIds = entries.map((e) => e.id);
+    const { data: cert, error: certErr } = await supabase
+      .from("cpd_certificates")
+      .insert({ user_id: user.id, total_hours: totalHours, entry_ids: entryIds } as any)
+      .select("cert_code")
+      .single();
+
+    const certCode = (cert as any)?.cert_code ?? "N/A";
+    const verifyUrl = `${window.location.origin}/verify/${certCode}`;
+
+    const svg = generateCertificateSvg(totalHours, new Date().toLocaleDateString(), certCode, verifyUrl);
     const blob = new Blob([svg], { type: "image/svg+xml" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -69,7 +81,7 @@ const CpdLog = () => {
     a.download = `echo-cpd-certificate-${new Date().toISOString().slice(0, 10)}.svg`;
     a.click();
     URL.revokeObjectURL(url);
-    toast({ title: "Certificate downloaded!" });
+    toast({ title: "Certificate downloaded!", description: certErr ? "Certificate issued locally." : `Verify at ${verifyUrl}` });
   };
 
   if (isLoading) {
