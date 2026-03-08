@@ -144,24 +144,63 @@ const ChatRoom = () => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  // Subscribe to crisis flags for volunteer alerts
+  useEffect(() => {
+    if (!sessionId || !user) return;
+
+    const channel = supabase
+      .channel(`crisis-${sessionId}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "crisis_flags",
+          filter: `session_id=eq.${sessionId}`,
+        },
+        () => {
+          // Show alert to volunteer (the seeker already sees the CrisisBanner)
+          if (session && user.id === session.volunteer_id) {
+            setVolunteerCrisisAlert(true);
+          }
+        }
+      )
+      .subscribe();
+
+    return () => { supabase.removeChannel(channel); };
+  }, [sessionId, user, session]);
+
   const sendMessage = useCallback(async () => {
     if (!user || !sessionId || !newMessage.trim()) return;
     const content = newMessage.trim();
 
     // Crisis detection
-    if (detectCrisisLanguage(content)) {
+    const isCrisis = detectCrisisLanguage(content);
+    if (isCrisis) {
       setShowCrisis(true);
     }
 
     setSending(true);
     setNewMessage("");
     try {
-      const { error } = await supabase.from("session_messages").insert({
-        session_id: sessionId,
-        sender_id: user.id,
-        content,
-      });
+      const { data: msgData, error } = await supabase
+        .from("session_messages")
+        .insert({
+          session_id: sessionId,
+          sender_id: user.id,
+          content,
+        })
+        .select("id")
+        .single();
       if (error) throw error;
+
+      // 8.1: Write crisis flag to DB
+      if (isCrisis && msgData) {
+        await supabase.from("crisis_flags").insert({
+          session_id: sessionId,
+          message_id: msgData.id,
+        });
+      }
     } catch (e: any) {
       toast({ title: "Failed to send", description: e.message, variant: "destructive" });
       setNewMessage(content);
