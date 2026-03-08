@@ -29,6 +29,7 @@ import AdminVolunteersPage from "./pages/admin/AdminVolunteersPage";
 import AdminSessionsPage from "./pages/admin/AdminSessionsPage";
 import AdminUsersPage from "./pages/admin/AdminUsersPage";
 import AdminCrisisPage from "./pages/app/AdminCrisisPage";
+import AdminCommunityPage from "./pages/admin/AdminCommunityPage";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 const queryClient = new QueryClient({
