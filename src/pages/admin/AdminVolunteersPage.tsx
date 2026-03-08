@@ -177,10 +177,10 @@ const AdminVolunteersPage = () => {
                     <p className="text-sm text-bark">{v.background}</p>
                   </div>
                 )}
-                {(v as any).rejection_reason && (
+                {v.rejection_reason && (
                   <div className="mb-2">
                     <p className="text-xs text-destructive font-medium">Rejection Reason</p>
-                    <p className="text-sm text-bark">{(v as any).rejection_reason}</p>
+                    <p className="text-sm text-bark">{v.rejection_reason}</p>
                   </div>
                 )}
 
