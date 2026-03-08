@@ -60,13 +60,16 @@ const SessionRequest = () => {
       <p className="text-driftwood text-sm mb-8">A volunteer will be matched to support you.</p>
 
       {/* Topic */}
-      <div className="mb-6">
-        <p className="text-sm font-medium text-bark mb-3">What would you like to talk about?</p>
-        <div className="flex flex-wrap gap-2">
+      <fieldset className="mb-6">
+        <legend className="text-sm font-medium text-bark mb-3">What would you like to talk about?</legend>
+        <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="Session topic">
           {TOPICS.map((t) => (
             <button
               key={t}
               onClick={() => setTopic(t)}
+              role="radio"
+              aria-checked={topic === t}
+              aria-label={`Topic: ${t}`}
               className={`px-4 py-2 rounded-echo-pill text-sm font-medium border-2 transition-all ${
                 topic === t
                   ? "border-forest bg-mist text-forest"
@@ -77,7 +80,7 @@ const SessionRequest = () => {
             </button>
           ))}
         </div>
-      </div>
+      </fieldset>
 
       {/* Urgency */}
       <div className="mb-6">
