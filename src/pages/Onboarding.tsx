@@ -64,6 +64,8 @@ const Onboarding = () => {
         })
         .eq("user_id", user.id);
       if (error) throw error;
+      // Refresh the cached profile so ProtectedRoute sees onboarding_complete = true
+      await refreshProfile();
       navigate("/app", { replace: true });
     } catch (e: any) {
       toast({ title: t("onboarding.errorSaving"), description: e.message, variant: "destructive" });
