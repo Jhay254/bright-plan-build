@@ -61,11 +61,13 @@ const JournalPage = () => {
       <HealingTimeline entries={entries} />
 
       {/* Filter */}
-      <div className="flex gap-2 mb-6">
+      <div className="flex gap-2 mb-6" role="tablist" aria-label="Journal filter">
         {(["all", "milestones"] as const).map((f) => (
           <button
             key={f}
             onClick={() => setFilter(f)}
+            role="tab"
+            aria-selected={filter === f}
             className={`px-4 py-1.5 rounded-echo-pill text-sm font-medium border-2 transition-all capitalize ${
               filter === f
                 ? "border-dusk bg-dusk/10 text-dusk"

@@ -207,6 +207,8 @@ const CocoonPage = () => {
         </div>
       )}
     </div>
+    </>
+  );
   );
 };
 
