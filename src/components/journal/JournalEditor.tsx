@@ -82,11 +82,14 @@ const JournalEditor = () => {
       {/* Mood selector */}
       <div className="mb-6">
         <p className="text-sm font-medium text-bark mb-3">How are you feeling?</p>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="Mood selector">
           {MOOD_OPTIONS.map((m) => (
             <button
               key={m.value}
               onClick={() => setMood(mood === m.value ? null : m.value)}
+              role="radio"
+              aria-checked={mood === m.value}
+              aria-label={`Mood: ${m.label}`}
               className={`flex items-center gap-1.5 px-3 py-2 rounded-echo-pill text-sm border-2 transition-all ${
                 mood === m.value ? `${m.color} font-medium` : "border-stone text-driftwood hover:border-dusk/40"
               }`}
