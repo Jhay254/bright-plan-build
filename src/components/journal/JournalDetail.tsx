@@ -1,24 +1,27 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { supabase } from "@/integrations/supabase/client";
+import { useJournalEntry, useUpdateJournalEntry, useDeleteJournalEntry } from "@/hooks/use-journal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowLeft, Trash2, Flag, Save, X } from "lucide-react";
 import { MOOD_OPTIONS, SUGGESTED_TAGS, getMoodOption } from "@/lib/journal";
+import { DetailSkeleton } from "@/components/ui/skeleton-card";
 import type { Database } from "@/integrations/supabase/types";
 
-type JournalEntry = Database["public"]["Tables"]["journal_entries"]["Row"];
 type JournalMood = Database["public"]["Enums"]["journal_mood"];
 
 const JournalDetail = () => {
   const { entryId } = useParams<{ entryId: string }>();
-  const { user, profile } = useAuth();
+  const { profile } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const [entry, setEntry] = useState<JournalEntry | null>(null);
+  const { data: entry, isLoading } = useJournalEntry(entryId);
+  const updateEntry = useUpdateJournalEntry();
+  const deleteEntry = useDeleteJournalEntry();
+
   const [editing, setEditing] = useState(false);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -27,29 +30,19 @@ const JournalDetail = () => {
   const [tagInput, setTagInput] = useState("");
   const [isMilestone, setIsMilestone] = useState(false);
   const [milestoneLabel, setMilestoneLabel] = useState("");
-  const [saving, setSaving] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
 
+  // Sync local state when entry loads
   useEffect(() => {
-    if (!entryId) return;
-    const fetch = async () => {
-      const { data } = await supabase
-        .from("journal_entries")
-        .select("*")
-        .eq("id", entryId)
-        .single();
-      if (data) {
-        setEntry(data);
-        setTitle(data.title ?? "");
-        setContent(data.content);
-        setMood(data.mood);
-        setTags(data.tags ?? []);
-        setIsMilestone(data.is_milestone);
-        setMilestoneLabel(data.milestone_label ?? "");
-      }
-    };
-    fetch();
-  }, [entryId]);
+    if (entry) {
+      setTitle(entry.title ?? "");
+      setContent(entry.content);
+      setMood(entry.mood);
+      setTags(entry.tags ?? []);
+      setIsMilestone(entry.is_milestone);
+      setMilestoneLabel(entry.milestone_label ?? "");
+    }
+  }, [entry]);
 
   const goalTags = profile?.healing_goals?.map((g) => g.toLowerCase().replace(/\s+/g, "-")) ?? [];
   const allSuggested = [...new Set([...SUGGESTED_TAGS, ...goalTags])];
@@ -63,47 +56,35 @@ const JournalDetail = () => {
 
   const handleSave = async () => {
     if (!entryId || !content.trim()) return;
-    setSaving(true);
     try {
-      const { error } = await supabase.from("journal_entries").update({
+      await updateEntry.mutateAsync({
+        id: entryId,
         title: title.trim() || null,
         content: content.trim(),
         mood,
         tags,
         is_milestone: isMilestone,
         milestone_label: isMilestone ? milestoneLabel.trim() || null : null,
-      }).eq("id", entryId);
-      if (error) throw error;
+      });
       toast({ title: "Entry updated" });
       setEditing(false);
-      // Refresh
-      const { data } = await supabase.from("journal_entries").select("*").eq("id", entryId).single();
-      if (data) setEntry(data);
     } catch (e: any) {
       toast({ title: "Error", description: e.message, variant: "destructive" });
-    } finally {
-      setSaving(false);
     }
   };
 
   const handleDelete = async () => {
     if (!entryId) return;
-    const { error } = await supabase.from("journal_entries").delete().eq("id", entryId);
-    if (error) {
-      toast({ title: "Error", description: error.message, variant: "destructive" });
-    } else {
+    try {
+      await deleteEntry.mutateAsync(entryId);
       toast({ title: "Entry deleted" });
       navigate("/app/journal");
+    } catch (e: any) {
+      toast({ title: "Error", description: e.message, variant: "destructive" });
     }
   };
 
-  if (!entry) {
-    return (
-      <div className="px-6 pt-8">
-        <div className="animate-pulse-gentle text-dusk font-journal">Loading…</div>
-      </div>
-    );
-  }
+  if (isLoading || !entry) return <DetailSkeleton />;
 
   const moodInfo = getMoodOption(entry.mood);
 
@@ -119,7 +100,7 @@ const JournalDetail = () => {
             <Button variant="ghost" size="sm" onClick={() => setEditing(true)}>Edit</Button>
             {confirmDelete ? (
               <div className="flex items-center gap-1">
-                <Button variant="destructive" size="sm" onClick={handleDelete}>Confirm</Button>
+                <Button variant="destructive" size="sm" onClick={handleDelete} disabled={deleteEntry.isPending}>Confirm</Button>
                 <Button variant="ghost" size="sm" onClick={() => setConfirmDelete(false)}>Cancel</Button>
               </div>
             ) : (
@@ -130,7 +111,6 @@ const JournalDetail = () => {
           </div>
         </div>
 
-        {/* Meta */}
         <div className="flex items-center gap-3 mb-4">
           {moodInfo && (
             <div className={`w-10 h-10 rounded-full ${moodInfo.color} border flex items-center justify-center text-xl`}>
@@ -175,8 +155,8 @@ const JournalDetail = () => {
         <button onClick={() => setEditing(false)} className="flex items-center gap-1 text-sm text-driftwood hover:text-dusk">
           <ArrowLeft className="h-4 w-4" /> Cancel
         </button>
-        <Button variant="default" size="sm" onClick={handleSave} disabled={!content.trim() || saving}>
-          <Save className="h-4 w-4 mr-1" /> {saving ? "Saving…" : "Save"}
+        <Button variant="default" size="sm" onClick={handleSave} disabled={!content.trim() || updateEntry.isPending}>
+          <Save className="h-4 w-4 mr-1" /> {updateEntry.isPending ? "Saving…" : "Save"}
         </Button>
       </div>
 
