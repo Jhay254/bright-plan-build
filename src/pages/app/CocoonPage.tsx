@@ -1,8 +1,9 @@
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserSessions, useAvailableSessions } from "@/hooks/use-sessions";
 import { Button } from "@/components/ui/button";
-import { Plus, MessageCircle, Clock, CheckCircle2 } from "lucide-react";
+import { Plus, MessageCircle, Clock, CheckCircle2, Filter } from "lucide-react";
 import { PageSkeleton } from "@/components/ui/skeleton-card";
 import type { Database } from "@/integrations/supabase/types";
 
