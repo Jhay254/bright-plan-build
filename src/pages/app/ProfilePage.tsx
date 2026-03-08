@@ -7,6 +7,9 @@ import { useToast } from "@/hooks/use-toast";
 import { generateAvatarSvg } from "@/lib/avatar";
 import { LogOut, RefreshCw, Shield, Edit2, Check, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import AccountUpgrade from "@/components/profile/AccountUpgrade";
+import DataExport from "@/components/profile/DataExport";
+import AccountDeletion from "@/components/profile/AccountDeletion";
 
 const LANGUAGES = [
   { code: "en", label: "English" },
