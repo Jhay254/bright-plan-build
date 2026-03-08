@@ -58,8 +58,11 @@ import SessionFeedback from "@/components/cocoon/SessionFeedback";
 describe("SessionFeedback", () => {
   const onComplete = vi.fn();
 
+  const renderWithRouter = (ui: React.ReactElement) =>
+    render(<MemoryRouter>{ui}</MemoryRouter>);
+
   it("renders seeker view with emotional rating and felt-heard/safe toggles", () => {
-    render(
+    renderWithRouter(
       <SessionFeedback sessionId="s1" volunteerId="v1" role="seeker" onComplete={onComplete} />
     );
     expect(screen.getByText("How are you feeling?")).toBeInTheDocument();
@@ -69,7 +72,7 @@ describe("SessionFeedback", () => {
   });
 
   it("renders volunteer view without felt-heard/safe", () => {
-    render(
+    renderWithRouter(
       <SessionFeedback sessionId="s1" volunteerId={null} role="volunteer" onComplete={onComplete} />
     );
     expect(screen.getByText("Session Reflection")).toBeInTheDocument();
@@ -77,7 +80,7 @@ describe("SessionFeedback", () => {
   });
 
   it("disables submit when no rating selected", () => {
-    render(
+    renderWithRouter(
       <SessionFeedback sessionId="s1" volunteerId="v1" role="seeker" onComplete={onComplete} />
     );
     const submitBtn = screen.getByRole("button", { name: /submit feedback/i });
@@ -85,7 +88,7 @@ describe("SessionFeedback", () => {
   });
 
   it("enables submit after selecting a rating", () => {
-    render(
+    renderWithRouter(
       <SessionFeedback sessionId="s1" volunteerId="v1" role="seeker" onComplete={onComplete} />
     );
     fireEvent.click(screen.getByText("😊"));
@@ -94,7 +97,7 @@ describe("SessionFeedback", () => {
   });
 
   it("shows skip button that calls onComplete", () => {
-    render(
+    renderWithRouter(
       <SessionFeedback sessionId="s1" volunteerId="v1" role="seeker" onComplete={onComplete} />
     );
     fireEvent.click(screen.getByText("Skip for now"));
@@ -102,14 +105,11 @@ describe("SessionFeedback", () => {
   });
 
   it("limits skill endorsement to 3", () => {
-    render(
+    renderWithRouter(
       <SessionFeedback sessionId="s1" volunteerId="v1" role="seeker" onComplete={onComplete} />
     );
     const skills = ["Good listener", "Empathetic", "Patient", "Supportive"];
     skills.forEach((s) => fireEvent.click(screen.getByText(s)));
-    // 4th click should not add (max 3)
-    // All 4 buttons exist but only first 3 should be visually active
-    // We verify that "Supportive" doesn't get selected class by checking the component behavior
     expect(screen.getByText("Supportive")).toBeInTheDocument();
   });
 });
