@@ -186,6 +186,29 @@
       "desc": "Le contenu des messages de session est automatiquement supprimé 90 jours après la fin d'une session. Les métadonnées sont conservées pour la supervision."
     }
   },
+  "feedback": {
+    "seekerTitle": "Comment vous sentez-vous ?",
+    "volunteerTitle": "Réflexion de session",
+    "seekerDesc": "Vos retours nous aident à nous améliorer et soutiennent votre parcours de guérison.",
+    "volunteerDesc": "Réfléchissez à cette session pour votre propre croissance.",
+    "howFeelAfter": "Comment vous sentez-vous après cette session ?",
+    "howSessionGo": "Comment s'est passée la session ?",
+    "feltHeard": "Vous êtes-vous senti(e) écouté(e) ?",
+    "feltSafe": "Vous êtes-vous senti(e) en sécurité ?",
+    "yes": "Oui",
+    "notReally": "Pas vraiment",
+    "endorseSkills": "Recommandez les compétences de votre bénévole",
+    "endorseDesc": "Sélectionnez jusqu'à 3 compétences qui décrivent votre bénévole (optionnel).",
+    "anythingElse": "Autre chose à partager ?",
+    "selfReflection": "Notes d'auto-réflexion",
+    "optional": "optionnel",
+    "seekerPlaceholder": "Comment pourrions-nous améliorer votre expérience ?",
+    "volunteerPlaceholder": "Qu'est-ce qui a bien fonctionné ? Que pourriez-vous améliorer ?",
+    "submitting": "Envoi…",
+    "submit": "Envoyer le retour",
+    "skip": "Passer pour le moment",
+    "thanks": "Merci pour votre retour"
+  },
   "crisis": {
     "title": "Il semble que vous traversez quelque chose de grave",
     "subtitle": "Votre sécurité est primordiale. Si vous êtes en danger immédiat, veuillez contacter un service de crise :"

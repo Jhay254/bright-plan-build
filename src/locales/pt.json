@@ -186,6 +186,29 @@
       "desc": "O conteúdo das mensagens de sessão é removido automaticamente 90 dias após o término da sessão. Os metadados são mantidos para supervisão de segurança."
     }
   },
+  "feedback": {
+    "seekerTitle": "Como você está se sentindo?",
+    "volunteerTitle": "Reflexão da sessão",
+    "seekerDesc": "Seu feedback nos ajuda a melhorar e apoia sua jornada de cura.",
+    "volunteerDesc": "Reflita sobre esta sessão para seu próprio crescimento.",
+    "howFeelAfter": "Como você se sente após esta sessão?",
+    "howSessionGo": "Como foi a sessão?",
+    "feltHeard": "Você se sentiu ouvido(a)?",
+    "feltSafe": "Você se sentiu seguro(a)?",
+    "yes": "Sim",
+    "notReally": "Não muito",
+    "endorseSkills": "Recomende as habilidades do seu voluntário",
+    "endorseDesc": "Selecione até 3 habilidades que descrevem seu voluntário (opcional).",
+    "anythingElse": "Mais alguma coisa que gostaria de compartilhar?",
+    "selfReflection": "Notas de autorreflexão",
+    "optional": "opcional",
+    "seekerPlaceholder": "Como poderíamos melhorar sua experiência?",
+    "volunteerPlaceholder": "O que deu certo? O que você poderia melhorar?",
+    "submitting": "Enviando…",
+    "submit": "Enviar feedback",
+    "skip": "Pular por enquanto",
+    "thanks": "Obrigado pelo seu feedback"
+  },
   "crisis": {
     "title": "Parece que você pode estar passando por algo sério",
     "subtitle": "Sua segurança é o mais importante. Se você está em perigo imediato, entre em contato com um serviço de crise:"
