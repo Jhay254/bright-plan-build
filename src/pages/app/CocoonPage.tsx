@@ -1,8 +1,9 @@
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserSessions, useAvailableSessions } from "@/hooks/use-sessions";
 import { Button } from "@/components/ui/button";
-import { Plus, MessageCircle, Clock, CheckCircle2 } from "lucide-react";
+import { Plus, MessageCircle, Clock, CheckCircle2, Filter } from "lucide-react";
 import { PageSkeleton } from "@/components/ui/skeleton-card";
 import type { Database } from "@/integrations/supabase/types";
 
@@ -26,14 +27,34 @@ const STATUS_LABEL: Record<SessionStatus, string> = {
   cancelled: "Cancelled",
 };
 
+const LANGUAGE_OPTIONS = [
+  { value: "", label: "All Languages" },
+  { value: "en", label: "English" },
+  { value: "fr", label: "French" },
+  { value: "sw", label: "Swahili" },
+  { value: "ar", label: "Arabic" },
+  { value: "pt", label: "Portuguese" },
+];
+
 const CocoonPage = () => {
   const { user, role } = useAuth();
   const navigate = useNavigate();
   const { data: sessions = [], isLoading } = useUserSessions(user?.id);
   const { data: availableSessions = [] } = useAvailableSessions(user?.id, role === "volunteer");
 
+  const [filterLang, setFilterLang] = useState("");
+  const [filterTopic, setFilterTopic] = useState("");
+  const [showFilters, setShowFilters] = useState(false);
+
   const activeSessions = sessions.filter((s) => !["closed", "cancelled"].includes(s.status));
   const pastSessions = sessions.filter((s) => ["closed", "cancelled"].includes(s.status));
+
+  const filteredAvailable = useMemo(() => {
+    let result = availableSessions;
+    if (filterLang) result = result.filter((s) => s.language === filterLang);
+    if (filterTopic) result = result.filter((s) => s.topic.toLowerCase().includes(filterTopic.toLowerCase()));
+    return result;
+  }, [availableSessions, filterLang, filterTopic]);
 
   if (isLoading) return <PageSkeleton rows={4} />;
 
@@ -54,30 +75,67 @@ const CocoonPage = () => {
       {/* Volunteer: available sessions to accept */}
       {role === "volunteer" && availableSessions.length > 0 && (
         <div className="mb-8">
-          <h2 className="font-heading text-sm font-semibold text-forest uppercase tracking-wide mb-3">
-            Sessions Needing Support
-          </h2>
-          <div className="space-y-2">
-            {availableSessions.map((s) => (
-              <button
-                key={s.id}
-                onClick={() => navigate(`/app/cocoon/${s.id}`)}
-                className="w-full text-left bg-dawn rounded-echo-md p-4 border border-mist hover:border-forest transition-colors"
-              >
-                <p className="font-medium text-bark text-sm">{s.topic}</p>
-                <div className="flex items-center gap-2 mt-1">
-                  <span className={`text-xs font-medium px-2 py-0.5 rounded-echo-pill ${
-                    s.urgency === "high" ? "bg-ember/20 text-ember" :
-                    s.urgency === "medium" ? "bg-sunlight/20 text-bark" :
-                    "bg-mist text-fern"
-                  }`}>
-                    {s.urgency}
-                  </span>
-                  <span className="text-xs text-driftwood">{s.language.toUpperCase()}</span>
-                </div>
-              </button>
-            ))}
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="font-heading text-sm font-semibold text-forest uppercase tracking-wide">
+              Sessions Needing Support
+            </h2>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowFilters(!showFilters)}
+              className="text-driftwood"
+            >
+              <Filter className="h-4 w-4 mr-1" />
+              Filter
+            </Button>
           </div>
+
+          {showFilters && (
+            <div className="flex flex-wrap gap-2 mb-3">
+              <select
+                value={filterLang}
+                onChange={(e) => setFilterLang(e.target.value)}
+                className="text-sm border border-border rounded-echo-md px-3 py-1.5 bg-card text-bark focus:border-fern focus:outline-none"
+              >
+                {LANGUAGE_OPTIONS.map((opt) => (
+                  <option key={opt.value} value={opt.value}>{opt.label}</option>
+                ))}
+              </select>
+              <input
+                type="text"
+                value={filterTopic}
+                onChange={(e) => setFilterTopic(e.target.value)}
+                placeholder="Filter by topic…"
+                className="text-sm border border-border rounded-echo-md px-3 py-1.5 bg-card text-bark placeholder:text-driftwood/60 focus:border-fern focus:outline-none flex-1 min-w-[140px]"
+              />
+            </div>
+          )}
+
+          {filteredAvailable.length === 0 ? (
+            <p className="text-sm text-driftwood">No sessions match your filters.</p>
+          ) : (
+            <div className="space-y-2">
+              {filteredAvailable.map((s) => (
+                <button
+                  key={s.id}
+                  onClick={() => navigate(`/app/cocoon/${s.id}`)}
+                  className="w-full text-left bg-dawn rounded-echo-md p-4 border border-mist hover:border-forest transition-colors"
+                >
+                  <p className="font-medium text-bark text-sm">{s.topic}</p>
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className={`text-xs font-medium px-2 py-0.5 rounded-echo-pill ${
+                      s.urgency === "high" ? "bg-ember/20 text-ember" :
+                      s.urgency === "medium" ? "bg-sunlight/20 text-bark" :
+                      "bg-mist text-fern"
+                    }`}>
+                      {s.urgency}
+                    </span>
+                    <span className="text-xs text-driftwood">{s.language.toUpperCase()}</span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       )}
 

@@ -392,6 +392,14 @@ export type Database = {
         }
         Returns: boolean
       }
+      match_volunteer_score: {
+        Args: {
+          _session_language: string
+          _session_topic: string
+          _volunteer_id: string
+        }
+        Returns: number
+      }
       transition_session: {
         Args: {
           _new_status: Database["public"]["Enums"]["session_status"]
