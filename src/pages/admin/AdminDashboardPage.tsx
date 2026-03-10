@@ -132,6 +132,7 @@ const TYPE_BADGE: Record<ActivityItem["type"], { label: string; className: strin
 const AdminDashboardPage = () => {
   const navigate = useNavigate();
   const qc = useQueryClient();
+  const { user, loading: authLoading } = useAuth();
 
   // Realtime: auto-refresh activity feed & stats on changes
   useEffect(() => {
