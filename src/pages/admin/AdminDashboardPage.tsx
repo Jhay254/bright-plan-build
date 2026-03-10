@@ -33,9 +33,10 @@ interface Stats {
   unresolved_crisis: number;
 }
 
-function useActivityFeed() {
+function useActivityFeed(enabled: boolean) {
   return useQuery({
     queryKey: ["admin", "activity-feed"],
+    enabled,
     queryFn: async () => {
       const [sessionsRes, volunteersRes, crisisFlags, profilesRes] = await Promise.all([
         supabase
