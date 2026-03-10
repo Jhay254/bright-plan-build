@@ -161,6 +161,54 @@ export type Database = {
         }
         Relationships: []
       }
+      crisis_flags: {
+        Row: {
+          flagged_at: string
+          id: string
+          message_id: string
+          notes: string | null
+          resolved: boolean
+          resolved_at: string | null
+          resolved_by: string | null
+          session_id: string
+        }
+        Insert: {
+          flagged_at?: string
+          id?: string
+          message_id: string
+          notes?: string | null
+          resolved?: boolean
+          resolved_at?: string | null
+          resolved_by?: string | null
+          session_id: string
+        }
+        Update: {
+          flagged_at?: string
+          id?: string
+          message_id?: string
+          notes?: string | null
+          resolved?: boolean
+          resolved_at?: string | null
+          resolved_by?: string | null
+          session_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crisis_flags_message_id_fkey"
+            columns: ["message_id"]
+            isOneToOne: false
+            referencedRelation: "session_messages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crisis_flags_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "cocoon_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       journal_entries: {
         Row: {
           content: string
