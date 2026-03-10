@@ -178,7 +178,7 @@ const AdminDashboardPage = () => {
 
   const statsError = !statsLoading && !stats;
 
-  if (statsLoading) return <PageSkeleton rows={3} />;
+  if (authLoading || statsLoading) return <PageSkeleton rows={3} />;
   if (statsError) return <QueryError message="Failed to load dashboard stats." onRetry={() => qc.invalidateQueries({ queryKey: ["admin", "stats"] })} />;
 
   const cards = [
