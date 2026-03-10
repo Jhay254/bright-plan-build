@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import heroIllustration from "@/assets/hero-illustration.jpg";
+import heroIllustration from "@/assets/hero-illustration.webp";
 
 const HeroSection = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-dawn pt-16">
       <div className="absolute inset-0">
-        <img src={heroIllustration} alt="" className="w-full h-full object-cover opacity-30" loading="eager" decoding="async" fetchPriority="high" />
+        <img src={heroIllustration} alt="" width={1920} height={1080} className="w-full h-full object-cover opacity-30" loading="eager" decoding="async" fetchPriority="high" />
         <div className="absolute inset-0 bg-gradient-to-b from-dawn/60 via-dawn/40 to-parchment" />
       </div>
 
