@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -32,9 +33,10 @@ interface Stats {
   unresolved_crisis: number;
 }
 
-function useActivityFeed() {
+function useActivityFeed(enabled: boolean) {
   return useQuery({
     queryKey: ["admin", "activity-feed"],
+    enabled,
     queryFn: async () => {
       const [sessionsRes, volunteersRes, crisisFlags, profilesRes] = await Promise.all([
         supabase
@@ -132,6 +134,7 @@ const TYPE_BADGE: Record<ActivityItem["type"], { label: string; className: strin
 const AdminDashboardPage = () => {
   const navigate = useNavigate();
   const qc = useQueryClient();
+  const { user, loading: authLoading } = useAuth();
 
   // Realtime: auto-refresh activity feed & stats on changes
   useEffect(() => {
@@ -168,13 +171,14 @@ const AdminDashboardPage = () => {
       return data as unknown as Stats;
     },
     staleTime: 30_000,
+    enabled: !authLoading && !!user,
   });
 
-  const { data: activity = [], isLoading: activityLoading } = useActivityFeed();
+  const { data: activity = [], isLoading: activityLoading } = useActivityFeed(!authLoading && !!user);
 
   const statsError = !statsLoading && !stats;
 
-  if (statsLoading) return <PageSkeleton rows={3} />;
+  if (authLoading || statsLoading) return <PageSkeleton rows={3} />;
   if (statsError) return <QueryError message="Failed to load dashboard stats." onRetry={() => qc.invalidateQueries({ queryKey: ["admin", "stats"] })} />;
 
   const cards = [
