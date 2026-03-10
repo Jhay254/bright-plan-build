@@ -171,9 +171,10 @@ const AdminDashboardPage = () => {
       return data as unknown as Stats;
     },
     staleTime: 30_000,
+    enabled: !authLoading && !!user,
   });
 
-  const { data: activity = [], isLoading: activityLoading } = useActivityFeed();
+  const { data: activity = [], isLoading: activityLoading } = useActivityFeed(!authLoading && !!user);
 
   const statsError = !statsLoading && !stats;
 
