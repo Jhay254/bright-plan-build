@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useCallback, memo } from "react";
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceDot } from "recharts";
 import { MOOD_OPTIONS } from "@/lib/journal";
 import type { Database } from "@/integrations/supabase/types";
@@ -16,11 +16,33 @@ const MOOD_SCORE: Record<string, number> = {
   overwhelmed: 1,
 };
 
+const Y_LABELS: Record<number, string> = { 1: "😤", 2: "😰", 3: "😐", 4: "😌", 5: "😊" };
+const yTickFormatter = (v: number) => Y_LABELS[v] ?? "";
+
 interface HealingTimelineProps {
   entries: JournalEntry[];
 }
 
-const HealingTimeline = ({ entries }: HealingTimelineProps) => {
+/* ── Memoised custom tooltip ── */
+const TimelineTooltip = memo(({ active, payload }: any) => {
+  if (!active || !payload?.length) return null;
+  const d = payload[0].payload;
+  return (
+    <div className="bg-card border border-border rounded-echo-md px-3 py-2 shadow-echo-2 text-xs">
+      <p className="font-medium text-bark">{d.date}</p>
+      <p className="text-driftwood">
+        {d.mood?.emoji} {d.mood?.label}
+      </p>
+      {d.title && <p className="text-driftwood truncate max-w-[150px]">{d.title}</p>}
+      {d.isMilestone && (
+        <p className="text-dusk font-medium mt-1">🏴 {d.milestoneLabel || "Milestone"}</p>
+      )}
+    </div>
+  );
+});
+TimelineTooltip.displayName = "TimelineTooltip";
+
+const HealingTimeline = memo(({ entries }: HealingTimelineProps) => {
   const data = useMemo(() => {
     const withMood = entries
       .filter((e) => e.mood)
@@ -36,9 +58,11 @@ const HealingTimeline = ({ entries }: HealingTimelineProps) => {
     }));
   }, [entries]);
 
-  if (data.length < 2) return null;
+  const milestones = useMemo(() => data.filter((d) => d.isMilestone), [data]);
 
-  const milestones = data.filter((d) => d.isMilestone);
+  const renderTooltip = useCallback((props: any) => <TimelineTooltip {...props} />, []);
+
+  if (data.length < 2) return null;
 
   return (
     <div className="bg-card rounded-echo-lg p-5 shadow-echo-1 border border-border mb-6">
@@ -65,29 +89,9 @@ const HealingTimeline = ({ entries }: HealingTimelineProps) => {
               axisLine={false}
               tickLine={false}
               ticks={[1, 2, 3, 4, 5]}
-              tickFormatter={(v) => {
-                const labels: Record<number, string> = { 1: "😤", 2: "😰", 3: "😐", 4: "😌", 5: "😊" };
-                return labels[v] ?? "";
-              }}
+              tickFormatter={yTickFormatter}
             />
-            <Tooltip
-              content={({ active, payload }) => {
-                if (!active || !payload?.length) return null;
-                const d = payload[0].payload;
-                return (
-                  <div className="bg-card border border-border rounded-echo-md px-3 py-2 shadow-echo-2 text-xs">
-                    <p className="font-medium text-bark">{d.date}</p>
-                    <p className="text-driftwood">
-                      {d.mood?.emoji} {d.mood?.label}
-                    </p>
-                    {d.title && <p className="text-driftwood truncate max-w-[150px]">{d.title}</p>}
-                    {d.isMilestone && (
-                      <p className="text-dusk font-medium mt-1">🏴 {d.milestoneLabel || "Milestone"}</p>
-                    )}
-                  </div>
-                );
-              }}
-            />
+            <Tooltip content={renderTooltip} />
             <Area
               type="monotone"
               dataKey="score"
@@ -95,20 +99,17 @@ const HealingTimeline = ({ entries }: HealingTimelineProps) => {
               strokeWidth={2}
               fill="url(#moodGradient)"
             />
-            {milestones.map((m, i) => {
-              const idx = data.indexOf(m);
-              return (
-                <ReferenceDot
-                  key={i}
-                  x={m.date}
-                  y={m.score}
-                  r={6}
-                  fill="hsl(268, 28%, 51%)"
-                  stroke="white"
-                  strokeWidth={2}
-                />
-              );
-            })}
+            {milestones.map((m, i) => (
+              <ReferenceDot
+                key={i}
+                x={m.date}
+                y={m.score}
+                r={6}
+                fill="hsl(268, 28%, 51%)"
+                stroke="white"
+                strokeWidth={2}
+              />
+            ))}
           </AreaChart>
         </ResponsiveContainer>
       </div>
@@ -120,6 +121,7 @@ const HealingTimeline = ({ entries }: HealingTimelineProps) => {
       )}
     </div>
   );
-};
+});
+HealingTimeline.displayName = "HealingTimeline";
 
 export default HealingTimeline;

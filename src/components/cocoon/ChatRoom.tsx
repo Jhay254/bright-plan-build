@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback, memo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -23,6 +23,48 @@ const STATUS_LABELS: Record<SessionStatus, { label: string; color: string }> = {
   closed: { label: "Session ended", color: "text-driftwood" },
   cancelled: { label: "Cancelled", color: "text-care-alert" },
 };
+
+/* ── Memoized message bubble — prevents re-render of all messages on new message ── */
+interface MessageBubbleProps {
+  msg: Message;
+  isMine: boolean;
+  alias: string;
+}
+
+const MessageBubble = memo(({ msg, isMine, alias }: MessageBubbleProps) => {
+  if (msg.is_system) {
+    return (
+      <div className="text-center">
+        <p className="text-xs text-driftwood bg-sand inline-block px-3 py-1 rounded-echo-pill">
+          {msg.content}
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className={`flex ${isMine ? "justify-end" : "justify-start"}`}>
+      <div className={`max-w-[80%] ${isMine ? "order-2" : ""}`}>
+        <p className={`text-[10px] mb-0.5 ${isMine ? "text-right" : "text-left"} text-driftwood`}>
+          {isMine ? "You" : alias}
+        </p>
+        <div
+          className={`px-4 py-2.5 rounded-echo-lg text-sm leading-relaxed ${
+            isMine
+              ? "bg-forest text-primary-foreground rounded-br-sm"
+              : "bg-card border border-border text-bark rounded-bl-sm"
+          }`}
+        >
+          {msg.content}
+        </div>
+        <p className={`text-[10px] mt-0.5 text-driftwood ${isMine ? "text-right" : ""}`}>
+          {new Date(msg.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+        </p>
+      </div>
+    </div>
+  );
+});
+MessageBubble.displayName = "MessageBubble";
 
 const ChatRoom = () => {
   const { sessionId } = useParams<{ sessionId: string }>();
@@ -132,7 +174,6 @@ const ChatRoom = () => {
         (payload) => {
           const updated = payload.new as Session;
           setSession(updated);
-          // 17.5: Proactive feedback — auto-show when session closes
           if (updated.status === "closed") {
             setShowFeedback(true);
           }
@@ -165,7 +206,6 @@ const ChatRoom = () => {
           filter: `session_id=eq.${sessionId}`,
         },
         () => {
-          // Show alert to volunteer (the seeker already sees the CrisisBanner)
           if (session && user.id === session.volunteer_id) {
             setVolunteerCrisisAlert(true);
           }
@@ -180,7 +220,6 @@ const ChatRoom = () => {
     if (!user || !sessionId || !newMessage.trim()) return;
     const content = newMessage.trim();
 
-    // Crisis detection
     const isCrisis = detectCrisisLanguage(content);
     if (isCrisis) {
       setShowCrisis(true);
@@ -200,7 +239,6 @@ const ChatRoom = () => {
         .single();
       if (error) throw error;
 
-      // 8.1: Write crisis flag to DB (type-safe wrapper)
       if (isCrisis && msgData) {
         await insertCrisisFlag({
           session_id: sessionId,
@@ -215,9 +253,9 @@ const ChatRoom = () => {
     }
   }, [user, sessionId, newMessage, toast]);
 
-  const transitionSession = async (newStatus: SessionStatus) => {
+  const transitionSession = useCallback(async (newStatus: SessionStatus) => {
     try {
-      const { data, error } = await supabase.rpc("transition_session", {
+      const { error } = await supabase.rpc("transition_session", {
         _session_id: sessionId!,
         _new_status: newStatus,
       });
@@ -228,9 +266,9 @@ const ChatRoom = () => {
     } catch (e: any) {
       toast({ title: "Error", description: e.message, variant: "destructive" });
     }
-  };
+  }, [sessionId, toast]);
 
-  const acceptSession = async () => {
+  const acceptSession = useCallback(async () => {
     try {
       const { data, error } = await supabase.rpc("volunteer_accept_session", {
         _session_id: sessionId!,
@@ -242,7 +280,26 @@ const ChatRoom = () => {
     } catch (e: any) {
       toast({ title: "Error", description: e.message, variant: "destructive" });
     }
-  };
+  }, [sessionId, toast]);
+
+  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setNewMessage(e.target.value.slice(0, 2000));
+  }, []);
+
+  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  }, [sendMessage]);
+
+  const dismissCrisisAlert = useCallback(() => setVolunteerCrisisAlert(false), []);
+  const navigateToCocoon = useCallback(() => navigate("/app/cocoon"), [navigate]);
+  const openFeedback = useCallback(() => setShowFeedback(true), []);
+  const cancelRequest = useCallback(() => transitionSession("cancelled"), [transitionSession]);
+  const startSession = useCallback(() => transitionSession("active"), [transitionSession]);
+  const wrapUp = useCallback(() => transitionSession("wrap_up"), [transitionSession]);
+  const endSession = useCallback(() => transitionSession("closed"), [transitionSession]);
 
   if (showFeedback && session) {
     return (
@@ -250,7 +307,7 @@ const ChatRoom = () => {
         sessionId={session.id}
         volunteerId={session.volunteer_id}
         role={role ?? "seeker"}
-        onComplete={() => navigate("/app/cocoon")}
+        onComplete={navigateToCocoon}
       />
     );
   }
@@ -272,7 +329,7 @@ const ChatRoom = () => {
     <div className="flex flex-col h-screen bg-background">
       {/* Header */}
       <div className="border-b border-border bg-card px-4 py-3 flex items-center gap-3 shrink-0">
-        <button onClick={() => navigate("/app/cocoon")} className="text-driftwood hover:text-forest">
+        <button onClick={navigateToCocoon} className="text-driftwood hover:text-forest">
           <ArrowLeft className="h-5 w-5" />
         </button>
         <div className="flex-1 min-w-0">
@@ -288,17 +345,17 @@ const ChatRoom = () => {
           <Button size="sm" variant="default" onClick={acceptSession}>Accept</Button>
         )}
         {session.status === "matched" && (isSeeker || isVolunteer) && (
-          <Button size="sm" variant="default" onClick={() => transitionSession("active")}>
+          <Button size="sm" variant="default" onClick={startSession}>
             Start Session
           </Button>
         )}
         {session.status === "active" && (isSeeker || isVolunteer) && (
-          <Button size="sm" variant="secondary" onClick={() => transitionSession("wrap_up")}>
+          <Button size="sm" variant="secondary" onClick={wrapUp}>
             Wrap Up
           </Button>
         )}
         {session.status === "wrap_up" && (isSeeker || isVolunteer) && (
-          <Button size="sm" variant="outline" onClick={() => transitionSession("closed")}>
+          <Button size="sm" variant="outline" onClick={endSession}>
             <CheckCircle2 className="h-4 w-4 mr-1" /> End Session
           </Button>
         )}
@@ -323,7 +380,7 @@ const ChatRoom = () => {
             variant="ghost"
             size="sm"
             className="mt-2 text-xs text-driftwood"
-            onClick={() => setVolunteerCrisisAlert(false)}
+            onClick={dismissCrisisAlert}
           >
             Acknowledge
           </Button>
@@ -344,7 +401,7 @@ const ChatRoom = () => {
             <Button
               variant="ghost"
               className="mt-6 text-care-alert"
-              onClick={() => transitionSession("cancelled")}
+              onClick={cancelRequest}
             >
               Cancel request
             </Button>
@@ -362,42 +419,14 @@ const ChatRoom = () => {
             </div>
           )}
 
-          {messages.map((msg) => {
-            const isMine = msg.sender_id === user?.id;
-            const alias = participantAliases[msg.sender_id] ?? "Unknown";
-
-            if (msg.is_system) {
-              return (
-                <div key={msg.id} className="text-center">
-                  <p className="text-xs text-driftwood bg-sand inline-block px-3 py-1 rounded-echo-pill">
-                    {msg.content}
-                  </p>
-                </div>
-              );
-            }
-
-            return (
-              <div key={msg.id} className={`flex ${isMine ? "justify-end" : "justify-start"}`}>
-                <div className={`max-w-[80%] ${isMine ? "order-2" : ""}`}>
-                  <p className={`text-[10px] mb-0.5 ${isMine ? "text-right" : "text-left"} text-driftwood`}>
-                    {isMine ? "You" : alias}
-                  </p>
-                  <div
-                    className={`px-4 py-2.5 rounded-echo-lg text-sm leading-relaxed ${
-                      isMine
-                        ? "bg-forest text-primary-foreground rounded-br-sm"
-                        : "bg-card border border-border text-bark rounded-bl-sm"
-                    }`}
-                  >
-                    {msg.content}
-                  </div>
-                  <p className={`text-[10px] mt-0.5 text-driftwood ${isMine ? "text-right" : ""}`}>
-                    {new Date(msg.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                  </p>
-                </div>
-              </div>
-            );
-          })}
+          {messages.map((msg) => (
+            <MessageBubble
+              key={msg.id}
+              msg={msg}
+              isMine={msg.sender_id === user?.id}
+              alias={participantAliases[msg.sender_id] ?? "Unknown"}
+            />
+          ))}
           <div ref={bottomRef} />
         </div>
       )}
@@ -408,13 +437,8 @@ const ChatRoom = () => {
           <div className="flex items-end gap-2 max-w-lg mx-auto">
             <textarea
               value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value.slice(0, 2000))}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  sendMessage();
-                }
-              }}
+              onChange={handleInputChange}
+              onKeyDown={handleKeyDown}
               placeholder="Type a message…"
               rows={1}
               className="flex-1 resize-none px-4 py-2.5 rounded-echo-lg border border-stone bg-background text-bark placeholder:text-driftwood/60 focus:border-fern focus:outline-none text-sm max-h-32"
@@ -437,7 +461,7 @@ const ChatRoom = () => {
       {session.status === "closed" && !showFeedback && (
         <div className="border-t border-border bg-dawn px-4 py-4 text-center shrink-0">
           <p className="text-sm text-driftwood mb-2">This session has ended.</p>
-          <Button variant="outline" size="sm" onClick={() => setShowFeedback(true)}>
+          <Button variant="outline" size="sm" onClick={openFeedback}>
             Leave Feedback
           </Button>
         </div>

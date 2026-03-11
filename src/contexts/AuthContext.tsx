@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, useCallback } from "react";
+import { createContext, useContext, useEffect, useState, useCallback, useMemo } from "react";
 import { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import i18n from "@/i18n";
@@ -7,20 +7,29 @@ import type { Database } from "@/integrations/supabase/types";
 type AppRole = Database["public"]["Enums"]["app_role"];
 type Profile = Database["public"]["Tables"]["profiles"]["Row"];
 
-interface AuthState {
+/* ── Split into two contexts to avoid cascading re-renders ── */
+
+interface AuthSessionState {
   session: Session | null;
   user: User | null;
-  profile: Profile | null;
-  role: AppRole | null;
   loading: boolean;
-  refreshProfile: () => Promise<void>;
   signUp: (email: string, password: string) => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
   signInAnonymously: () => Promise<void>;
   signOut: () => Promise<void>;
 }
 
-const AuthContext = createContext<AuthState | undefined>(undefined);
+interface AuthProfileState {
+  profile: Profile | null;
+  role: AppRole | null;
+  refreshProfile: () => Promise<void>;
+}
+
+// Combined type for backward compatibility
+type AuthState = AuthSessionState & AuthProfileState;
+
+const AuthSessionContext = createContext<AuthSessionState | undefined>(undefined);
+const AuthProfileContext = createContext<AuthProfileState | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
@@ -36,7 +45,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     ]);
     if (profileRes.data) {
       setProfile(profileRes.data);
-      // Sync i18n language and RTL direction
       const lang = profileRes.data.language || "en";
       if (i18n.language !== lang) {
         i18n.changeLanguage(lang);
@@ -78,39 +86,67 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return () => subscription.unsubscribe();
   }, [fetchProfileAndRole]);
 
-  const signUp = async (email: string, password: string) => {
+  const signUp = useCallback(async (email: string, password: string) => {
     const { error } = await supabase.auth.signUp({
       email,
       password,
       options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
     });
     if (error) throw error;
-  };
+  }, []);
 
-  const signIn = async (email: string, password: string) => {
+  const signIn = useCallback(async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) throw error;
-  };
+  }, []);
 
-  const signInAnonymously = async () => {
+  const signInAnonymously = useCallback(async () => {
     const { error } = await supabase.auth.signInAnonymously();
     if (error) throw error;
-  };
+  }, []);
 
-  const signOut = async () => {
+  const signOut = useCallback(async () => {
     const { error } = await supabase.auth.signOut();
     if (error) throw error;
-  };
+  }, []);
+
+  // Stabilise context value objects so consumers don't re-render on unrelated state changes
+  const sessionValue = useMemo<AuthSessionState>(
+    () => ({ session, user, loading, signUp, signIn, signInAnonymously, signOut }),
+    [session, user, loading, signUp, signIn, signInAnonymously, signOut]
+  );
+
+  const profileValue = useMemo<AuthProfileState>(
+    () => ({ profile, role, refreshProfile }),
+    [profile, role, refreshProfile]
+  );
 
   return (
-    <AuthContext.Provider value={{ session, user, profile, role, loading, refreshProfile, signUp, signIn, signInAnonymously, signOut }}>
-      {children}
-    </AuthContext.Provider>
+    <AuthSessionContext.Provider value={sessionValue}>
+      <AuthProfileContext.Provider value={profileValue}>
+        {children}
+      </AuthProfileContext.Provider>
+    </AuthSessionContext.Provider>
   );
 };
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) throw new Error("useAuth must be used within AuthProvider");
+/** Use only session/auth actions — won't re-render when profile changes */
+export const useAuthSession = () => {
+  const context = useContext(AuthSessionContext);
+  if (!context) throw new Error("useAuthSession must be used within AuthProvider");
   return context;
+};
+
+/** Use only profile/role — won't re-render when session token refreshes */
+export const useAuthProfile = () => {
+  const context = useContext(AuthProfileContext);
+  if (!context) throw new Error("useAuthProfile must be used within AuthProvider");
+  return context;
+};
+
+/** Combined hook for backward compatibility — re-renders on any auth change */
+export const useAuth = (): AuthState => {
+  const sessionCtx = useAuthSession();
+  const profileCtx = useAuthProfile();
+  return { ...sessionCtx, ...profileCtx };
 };
