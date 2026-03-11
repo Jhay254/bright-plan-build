@@ -3,7 +3,8 @@ import { initReactI18next } from "react-i18next";
 import en from "./locales/en.json";
 
 // Only English is bundled eagerly; other locales are lazy-loaded on demand
-const localeLoaders: Record<string, () => Promise<{ default: Record<string, string> }>> = {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const localeLoaders: Record<string, () => Promise<{ default: any }>> = {
   fr: () => import("./locales/fr.json"),
   sw: () => import("./locales/sw.json"),
   ar: () => import("./locales/ar.json"),
