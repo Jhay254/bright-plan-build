@@ -19,7 +19,10 @@ const BottomTabBar = () => {
     { to: "/app/cocoon", icon: MessageCircle, label: t("nav.cocoon"), badge: unreadCount },
     ...(isVolunteer
       ? [{ to: "/app/volunteer", icon: HeartHandshake, label: t("nav.hub"), end: false, badge: 0 }]
-      : [{ to: "/app/journal", icon: BookOpen, label: t("nav.journal"), end: false, badge: 0 }]),
+      : [
+          { to: "/app/journal", icon: BookOpen, label: t("nav.journal"), end: false, badge: 0 },
+          { to: "/app/wellbeing", icon: Activity, label: t("nav.wellbeing"), end: false, badge: 0 },
+        ]),
     { to: "/app/community", icon: Users, label: t("nav.community"), badge: 0 },
     ...(isAdmin
       ? [{ to: "/admin", icon: Shield, label: t("nav.admin"), end: false, badge: 0 }]

@@ -86,6 +86,7 @@ const App = () => (
                     <Route path="journal" element={<ErrorBoundary><JournalPage /></ErrorBoundary>} />
                     <Route path="journal/new" element={<ErrorBoundary><JournalEditor /></ErrorBoundary>} />
                     <Route path="journal/:entryId" element={<ErrorBoundary><JournalDetail /></ErrorBoundary>} />
+                    <Route path="wellbeing" element={<ErrorBoundary><WellbeingPage /></ErrorBoundary>} />
                     <Route path="community" element={<ErrorBoundary><CommunityPage /></ErrorBoundary>} />
                     <Route path="profile" element={<ErrorBoundary><ProfilePage /></ErrorBoundary>} />
                     <Route path="volunteer" element={<ErrorBoundary><VolunteerDashboard /></ErrorBoundary>} />
