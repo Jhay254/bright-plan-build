@@ -76,10 +76,61 @@
       "isolation": "Surmonter l'isolement"
     }
   },
+  "assessment": {
+    "pageTitle": "Bilan bien-être",
+    "pageDesc": "Suivez comment vous vous sentez au fil du temps avec des bilans simples et validés.",
+    "overPastTwoWeeks": "Au cours des 2 dernières semaines, à quelle fréquence avez-vous été gêné(e) par…",
+    "answers": {
+      "notAtAll": "Pas du tout",
+      "severalDays": "Plusieurs jours",
+      "moreThanHalf": "Plus de la moitié des jours",
+      "nearlyEveryDay": "Presque tous les jours"
+    },
+    "phq9": {
+      "title": "Bilan humeur",
+      "desc": "9 questions sur comment vous vous sentez émotionnellement",
+      "q1": "Peu d'intérêt ou de plaisir à faire les choses",
+      "q2": "Se sentir triste, déprimé(e) ou sans espoir",
+      "q3": "Difficultés à s'endormir ou à rester endormi(e), ou dormir trop",
+      "q4": "Se sentir fatigué(e) ou avoir peu d'énergie",
+      "q5": "Peu d'appétit ou manger trop",
+      "q6": "Avoir une mauvaise opinion de soi-même — ou avoir le sentiment d'être un(e) raté(e) ou d'avoir déçu sa famille",
+      "q7": "Difficultés à se concentrer, par exemple pour lire ou regarder la télévision",
+      "q8": "Bouger ou parler si lentement que les autres l'ont remarqué — ou au contraire, être agité(e)",
+      "q9": "Penser qu'il vaudrait mieux être mort(e) ou penser à se faire du mal"
+    },
+    "gad7": {
+      "title": "Bilan anxiété",
+      "desc": "7 questions sur l'inquiétude et l'anxiété",
+      "q1": "Se sentir nerveux(se), anxieux(se) ou tendu(e)",
+      "q2": "Ne pas pouvoir arrêter ou contrôler ses inquiétudes",
+      "q3": "S'inquiéter trop à propos de différentes choses",
+      "q4": "Avoir du mal à se détendre",
+      "q5": "Être si agité(e) qu'il est difficile de rester assis(e)",
+      "q6": "Devenir facilement contrarié(e) ou irritable",
+      "q7": "Avoir peur, comme si quelque chose de terrible allait arriver"
+    },
+    "bands": {
+      "minimal": "Vous allez bien",
+      "mild": "Léger — gardez un œil",
+      "moderate": "Modéré — pensez à en parler",
+      "moderatelySevere": "Significatif — nous vous encourageons à en parler",
+      "severe": "Sévère — veuillez demander de l'aide"
+    },
+    "seeResults": "Voir les résultats",
+    "saved": "Bilan enregistré",
+    "lastTaken": "Dernier bilan",
+    "neverTaken": "Vous n'avez pas encore fait ce bilan.",
+    "retake": "Refaire",
+    "takeNow": "Commencer le bilan",
+    "noDataYet": "Complétez votre premier bilan pour voir vos tendances.",
+    "disclaimer": "Ces bilans sont uniquement pour l'auto-réflexion. Ils ne constituent pas un diagnostic. Si vous souffrez, veuillez contacter un service de crise ou votre médecin."
+  },
   "nav": {
     "home": "Accueil",
     "cocoon": "Cocoon",
     "journal": "Journal",
+    "wellbeing": "Bien-être",
     "community": "Communauté",
     "profile": "Profil",
     "hub": "Hub",

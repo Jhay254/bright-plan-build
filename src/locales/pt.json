@@ -76,10 +76,61 @@
       "isolation": "Superar o isolamento"
     }
   },
+  "assessment": {
+    "pageTitle": "Check-in de bem-estar",
+    "pageDesc": "Acompanhe como você está se sentindo ao longo do tempo com check-ins simples e validados.",
+    "overPastTwoWeeks": "Nas últimas 2 semanas, com que frequência você foi incomodado(a) por…",
+    "answers": {
+      "notAtAll": "Nenhuma vez",
+      "severalDays": "Vários dias",
+      "moreThanHalf": "Mais da metade dos dias",
+      "nearlyEveryDay": "Quase todos os dias"
+    },
+    "phq9": {
+      "title": "Check-in de humor",
+      "desc": "9 perguntas sobre como você tem se sentido emocionalmente",
+      "q1": "Pouco interesse ou prazer em fazer as coisas",
+      "q2": "Sentir-se para baixo, deprimido(a) ou sem esperança",
+      "q3": "Dificuldade para adormecer ou permanecer dormindo, ou dormir demais",
+      "q4": "Sentir-se cansado(a) ou com pouca energia",
+      "q5": "Pouco apetite ou comer demais",
+      "q6": "Sentir-se mal consigo mesmo(a) — ou que é um fracasso ou decepcionou a si mesmo(a) ou sua família",
+      "q7": "Dificuldade para se concentrar nas coisas, como ler ou assistir TV",
+      "q8": "Mover-se ou falar tão devagar que outras pessoas notaram — ou o oposto, estar inquieto(a)",
+      "q9": "Pensamentos de que estaria melhor morto(a), ou de se machucar"
+    },
+    "gad7": {
+      "title": "Check-in de ansiedade",
+      "desc": "7 perguntas sobre preocupação e ansiedade",
+      "q1": "Sentir-se nervoso(a), ansioso(a) ou tenso(a)",
+      "q2": "Não conseguir parar ou controlar a preocupação",
+      "q3": "Preocupar-se demais com coisas diferentes",
+      "q4": "Dificuldade para relaxar",
+      "q5": "Estar tão inquieto(a) que é difícil ficar parado(a)",
+      "q6": "Irritar-se ou ficar incomodado(a) facilmente",
+      "q7": "Sentir medo, como se algo terrível fosse acontecer"
+    },
+    "bands": {
+      "minimal": "Você está bem",
+      "mild": "Leve — fique atento(a)",
+      "moderate": "Moderado — considere conversar com alguém",
+      "moderatelySevere": "Significativo — encorajamos você a conversar com alguém",
+      "severe": "Severo — por favor, busque apoio"
+    },
+    "seeResults": "Ver resultados",
+    "saved": "Check-in salvo",
+    "lastTaken": "Último check-in",
+    "neverTaken": "Você ainda não fez este check-in.",
+    "retake": "Fazer novamente",
+    "takeNow": "Iniciar check-in",
+    "noDataYet": "Complete seu primeiro check-in para ver suas tendências.",
+    "disclaimer": "Estes check-ins são apenas para autorreflexão. Não são um diagnóstico. Se você está com dificuldades, entre em contato com um serviço de crise ou seu profissional de saúde."
+  },
   "nav": {
     "home": "Início",
     "cocoon": "Cocoon",
     "journal": "Diário",
+    "wellbeing": "Bem-estar",
     "community": "Comunidade",
     "profile": "Perfil",
     "hub": "Hub",

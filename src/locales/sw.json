@@ -76,10 +76,61 @@
       "isolation": "Kushinda upweke"
     }
   },
+  "assessment": {
+    "pageTitle": "Ukaguzi wa ustawi",
+    "pageDesc": "Fuatilia jinsi unavyojisikia kwa muda kwa ukaguzi rahisi na uliothibitishwa.",
+    "overPastTwoWeeks": "Katika wiki 2 zilizopita, ni mara ngapi umesumbuliwa na…",
+    "answers": {
+      "notAtAll": "Hapana kabisa",
+      "severalDays": "Siku kadhaa",
+      "moreThanHalf": "Zaidi ya nusu ya siku",
+      "nearlyEveryDay": "Karibu kila siku"
+    },
+    "phq9": {
+      "title": "Ukaguzi wa hisia",
+      "desc": "Maswali 9 kuhusu jinsi umekuwa ukijisikia kihisia",
+      "q1": "Kupendezwa kidogo au kupata furaha katika kufanya mambo",
+      "q2": "Kujisikia chini, kukata tamaa, au kutokuwa na tumaini",
+      "q3": "Ugumu wa kulala au kubaki umelala, au kulala sana",
+      "q4": "Kujisikia uchovu au kuwa na nguvu kidogo",
+      "q5": "Hamu ndogo ya kula au kula kupita kiasi",
+      "q6": "Kujisikia vibaya kuhusu wewe mwenyewe — au kwamba umeshindwa au umewaachia familia yako",
+      "q7": "Ugumu wa kuzingatia mambo, kama kusoma au kutazama TV",
+      "q8": "Kutembea au kuzungumza polepole sana hadi watu wengine wameona — au kinyume chake, kuwa na wasiwasi",
+      "q9": "Mawazo kwamba ungekuwa bora ukiwa umekufa, au kujiumiza"
+    },
+    "gad7": {
+      "title": "Ukaguzi wa wasiwasi",
+      "desc": "Maswali 7 kuhusu wasiwasi na hofu",
+      "q1": "Kujisikia na wasiwasi, hofu, au mvutano",
+      "q2": "Kutoweza kuacha au kudhibiti wasiwasi",
+      "q3": "Kuwa na wasiwasi sana kuhusu mambo tofauti",
+      "q4": "Ugumu wa kupumzika",
+      "q5": "Kuwa na wasiwasi kiasi kwamba ni vigumu kukaa kimya",
+      "q6": "Kukasirika au kukera kwa urahisi",
+      "q7": "Kuhisi hofu, kana kwamba kitu kibaya kitatokea"
+    },
+    "bands": {
+      "minimal": "Uko vizuri",
+      "mild": "Kidogo — endelea kufuatilia",
+      "moderate": "Wastani — fikiria kuongea na mtu",
+      "moderatelySevere": "Kubwa — tunakuhimiza kuzungumza na mtu",
+      "severe": "Kali — tafadhali tafuta msaada"
+    },
+    "seeResults": "Ona matokeo",
+    "saved": "Ukaguzi umehifadhiwa",
+    "lastTaken": "Ukaguzi wa mwisho",
+    "neverTaken": "Bado hujafanya ukaguzi huu.",
+    "retake": "Fanya tena",
+    "takeNow": "Anza ukaguzi",
+    "noDataYet": "Kamilisha ukaguzi wako wa kwanza kuona mwenendo wako.",
+    "disclaimer": "Ukaguzi huu ni kwa kutafakari binafsi tu. Si uchunguzi wa matibabu. Ikiwa unapambana, tafadhali wasiliana na huduma ya msaada au daktari wako."
+  },
   "nav": {
     "home": "Nyumbani",
     "cocoon": "Cocoon",
     "journal": "Jarida",
+    "wellbeing": "Ustawi",
     "community": "Jamii",
     "profile": "Wasifu",
     "hub": "Kituo",
