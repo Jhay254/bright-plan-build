@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { Home, MessageCircle, BookOpen, Users, User, HeartHandshake, Shield } from "lucide-react";
+import { Home, MessageCircle, BookOpen, Users, User, HeartHandshake, Shield, Activity } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contexts/AuthContext";
