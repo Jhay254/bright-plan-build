@@ -25,6 +25,7 @@ const CocoonPage = lazy(() => import("./pages/app/CocoonPage"));
 const SessionRequest = lazy(() => import("@/components/cocoon/SessionRequest"));
 const ChatRoom = lazy(() => import("@/components/cocoon/ChatRoom"));
 const JournalPage = lazy(() => import("./pages/app/JournalPage"));
+const WellbeingPage = lazy(() => import("./pages/app/WellbeingPage"));
 const JournalEditor = lazy(() => import("@/components/journal/JournalEditor"));
 const JournalDetail = lazy(() => import("@/components/journal/JournalDetail"));
 const CommunityPage = lazy(() => import("./pages/app/CommunityPage"));
