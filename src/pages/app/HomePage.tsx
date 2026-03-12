@@ -1,6 +1,6 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import { MessageCircle, BookOpen } from "lucide-react";
+import { MessageCircle, BookOpen, Activity } from "lucide-react";
 import { useNavigate, Navigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Helmet } from "react-helmet-async";
