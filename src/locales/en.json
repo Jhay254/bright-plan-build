@@ -76,10 +76,61 @@
       "isolation": "Overcoming isolation"
     }
   },
+  "assessment": {
+    "pageTitle": "Wellbeing Check-in",
+    "pageDesc": "Track how you're feeling over time with simple, validated check-ins.",
+    "overPastTwoWeeks": "Over the past 2 weeks, how often have you been bothered by…",
+    "answers": {
+      "notAtAll": "Not at all",
+      "severalDays": "Several days",
+      "moreThanHalf": "More than half the days",
+      "nearlyEveryDay": "Nearly every day"
+    },
+    "phq9": {
+      "title": "Mood Check",
+      "desc": "9 questions about how you've been feeling emotionally",
+      "q1": "Little interest or pleasure in doing things",
+      "q2": "Feeling down, depressed, or hopeless",
+      "q3": "Trouble falling or staying asleep, or sleeping too much",
+      "q4": "Feeling tired or having little energy",
+      "q5": "Poor appetite or overeating",
+      "q6": "Feeling bad about yourself — or that you're a failure or have let yourself or your family down",
+      "q7": "Trouble concentrating on things, such as reading or watching TV",
+      "q8": "Moving or speaking so slowly that other people could have noticed — or the opposite, being fidgety or restless",
+      "q9": "Thoughts that you would be better off dead, or of hurting yourself"
+    },
+    "gad7": {
+      "title": "Anxiety Check",
+      "desc": "7 questions about worry and anxiety",
+      "q1": "Feeling nervous, anxious, or on edge",
+      "q2": "Not being able to stop or control worrying",
+      "q3": "Worrying too much about different things",
+      "q4": "Trouble relaxing",
+      "q5": "Being so restless that it's hard to sit still",
+      "q6": "Becoming easily annoyed or irritable",
+      "q7": "Feeling afraid, as if something awful might happen"
+    },
+    "bands": {
+      "minimal": "You're doing well",
+      "mild": "Mild — keep an eye on it",
+      "moderate": "Moderate — consider reaching out",
+      "moderatelySevere": "Significant — we encourage you to talk to someone",
+      "severe": "Severe — please reach out for support"
+    },
+    "seeResults": "See Results",
+    "saved": "Check-in saved",
+    "lastTaken": "Last check-in",
+    "neverTaken": "You haven't done this check-in yet.",
+    "retake": "Take Again",
+    "takeNow": "Start Check-in",
+    "noDataYet": "Complete your first check-in to see your trends.",
+    "disclaimer": "These check-ins are for self-reflection only. They are not a diagnosis. If you're struggling, please reach out to a crisis service or your healthcare provider."
+  },
   "nav": {
     "home": "Home",
     "cocoon": "Cocoon",
     "journal": "Journal",
+    "wellbeing": "Wellbeing",
     "community": "Community",
     "profile": "Profile",
     "hub": "Hub",

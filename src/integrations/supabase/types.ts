@@ -552,6 +552,33 @@ export type Database = {
         }
         Relationships: []
       }
+      wellbeing_assessments: {
+        Row: {
+          answers: number[]
+          created_at: string
+          id: string
+          total_score: number
+          type: string
+          user_id: string
+        }
+        Insert: {
+          answers: number[]
+          created_at?: string
+          id?: string
+          total_score: number
+          type: string
+          user_id: string
+        }
+        Update: {
+          answers?: number[]
+          created_at?: string
+          id?: string
+          total_score?: number
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       visible_encouragements: {
