@@ -44,6 +44,14 @@ const HomePage = () => {
             <BookOpen className="h-4 w-4 ltr:mr-2 rtl:ml-2" /> {t("home.openJournal")}
           </Button>
         </div>
+
+        <div className="bg-card rounded-echo-lg p-6 shadow-echo-1 border border-border">
+          <h2 className="font-heading text-lg font-semibold text-bark mb-2">{t("assessment.pageTitle")}</h2>
+          <p className="text-sm text-driftwood mb-4">{t("assessment.pageDesc")}</p>
+          <Button variant="outline" onClick={() => navigate("/app/wellbeing")}>
+            <Activity className="h-4 w-4 ltr:mr-2 rtl:ml-2" /> {t("assessment.takeNow")}
+          </Button>
+        </div>
       </div>
       </div>
     </>
