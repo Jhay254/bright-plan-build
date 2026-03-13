@@ -7,7 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
-import { Heart, BookOpen, Plus, Pencil, Trash2 } from "lucide-react";
+import { Heart, BookOpen, Plus, Pencil, Trash2, MessageSquare } from "lucide-react";
+import ForumModeration from "@/components/community/ForumModeration";
 import {
   Dialog,
   DialogContent,
@@ -268,6 +269,9 @@ const AdminCommunityPage = () => {
           <TabsTrigger value="resources" className="gap-1.5">
             <BookOpen className="h-4 w-4" /> Resources
           </TabsTrigger>
+          <TabsTrigger value="forums" className="gap-1.5">
+            <MessageSquare className="h-4 w-4" /> Forums
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="encouragements">
@@ -275,6 +279,9 @@ const AdminCommunityPage = () => {
         </TabsContent>
         <TabsContent value="resources">
           <ResourceManagement />
+        </TabsContent>
+        <TabsContent value="forums">
+          <ForumModeration />
         </TabsContent>
       </Tabs>
     </div>

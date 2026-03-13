@@ -209,6 +209,63 @@ export type Database = {
           },
         ]
       }
+      forum_posts: {
+        Row: {
+          category: string
+          content: string
+          created_at: string
+          hidden_by: string | null
+          hidden_reason: string | null
+          id: string
+          is_hidden: boolean
+          parent_id: string | null
+          title: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category?: string
+          content: string
+          created_at?: string
+          hidden_by?: string | null
+          hidden_reason?: string | null
+          id?: string
+          is_hidden?: boolean
+          parent_id?: string | null
+          title?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: string
+          content?: string
+          created_at?: string
+          hidden_by?: string | null
+          hidden_reason?: string | null
+          id?: string
+          is_hidden?: boolean
+          parent_id?: string | null
+          title?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "forum_posts_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "forum_posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "forum_posts_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "forum_posts_anonymous"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       journal_entries: {
         Row: {
           content: string
@@ -581,6 +638,37 @@ export type Database = {
       }
     }
     Views: {
+      forum_posts_anonymous: {
+        Row: {
+          author_alias: string | null
+          author_avatar_seed: string | null
+          category: string | null
+          content: string | null
+          created_at: string | null
+          id: string | null
+          is_hidden: boolean | null
+          parent_id: string | null
+          title: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "forum_posts_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "forum_posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "forum_posts_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "forum_posts_anonymous"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       visible_encouragements: {
         Row: {
           content: string | null

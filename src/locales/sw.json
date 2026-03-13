@@ -242,13 +242,47 @@
   "community": {
     "title": "Jamii",
     "subtitle": "Rasilimali, msaada na maneno ya kutia moyo kutoka kwa wale wanaolewa.",
+    "forumsTab": "Majadiliano",
     "resourcesTab": "Rasilimali",
     "encouragementsTab": "Maneno ya kutia moyo",
     "postEncouragement": "Shiriki neno la kutia moyo",
     "encouragementPlaceholder": "Andika kitu kizuri kwa mtu anayekihitaji…",
     "post": "Chapisha",
     "posting": "Inachapisha…",
-    "noEncouragements": "Hakuna maneno ya kutia moyo bado. Kuwa wa kwanza kushiriki."
+    "noEncouragements": "Hakuna maneno ya kutia moyo bado. Kuwa wa kwanza kushiriki.",
+    "forum": {
+      "allTopics": "Mada Zote",
+      "newThread": "Mjadala Mpya",
+      "startThread": "Anza mjadala mpya",
+      "titlePlaceholder": "Weka kichwa cha mjadala (hiari)",
+      "contentPlaceholder": "Shiriki unachofikiri…",
+      "post": "Chapisha",
+      "threadCreated": "Mjadala umeundwa",
+      "noThreads": "Hakuna mjadala bado. Anza wa kwanza.",
+      "threadNotFound": "Mjadala haujapatikana.",
+      "replies": "Majibu",
+      "noReplies": "Hakuna majibu bado. Kuwa wa kwanza kujibu.",
+      "replyPlaceholder": "Andika jibu la kuunga mkono…",
+      "reply": "Jibu",
+      "replySent": "Jibu limechapishwa",
+      "hide": "Ficha",
+      "restore": "Rejesha",
+      "hidden": "Ujumbe umefichwa",
+      "restored": "Ujumbe umerejeshwa",
+      "hiddenLabel": "Imefichwa",
+      "safetyTitle": "Tunajali usalama wako",
+      "safetyDesc": "Ikiwa uko katika hali ya dharura, tafadhali tembelea kichupo cha rasilimali. Majadiliano ni kwa msaada wa rika.",
+      "categories": {
+        "grief": "Msiba na Upotezaji",
+        "anxiety": "Wasiwasi",
+        "trauma-recovery": "Kupona Kiwewe",
+        "stress": "Msongo na Uchovu",
+        "relationships": "Mahusiano",
+        "self-esteem": "Kujistahi",
+        "resilience": "Kujenga Ustahimilivu",
+        "general": "Jumla"
+      }
+    }
   },
   "profile": {
     "title": "Wasifu",
