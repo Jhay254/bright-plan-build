@@ -269,6 +269,9 @@ const AdminCommunityPage = () => {
           <TabsTrigger value="resources" className="gap-1.5">
             <BookOpen className="h-4 w-4" /> Resources
           </TabsTrigger>
+          <TabsTrigger value="forums" className="gap-1.5">
+            <MessageSquare className="h-4 w-4" /> Forums
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="encouragements">
@@ -276,6 +279,9 @@ const AdminCommunityPage = () => {
         </TabsContent>
         <TabsContent value="resources">
           <ResourceManagement />
+        </TabsContent>
+        <TabsContent value="forums">
+          <ForumModeration />
         </TabsContent>
       </Tabs>
     </div>
