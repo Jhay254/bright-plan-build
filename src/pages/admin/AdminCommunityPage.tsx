@@ -7,7 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
-import { Heart, BookOpen, Plus, Pencil, Trash2 } from "lucide-react";
+import { Heart, BookOpen, Plus, Pencil, Trash2, MessageSquare } from "lucide-react";
+import ForumModeration from "@/components/community/ForumModeration";
 import {
   Dialog,
   DialogContent,
