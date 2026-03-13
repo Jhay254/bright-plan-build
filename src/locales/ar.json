@@ -242,13 +242,47 @@
   "community": {
     "title": "المجتمع",
     "subtitle": "موارد ودعم وتشجيع من أولئك الذين يفهمون.",
+    "forumsTab": "المنتديات",
     "resourcesTab": "الموارد",
     "encouragementsTab": "التشجيعات",
     "postEncouragement": "شارك تشجيعًا",
     "encouragementPlaceholder": "اكتب شيئًا لطيفًا لشخص يحتاجه…",
     "post": "نشر",
     "posting": "جارٍ النشر…",
-    "noEncouragements": "لا توجد تشجيعات بعد. كن أول من يشارك."
+    "noEncouragements": "لا توجد تشجيعات بعد. كن أول من يشارك.",
+    "forum": {
+      "allTopics": "جميع المواضيع",
+      "newThread": "موضوع جديد",
+      "startThread": "ابدأ نقاشًا جديدًا",
+      "titlePlaceholder": "أعطِ موضوعك عنوانًا (اختياري)",
+      "contentPlaceholder": "شارك ما يدور في ذهنك…",
+      "post": "نشر",
+      "threadCreated": "تم إنشاء الموضوع",
+      "noThreads": "لا توجد نقاشات بعد. ابدأ أول واحد.",
+      "threadNotFound": "الموضوع غير موجود.",
+      "replies": "الردود",
+      "noReplies": "لا توجد ردود بعد. كن أول من يرد.",
+      "replyPlaceholder": "اكتب ردًا داعمًا…",
+      "reply": "رد",
+      "replySent": "تم نشر الرد",
+      "hide": "إخفاء",
+      "restore": "استعادة",
+      "hidden": "تم إخفاء المنشور",
+      "restored": "تم استعادة المنشور",
+      "hiddenLabel": "مخفي",
+      "safetyTitle": "نحن نهتم بسلامتك",
+      "safetyDesc": "إذا كنت في أزمة، يرجى زيارة تبويب الموارد. المنتديات للدعم بين الأقران.",
+      "categories": {
+        "grief": "الحزن والفقدان",
+        "anxiety": "القلق",
+        "trauma-recovery": "التعافي من الصدمات",
+        "stress": "الضغط والإرهاق",
+        "relationships": "العلاقات",
+        "self-esteem": "تقدير الذات",
+        "resilience": "بناء المرونة",
+        "general": "عام"
+      }
+    }
   },
   "profile": {
     "title": "الملف الشخصي",

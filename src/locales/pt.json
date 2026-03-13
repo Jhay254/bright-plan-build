@@ -242,13 +242,47 @@
   "community": {
     "title": "Comunidade",
     "subtitle": "Recursos, apoio e incentivo de quem entende.",
+    "forumsTab": "Fóruns",
     "resourcesTab": "Recursos",
     "encouragementsTab": "Incentivos",
     "postEncouragement": "Compartilhar um incentivo",
     "encouragementPlaceholder": "Escreva algo gentil para alguém que precisa…",
     "post": "Publicar",
     "posting": "Publicando…",
-    "noEncouragements": "Nenhum incentivo ainda. Seja o primeiro a compartilhar."
+    "noEncouragements": "Nenhum incentivo ainda. Seja o primeiro a compartilhar.",
+    "forum": {
+      "allTopics": "Todos os Tópicos",
+      "newThread": "Novo Tópico",
+      "startThread": "Iniciar uma discussão",
+      "titlePlaceholder": "Dê um título ao seu tópico (opcional)",
+      "contentPlaceholder": "Compartilhe o que está pensando…",
+      "post": "Publicar",
+      "threadCreated": "Tópico criado",
+      "noThreads": "Nenhuma discussão ainda. Inicie a primeira.",
+      "threadNotFound": "Tópico não encontrado.",
+      "replies": "Respostas",
+      "noReplies": "Nenhuma resposta ainda. Seja o primeiro a responder.",
+      "replyPlaceholder": "Escreva uma resposta de apoio…",
+      "reply": "Responder",
+      "replySent": "Resposta publicada",
+      "hide": "Ocultar",
+      "restore": "Restaurar",
+      "hidden": "Publicação ocultada",
+      "restored": "Publicação restaurada",
+      "hiddenLabel": "Oculto",
+      "safetyTitle": "Nos preocupamos com sua segurança",
+      "safetyDesc": "Se você está em crise, visite a aba de recursos. Os fóruns são para apoio entre pares.",
+      "categories": {
+        "grief": "Luto e Perda",
+        "anxiety": "Ansiedade",
+        "trauma-recovery": "Recuperação de Trauma",
+        "stress": "Estresse e Esgotamento",
+        "relationships": "Relacionamentos",
+        "self-esteem": "Autoestima",
+        "resilience": "Construindo Resiliência",
+        "general": "Geral"
+      }
+    }
   },
   "profile": {
     "title": "Perfil",

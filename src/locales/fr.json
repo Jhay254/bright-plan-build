@@ -242,13 +242,47 @@
   "community": {
     "title": "Communauté",
     "subtitle": "Ressources, soutien et encouragements de ceux qui comprennent.",
+    "forumsTab": "Forums",
     "resourcesTab": "Ressources",
     "encouragementsTab": "Encouragements",
     "postEncouragement": "Partager un encouragement",
     "encouragementPlaceholder": "Écrivez quelque chose de bienveillant pour quelqu'un qui en a besoin…",
     "post": "Publier",
     "posting": "Publication…",
-    "noEncouragements": "Aucun encouragement pour le moment. Soyez le premier à en partager un."
+    "noEncouragements": "Aucun encouragement pour le moment. Soyez le premier à en partager un.",
+    "forum": {
+      "allTopics": "Tous les sujets",
+      "newThread": "Nouveau fil",
+      "startThread": "Démarrer une discussion",
+      "titlePlaceholder": "Donnez un titre à votre fil (optionnel)",
+      "contentPlaceholder": "Partagez ce que vous avez en tête…",
+      "post": "Publier",
+      "threadCreated": "Fil créé",
+      "noThreads": "Aucune discussion pour le moment. Lancez la première.",
+      "threadNotFound": "Fil introuvable.",
+      "replies": "Réponses",
+      "noReplies": "Aucune réponse pour le moment. Soyez le premier à répondre.",
+      "replyPlaceholder": "Écrivez une réponse bienveillante…",
+      "reply": "Répondre",
+      "replySent": "Réponse publiée",
+      "hide": "Masquer",
+      "restore": "Restaurer",
+      "hidden": "Message masqué",
+      "restored": "Message restauré",
+      "hiddenLabel": "Masqué",
+      "safetyTitle": "Votre sécurité nous tient à cœur",
+      "safetyDesc": "Si vous êtes en crise, consultez l'onglet ressources. Les forums sont pour le soutien entre pairs.",
+      "categories": {
+        "grief": "Deuil et perte",
+        "anxiety": "Anxiété",
+        "trauma-recovery": "Guérison du traumatisme",
+        "stress": "Stress et épuisement",
+        "relationships": "Relations",
+        "self-esteem": "Estime de soi",
+        "resilience": "Développer la résilience",
+        "general": "Général"
+      }
+    }
   },
   "profile": {
     "title": "Profil",
