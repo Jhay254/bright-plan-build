@@ -242,13 +242,47 @@
   "community": {
     "title": "Community",
     "subtitle": "Resources, support, and encouragement from those who understand.",
+    "forumsTab": "Forums",
     "resourcesTab": "Resources",
     "encouragementsTab": "Encouragements",
     "postEncouragement": "Share an encouragement",
     "encouragementPlaceholder": "Write something kind for someone who needs it…",
     "post": "Post",
     "posting": "Posting…",
-    "noEncouragements": "No encouragements yet. Be the first to share one."
+    "noEncouragements": "No encouragements yet. Be the first to share one.",
+    "forum": {
+      "allTopics": "All Topics",
+      "newThread": "New Thread",
+      "startThread": "Start a new discussion",
+      "titlePlaceholder": "Give your thread a title (optional)",
+      "contentPlaceholder": "Share what's on your mind…",
+      "post": "Post",
+      "threadCreated": "Thread created",
+      "noThreads": "No discussions yet. Start the first one.",
+      "threadNotFound": "Thread not found.",
+      "replies": "Replies",
+      "noReplies": "No replies yet. Be the first to respond.",
+      "replyPlaceholder": "Write a supportive reply…",
+      "reply": "Reply",
+      "replySent": "Reply posted",
+      "hide": "Hide",
+      "restore": "Restore",
+      "hidden": "Post hidden",
+      "restored": "Post restored",
+      "hiddenLabel": "Hidden",
+      "safetyTitle": "We care about your safety",
+      "safetyDesc": "If you're in crisis, please reach out to the resources tab. Forums are for peer support.",
+      "categories": {
+        "grief": "Grief & Loss",
+        "anxiety": "Anxiety",
+        "trauma-recovery": "Trauma Recovery",
+        "stress": "Stress & Burnout",
+        "relationships": "Relationships",
+        "self-esteem": "Self-Esteem",
+        "resilience": "Building Resilience",
+        "general": "General"
+      }
+    }
   },
   "profile": {
     "title": "Profile",
