@@ -124,7 +124,9 @@
     "retake": "Fazer novamente",
     "takeNow": "Iniciar check-in",
     "noDataYet": "Complete seu primeiro check-in para ver suas tendências.",
-    "disclaimer": "Estes check-ins são apenas para autorreflexão. Não são um diagnóstico. Se você está com dificuldades, entre em contato com um serviço de crise ou seu profissional de saúde."
+    "disclaimer": "Estes check-ins são apenas para autorreflexão. Não são um diagnóstico. Se você está com dificuldades, entre em contato com um serviço de crise ou seu profissional de saúde.",
+    "reminderTitle": "Hora de um check-in de bem-estar?",
+    "reminderDesc": "Faz um tempo desde seu último check-in. Um rápido pode ajudar você a perceber padrões."
   },
   "nav": {
     "home": "Início",

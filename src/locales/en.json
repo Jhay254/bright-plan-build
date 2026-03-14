@@ -124,7 +124,9 @@
     "retake": "Take Again",
     "takeNow": "Start Check-in",
     "noDataYet": "Complete your first check-in to see your trends.",
-    "disclaimer": "These check-ins are for self-reflection only. They are not a diagnosis. If you're struggling, please reach out to a crisis service or your healthcare provider."
+    "disclaimer": "These check-ins are for self-reflection only. They are not a diagnosis. If you're struggling, please reach out to a crisis service or your healthcare provider.",
+    "reminderTitle": "Time for a wellbeing check-in?",
+    "reminderDesc": "It's been a while since your last check-in. A quick one can help you notice patterns."
   },
   "nav": {
     "home": "Home",
@@ -386,6 +388,7 @@
     "cancel": "Cancel",
     "delete": "Delete",
     "confirm": "Confirm",
-    "back": "Back"
+    "back": "Back",
+    "dismiss": "Dismiss"
   }
 }

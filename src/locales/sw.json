@@ -124,7 +124,9 @@
     "retake": "Fanya tena",
     "takeNow": "Anza ukaguzi",
     "noDataYet": "Kamilisha ukaguzi wako wa kwanza kuona mwenendo wako.",
-    "disclaimer": "Ukaguzi huu ni kwa kutafakari binafsi tu. Si uchunguzi wa matibabu. Ikiwa unapambana, tafadhali wasiliana na huduma ya msaada au daktari wako."
+    "disclaimer": "Ukaguzi huu ni kwa kutafakari binafsi tu. Si uchunguzi wa matibabu. Ikiwa unapambana, tafadhali wasiliana na huduma ya msaada au daktari wako.",
+    "reminderTitle": "Muda wa ukaguzi wa ustawi?",
+    "reminderDesc": "Umekuwa muda tangu ukaguzi wako wa mwisho. Ukaguzi wa haraka unaweza kukusaidia kutambua mifumo."
   },
   "nav": {
     "home": "Nyumbani",
