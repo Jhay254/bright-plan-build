@@ -388,6 +388,7 @@
     "cancel": "Cancel",
     "delete": "Delete",
     "confirm": "Confirm",
-    "back": "Back"
+    "back": "Back",
+    "dismiss": "Dismiss"
   }
 }
