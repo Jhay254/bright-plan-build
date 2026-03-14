@@ -357,6 +357,28 @@
     "dashboard": "Central do voluntário",
     "notApproved": "Seu perfil está pendente de aprovação. Você poderá aceitar sessões quando for aprovado."
   },
+  "pathway": {
+    "title": "Torne-se voluntário",
+    "subtitle": "Sua jornada de cura pode ajudar outros. Contribua tornando-se um apoiador treinado.",
+    "introDesc": "Muitos dos nossos melhores voluntários começaram como buscadores. Se você se sentir pronto(a), pode se candidatar para apoiar outros.",
+    "step1": "Complete 3 módulos de leitura pré-requisito",
+    "step2": "Envie sua candidatura de voluntário",
+    "step3": "Seja avaliado(a) e aprovado(a) pela nossa equipe",
+    "beginButton": "Tenho interesse",
+    "trainingTitle": "Leituras pré-requisito",
+    "completed": "concluído(s)",
+    "tapToComplete": "Toque para marcar como lido",
+    "continueToApply": "Continuar para candidatura",
+    "whyVolunteer": "Por que você quer ser voluntário(a)?",
+    "motivationPlaceholder": "Compartilhe o que te motiva a apoiar outros…",
+    "backgroundLabel": "Experiência relevante",
+    "backgroundPlaceholder": "Qualquer experiência em aconselhamento, apoio entre pares, etc.",
+    "areasOfInterest": "Áreas de interesse",
+    "submitApplication": "Enviar candidatura",
+    "submitted": "Candidatura enviada!",
+    "submittedTitle": "Candidatura enviada!",
+    "submittedDesc": "Obrigado(a) por se candidatar. Nossa equipe analisará sua candidatura e notificará você quando uma decisão for tomada."
+  },
   "common": {
     "error": "Erro",
     "loading": "Carregando…",

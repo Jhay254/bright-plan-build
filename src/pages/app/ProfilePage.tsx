@@ -11,6 +11,7 @@ import { Helmet } from "react-helmet-async";
 import AccountUpgrade from "@/components/profile/AccountUpgrade";
 import DataExport from "@/components/profile/DataExport";
 import AccountDeletion from "@/components/profile/AccountDeletion";
+import SeekerToVolunteerPathway from "@/components/profile/SeekerToVolunteerPathway";
 
 
 const LANGUAGES = [
@@ -180,6 +181,9 @@ const ProfilePage = () => {
             <p className="text-sm text-bark">{profile.cultural_context}</p>
           </div>
         )}
+
+        {/* Seeker-to-Volunteer Pathway */}
+        <SeekerToVolunteerPathway />
 
         {/* Account Upgrade (anonymous users only) */}
         <AccountUpgrade />

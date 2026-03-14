@@ -357,6 +357,28 @@
     "dashboard": "Volunteer Hub",
     "notApproved": "Your profile is pending approval. You'll be able to accept sessions once approved."
   },
+  "pathway": {
+    "title": "Become a Volunteer",
+    "subtitle": "Your healing journey can help others. Give back by becoming a trained peer supporter.",
+    "introDesc": "Many of our best volunteers started as seekers. If you feel ready, you can apply to support others through their own healing journey.",
+    "step1": "Complete 3 short prerequisite reading modules",
+    "step2": "Submit your volunteer application",
+    "step3": "Get reviewed and approved by our team",
+    "beginButton": "I'm Interested",
+    "trainingTitle": "Prerequisite Reading",
+    "completed": "completed",
+    "tapToComplete": "Tap to mark as read",
+    "continueToApply": "Continue to Application",
+    "whyVolunteer": "Why do you want to volunteer?",
+    "motivationPlaceholder": "Share what motivates you to support others on their healing journey…",
+    "backgroundLabel": "Relevant experience",
+    "backgroundPlaceholder": "Any counselling, peer support, or related experience…",
+    "areasOfInterest": "Areas of interest",
+    "submitApplication": "Submit Application",
+    "submitted": "Application submitted!",
+    "submittedTitle": "Application Submitted!",
+    "submittedDesc": "Thank you for applying. Our team will review your application and notify you once a decision is made."
+  },
   "common": {
     "error": "Error",
     "loading": "Loading…",
