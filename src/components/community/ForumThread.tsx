@@ -52,7 +52,8 @@ const ForumThread = ({ threadId, onBack }: ForumThreadProps) => {
       supabase.removeChannel(channel);
     };
   }, [threadId, queryClient]);
-  const [replyText, setReplyText] = useState("");
+
+
 
   const { data: thread, isLoading: threadLoading } = useForumThread(threadId);
   const { data: replies, isLoading: repliesLoading } = useForumReplies(threadId);
