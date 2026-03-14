@@ -182,6 +182,9 @@ const ProfilePage = () => {
           </div>
         )}
 
+        {/* Seeker-to-Volunteer Pathway */}
+        <SeekerToVolunteerPathway />
+
         {/* Account Upgrade (anonymous users only) */}
         <AccountUpgrade />
 
