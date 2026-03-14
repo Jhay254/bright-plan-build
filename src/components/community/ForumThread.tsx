@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
 import { useForumThread, useForumReplies, useCreateForumPost, useHideForumPost } from "@/hooks/use-forum";
+import { supabase } from "@/integrations/supabase/client";
 import { detectCrisisLanguage } from "@/lib/safety";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -23,8 +25,35 @@ const ForumThread = ({ threadId, onBack }: ForumThreadProps) => {
   const { t } = useTranslation();
   const { user } = useAuth();
   const { role } = useAuthProfile();
+  const queryClient = useQueryClient();
   const { toast } = useToast();
   const [replyText, setReplyText] = useState("");
+
+  // Real-time subscription for new replies
+  useEffect(() => {
+    const channel = supabase
+      .channel(`forum-thread-${threadId}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "forum_posts",
+          filter: `parent_id=eq.${threadId}`,
+        },
+        () => {
+          queryClient.invalidateQueries({ queryKey: ["forum-replies", threadId] });
+          queryClient.invalidateQueries({ queryKey: ["forum-reply-count", threadId] });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [threadId, queryClient]);
+
+
 
   const { data: thread, isLoading: threadLoading } = useForumThread(threadId);
   const { data: replies, isLoading: repliesLoading } = useForumReplies(threadId);
