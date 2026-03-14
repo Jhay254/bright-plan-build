@@ -25,7 +25,33 @@ const ForumThread = ({ threadId, onBack }: ForumThreadProps) => {
   const { t } = useTranslation();
   const { user } = useAuth();
   const { role } = useAuthProfile();
+  const queryClient = useQueryClient();
   const { toast } = useToast();
+  const [replyText, setReplyText] = useState("");
+
+  // Real-time subscription for new replies
+  useEffect(() => {
+    const channel = supabase
+      .channel(`forum-thread-${threadId}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "forum_posts",
+          filter: `parent_id=eq.${threadId}`,
+        },
+        () => {
+          queryClient.invalidateQueries({ queryKey: ["forum-replies", threadId] });
+          queryClient.invalidateQueries({ queryKey: ["forum-reply-count", threadId] });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [threadId, queryClient]);
   const [replyText, setReplyText] = useState("");
 
   const { data: thread, isLoading: threadLoading } = useForumThread(threadId);
