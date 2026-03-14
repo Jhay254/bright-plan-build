@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
 import { useForumThread, useForumReplies, useCreateForumPost, useHideForumPost } from "@/hooks/use-forum";
+import { supabase } from "@/integrations/supabase/client";
 import { detectCrisisLanguage } from "@/lib/safety";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
