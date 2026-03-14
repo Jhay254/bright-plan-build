@@ -124,7 +124,9 @@
     "retake": "Refaire",
     "takeNow": "Commencer le bilan",
     "noDataYet": "Complétez votre premier bilan pour voir vos tendances.",
-    "disclaimer": "Ces bilans sont uniquement pour l'auto-réflexion. Ils ne constituent pas un diagnostic. Si vous souffrez, veuillez contacter un service de crise ou votre médecin."
+    "disclaimer": "Ces bilans sont uniquement pour l'auto-réflexion. Ils ne constituent pas un diagnostic. Si vous souffrez, veuillez contacter un service de crise ou votre médecin.",
+    "reminderTitle": "Un petit bilan de bien-être ?",
+    "reminderDesc": "Cela fait un moment depuis votre dernier bilan. Un rapide peut vous aider à repérer des tendances."
   },
   "nav": {
     "home": "Accueil",
