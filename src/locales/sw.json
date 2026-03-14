@@ -357,6 +357,28 @@
     "dashboard": "Kituo cha kujitolea",
     "notApproved": "Wasifu wako unasubiri idhini. Utaweza kukubali vikao ukishaidhinishwa."
   },
+  "pathway": {
+    "title": "Kuwa mjitolea",
+    "subtitle": "Safari yako ya uponyaji inaweza kusaidia wengine. Toa msaada kwa kuwa msaidizi mwenza aliyefunzwa.",
+    "introDesc": "Wengi wa wajitolea wetu bora walianza kama watafutaji. Ukijisikia tayari, unaweza kuomba kusaidia wengine.",
+    "step1": "Kamilisha moduli 3 za usomaji wa awali",
+    "step2": "Wasilisha maombi yako ya kujitolea",
+    "step3": "Kupitishwa na kuidhinishwa na timu yetu",
+    "beginButton": "Ninavutiwa",
+    "trainingTitle": "Usomaji wa awali",
+    "completed": "imekamilika",
+    "tapToComplete": "Gusa kuashiria kuwa umesoma",
+    "continueToApply": "Endelea kuomba",
+    "whyVolunteer": "Kwa nini unataka kujitolea?",
+    "motivationPlaceholder": "Shiriki kinachokusukuma kusaidia wengine…",
+    "backgroundLabel": "Uzoefu husika",
+    "backgroundPlaceholder": "Uzoefu wowote wa ushauri, msaada wa rika, nk.",
+    "areasOfInterest": "Maeneo ya kupendezwa",
+    "submitApplication": "Wasilisha maombi",
+    "submitted": "Maombi yamewasilishwa!",
+    "submittedTitle": "Maombi yamewasilishwa!",
+    "submittedDesc": "Asante kwa kuomba. Timu yetu itakagua maombi yako na kukujulisha uamuzi utakapofanywa."
+  },
   "common": {
     "error": "Hitilafu",
     "loading": "Inapakia…",

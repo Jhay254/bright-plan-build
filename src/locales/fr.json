@@ -357,6 +357,28 @@
     "dashboard": "Espace bénévole",
     "notApproved": "Votre profil est en attente d'approbation. Vous pourrez accepter des sessions une fois approuvé(e)."
   },
+  "pathway": {
+    "title": "Devenir bénévole",
+    "subtitle": "Votre parcours de guérison peut aider les autres. Contribuez en devenant un pair aidant formé.",
+    "introDesc": "Beaucoup de nos meilleurs bénévoles ont commencé comme chercheurs. Si vous vous sentez prêt(e), vous pouvez postuler pour soutenir d'autres personnes.",
+    "step1": "Compléter 3 modules de lecture préalables",
+    "step2": "Soumettre votre candidature de bénévole",
+    "step3": "Être évalué(e) et approuvé(e) par notre équipe",
+    "beginButton": "Je suis intéressé(e)",
+    "trainingTitle": "Lectures préalables",
+    "completed": "terminé(s)",
+    "tapToComplete": "Appuyez pour marquer comme lu",
+    "continueToApply": "Continuer vers la candidature",
+    "whyVolunteer": "Pourquoi souhaitez-vous devenir bénévole ?",
+    "motivationPlaceholder": "Partagez ce qui vous motive à soutenir les autres…",
+    "backgroundLabel": "Expérience pertinente",
+    "backgroundPlaceholder": "Toute expérience en conseil, soutien par les pairs, etc.",
+    "areasOfInterest": "Centres d'intérêt",
+    "submitApplication": "Soumettre la candidature",
+    "submitted": "Candidature soumise !",
+    "submittedTitle": "Candidature soumise !",
+    "submittedDesc": "Merci de votre candidature. Notre équipe l'examinera et vous notifiera une fois la décision prise."
+  },
   "common": {
     "error": "Erreur",
     "loading": "Chargement…",
